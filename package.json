@@ -29,6 +29,11 @@
     "lint": "eslint . --ext .ts,.tsx,.js",
     "lint:fix": "eslint . --ext .ts,.tsx,.js --fix"
   },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn lint && yarn test"
+    }
+  },
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -77,6 +82,7 @@
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-react-hooks": "^1.6.1",
     "eslint-plugin-taro": "2.0.3",
+    "husky": "^4.2.1",
     "jest": "^25.1.0",
     "stylelint": "9.3.0",
     "stylelint-config-taro-rn": "2.0.3",

@@ -1,5 +1,10 @@
 {
-  "extends": ["taro", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "taro",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "rules": {
     "no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
@@ -16,7 +21,10 @@
       }
     },
     "@typescript-eslint/explicit-function-return-type": 0,
-    "@typescript-eslint/no-empty-function": ["warn"]
+    "@typescript-eslint/no-empty-function": ["warn"],
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/quotes": ["error", "single"],
+    "@typescript-eslint/semi": ["error", "never"]
   },
   "parserOptions": {
     "ecmaFeatures": {

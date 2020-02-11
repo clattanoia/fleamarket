@@ -11,12 +11,12 @@ export default function counter (state = INITIAL_STATE, action) {
         ...state,
         num: state.num + 1
       }
-     case MINUS:
-       return {
-         ...state,
-         num: state.num - 1
-       }
-     default:
-       return state
+    case MINUS:
+      return {
+        ...state,
+        num: state.num - 1
+      }
+    default:
+      return state
   }
 }

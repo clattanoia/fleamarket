@@ -65,8 +65,8 @@ class Index extends Component {
     navigationBarTitleText: '首页'
   }
 
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+  componentWillReceiveProps () {
+    // console.log(this.props, nextProps)
   }
 
   componentWillUnmount () { }

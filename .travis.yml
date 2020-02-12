@@ -6,5 +6,6 @@ branchs:
     - master
 install:
   - npm install
+  - npm i -g @tarojs/cli
 script:
   - npm run test

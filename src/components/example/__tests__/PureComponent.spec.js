@@ -1,7 +1,7 @@
 import Nerv from 'nervjs'
-import { renderToString } from 'nerv-server'
+import { renderToString } from 'nerv-server/dist/index'
 
-import Index from '../../../.temp/components/example/PureComponent'
+import Index from '../../../../.temp/components/example/PureComponent'
 
 describe('canary test', () => {
   it('true must to equal true', () => {

@@ -38,6 +38,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.3",
     "@tarojs/components": "2.0.3",
     "@tarojs/components-qa": "2.0.3",
     "@tarojs/redux": "2.0.3",
@@ -51,8 +52,10 @@
     "@tarojs/taro-swan": "2.0.3",
     "@tarojs/taro-tt": "2.0.3",
     "@tarojs/taro-weapp": "2.0.3",
+    "apollo-boost": "^0.4.7",
     "babel-jest": "^23.6.0",
     "babel-runtime": "^6.26.0",
+    "graphql": "^14.6.0",
     "nerv-devtools": "^1.5.5",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",

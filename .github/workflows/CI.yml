@@ -7,10 +7,6 @@ on:
       - master
       - "releases/*"
 
-env:
-  IMAGE_NAME: clattanoia/fleamarket-bff
-  VERSION: latest
-
 jobs:
   unit-test:
     runs-on: ubuntu-latest

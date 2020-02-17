@@ -23,4 +23,4 @@ jobs:
       - run: npm install
       - run: npm i -g @tarojs/cli
       - run: npm test
-      - run: npm codecov -t $CODECOV_TOKEN
+      - run: npm codecov -t ${{ secrets.CODECOV_TOKEN }}

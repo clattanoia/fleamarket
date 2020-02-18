@@ -1,6 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View ,Text} from '@tarojs/components'
 import { AtInput,AtTextarea }  from 'taro-ui'
+
+import './index.scss'
 
 export default class Publish extends Component {
 
@@ -40,13 +42,6 @@ export default class Publish extends Component {
 
   componentDidHide () { }
 
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
   config: Config = {
     navigationBarTitleText: 'publish',
   }
@@ -54,30 +49,46 @@ export default class Publish extends Component {
   render () {
     return (
       <View>
-        <AtInput
-          name='title'
-          title=''
-          type='text'
-          placeholder='请输入标题'
-          value={this.state.title}
-          onChange={this.handleChangeTitle}
-          maxLength={100}
-        />
-        <AtInput
-          name='price'
-          title=''
-          type='number'
-          placeholder='请输入价格'
-          value={this.state.price}
-          onChange={this.handleChangePrice}
-        />
-        <AtTextarea
-          value={this.state.detail}
-          onChange={this.handleChangeDetail}
-          maxLength={500}
-          placeholder='请输入详情'
-          height={200}
-        />
+        <View className='form_line'>
+          <Text className='form_line_label'>*</Text>
+          <View className='form_line_content'>
+            <AtInput
+              name='title'
+              title=''
+              type='text'
+              placeholder='请输入标题'
+              value={this.state.title}
+              onChange={this.handleChangeTitle}
+              maxLength={100}
+            />
+          </View>
+        </View>
+        <View className='form_line'>
+          <Text className='form_line_label'>*</Text>
+          <View className='form_line_content'>
+            <AtInput
+              name='price'
+              title=''
+              type='number'
+              placeholder='请输入期望价格'
+              value={this.state.price}
+              onChange={this.handleChangePrice}
+            />
+          </View>
+        </View>
+        <View className='form_line'>
+          <Text className='form_line_label'>*</Text>
+          <View className='form_line_content'>
+            <AtTextarea
+              value={this.state.detail}
+              onChange={this.handleChangeDetail}
+              maxLength={500}
+              placeholder='请输入详情'
+              height={200}
+            />
+          </View>
+        </View>
+
 
       </View>
     )

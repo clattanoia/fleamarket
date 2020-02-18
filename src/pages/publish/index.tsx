@@ -1,7 +1,34 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
+import { AtInput,AtTextarea }  from 'taro-ui'
 
 export default class Publish extends Component {
+
+  state = {
+    title: '',
+    price:'',
+    detail:''
+  }
+
+  handleChangeTitle = (value) => {
+    this.setState({
+      title:value
+    })
+    return value
+  }
+
+  handleChangePrice = (value) => {
+    this.setState({
+      price:value
+    })
+    return value
+  }
+
+  handleChangeDetail = (event) => {
+    this.setState({
+      detail:event.target.value
+    })
+  }
 
   componentWillMount () {}
 
@@ -27,7 +54,31 @@ export default class Publish extends Component {
   render () {
     return (
       <View>
-        <Text>Hello publish!</Text>
+        <AtInput
+          name='title'
+          title=''
+          type='text'
+          placeholder='请输入标题'
+          value={this.state.title}
+          onChange={this.handleChangeTitle}
+          maxLength={100}
+        />
+        <AtInput
+          name='price'
+          title=''
+          type='number'
+          placeholder='请输入价格'
+          value={this.state.price}
+          onChange={this.handleChangePrice}
+        />
+        <AtTextarea
+          value={this.state.detail}
+          onChange={this.handleChangeDetail}
+          maxLength={500}
+          placeholder='请输入详情'
+          height={200}
+        />
+
       </View>
     )
   }

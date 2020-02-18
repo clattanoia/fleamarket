@@ -1,0 +1,28 @@
+@import "../../../styles/theme.scss";
+
+.publish_info {
+  .form_line{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+    .form_line_label {
+      color: $baseColor;
+      width: 30px;
+      height: 72.8px;
+      line-height: 72.8px;
+    }
+    .form_line_content {
+      flex: 1;
+      // .at-input {
+      //   margin: 0;
+      // }
+      // .at-textarea {
+      //   border: 0 solid $borderColor;
+      //   border-bottom-width: 1PX;
+      //   padding-left: 0;
+      // }
+    }
+  }
+}

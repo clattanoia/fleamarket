@@ -1,8 +1,10 @@
-// import { gql } from 'apollo-boost'
-// import client from '../graphql-client'
+import { gql } from 'apollo-boost'
+import client from '../graphql-client'
+
 import {
   ADD,
-  MINUS
+  MINUS,
+  FETCH
 } from '../constants/counter'
 
 export const add = () => {
@@ -15,6 +17,12 @@ export const minus = () => {
     type: MINUS
   }
 }
+export const fetch = (data) => {
+  return {
+    type: FETCH,
+    data
+  }
+}
 
 // 异步的action
 export function asyncAdd () {
@@ -22,6 +30,26 @@ export function asyncAdd () {
     setTimeout(() => {
       dispatch(add())
     }, 2000)
+  }
+}
+
+export function asyncGrapqlFetch() {
+  return async dispatch => {
+    const query = gql`
+      {
+        cat(id: 1) {
+          id
+          name
+        }
+      }
+    `
+
+    try {
+      const { data } = await client.query({query, variables: {}})
+      dispatch(fetch(data))
+    } catch (error) {
+      throw error
+    }
   }
 }
 

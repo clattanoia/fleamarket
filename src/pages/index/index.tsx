@@ -2,9 +2,10 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
+
 import CustomButton from '../../components/button'
 
-import { add, minus, asyncAdd } from '../../actions/counter'
+import { add, minus, asyncAdd, asyncGrapqlFetch } from '../../actions/counter'
 
 import './index.scss'
 
@@ -21,13 +22,15 @@ import './index.scss'
 type PageStateProps = {
   counter: {
     num: number
+    data: any
   }
 }
 
 type PageDispatchProps = {
   add: () => void
   dec: () => void
-  asyncAdd: () => any
+  asyncAdd: () => void
+  asyncGrapqlFetch: () => Function
   // asyncGraphqlAdd: () => any
   // asyncGet: () => any
 }
@@ -54,6 +57,9 @@ interface Index {
   asyncAdd () {
     dispatch(asyncAdd())
   },
+  asyncGrapqlFetch () {
+    dispatch(asyncGrapqlFetch())
+  }
   // asyncGraphqlAdd() {
   //   dispatch(asyncGraphqlAdd())
   // },
@@ -90,9 +96,9 @@ class Index extends Component {
         <Button className='add_btn' onClick={this.props.add}>+</Button>
         <Button className='dec_btn' onClick={this.props.dec}>-</Button>
         <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-        {/*<Button className='dec_btn' onClick={this.props.asyncGraphqlAdd}>async</Button>*/}
+        <Button className='dec_btn' onClick={this.props.asyncGrapqlFetch}>fetch</Button>
         <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
+        <View><Text>{JSON.stringify(this.props.counter.data, null, 4)}</Text></View>
         <CustomButton />
       </View>
     )

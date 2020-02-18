@@ -32,20 +32,26 @@ class App extends Component {
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationBarTextStyle: 'white',
+      navigationBarBackgroundColor: '#fe5155',
     },
     tabBar: {
-      color: '#3e3e3e',
+      selectedColor: '#fe5155',
       list: [{
         text: '首页',
+        iconPath: 'assets/home.png',
+        selectedIconPath: 'assets/home_selected.png',
         pagePath: 'pages/index/index'
       }, {
         text: '发布',
+        iconPath: 'assets/publish.png',
+        selectedIconPath: 'assets/publish.png',
         pagePath: 'pages/publish/index'
       }, {
         text: '我的',
+        iconPath: 'assets/profile.png',
+        selectedIconPath: 'assets/profile_selected.png',
         pagePath: 'pages/profile/index'
       }]
     },

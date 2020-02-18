@@ -26,14 +26,29 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/index/index'
+      'pages/index/index',
+      'pages/publish/index',
+      'pages/profile/index'
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
-    }
+    },
+    tabBar: {
+      color: '#3e3e3e',
+      list: [{
+        text: '首页',
+        pagePath: 'pages/index/index'
+      }, {
+        text: '发布',
+        pagePath: 'pages/publish/index'
+      }, {
+        text: '我的',
+        pagePath: 'pages/profile/index'
+      }]
+    },
   }
 
   componentDidMount() { }

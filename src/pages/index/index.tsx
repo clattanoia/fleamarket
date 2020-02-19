@@ -10,6 +10,7 @@ import { add, minus, asyncAdd, asyncGrapqlFetch } from '../../actions/counter'
 
 import './index.scss'
 import goods from '../../assets/goods.jpg'
+import avatar from '../../assets/avatar.png'
 
 // #region 书写注意
 //
@@ -82,6 +83,30 @@ class Index extends Component {
     navigationBarTitleText: '骚窝跳蚤平台'
   }
 
+  state = {
+    goodsList: [{
+      id: 1,
+      title: '榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机',
+      image: goods,
+      price: 2700,
+      tag: '家电',
+      user: {
+        name: '昵称',
+        avatar: avatar
+      }
+    }, {
+      id: 2,
+      title: '榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机',
+      image: goods,
+      price: 2700,
+      tag: '家电',
+      user: {
+        name: '昵称',
+        avatar: avatar
+      }
+    }]
+  }
+
   componentWillReceiveProps () {
     // console.log(this.props, nextProps)
   }
@@ -97,23 +122,20 @@ class Index extends Component {
       <View className='index'>
         <Text className='category'>看推荐</Text>
         <View className='wrapper-list'>
-          <View className='list-item'>
-            <Image className='goods-image' src={goods} />
-            <Text className='goods-name'>榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机</Text>
-            <View className='detail'>
-              <Text className='goods-price'><Text className='unit'>￥</Text>2700</Text>
-              <Text className='goods-tag'>家电</Text>
+          { this.state.goodsList.map(item =>
+            <View className='list-item' key={item.id}>
+              <Image className='goods-image' src={item.image} />
+              <Text className='goods-name'>{item.title}</Text>
+              <View className='detail'>
+                <Text className='goods-price'><Text className='unit'>￥</Text>{item.price}</Text>
+                <Text className='goods-tag'>{item.tag}</Text>
+              </View>
+              <View className='user-info'>
+                <AtAvatar circle size="small" image={item.user.avatar}></AtAvatar>
+                <Text className='name'>{item.user.name}</Text>
+              </View>
             </View>
-            <AtAvatar circle size="small" image='https://jdc.jd.com/img/200'></AtAvatar>
-          </View>
-          <View className='list-item'>
-            <Image className='goods-image' src={goods} />
-            <Text className='goods-name'>榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机</Text>
-            <View className='detail'>
-              <Text className='goods-price'><Text className='unit'>￥</Text>2700</Text>
-              <Text className='goods-tag'>家电</Text>
-            </View>
-          </View>
+          )}
         </View>
         <Button className='add_btn' onClick={this.props.add}>+</Button>
         <Button className='dec_btn' onClick={this.props.dec}>-</Button>

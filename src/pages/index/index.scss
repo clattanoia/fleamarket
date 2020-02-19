@@ -2,7 +2,8 @@
 
 .index {
   flex-direction: column;
-  width: 100%;
+  width: calc(100% - 40px);
+  margin: 0 20px;
 
   .category {
     color: #020202;
@@ -40,18 +41,22 @@
       }
 
       .goods-name {
+        margin-left: 10px;
         overflow : hidden;
         text-overflow: ellipsis;
         display: block;
         white-space: nowrap;
         font-size: 26px;
         color: #101010;
+        font-weight: bold;
       }
 
       .detail {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-top: 20px;
+        margin-left: 10px;
 
         .goods-price {
           color: $baseColor;
@@ -71,6 +76,24 @@
           background-color: #ffe8e8;
           color: #e51c23;
           font-size: 24px;
+        }
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+        margin-left: 10px;
+
+        .at-avatar {
+          width: 52px;
+          height: 52px;
+        }
+
+        .name {
+          color: $fontGray;
+          font-size: 24px;
+          margin-left: 10px;
         }
       }
     }

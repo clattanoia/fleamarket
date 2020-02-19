@@ -1,39 +1,14 @@
 import { gql } from 'apollo-boost'
 import client from '../graphql-client'
 
-import {
-  ADD,
-  MINUS,
-  FETCH
-} from '../constants/counter'
-
-export const add = () => {
-  return {
-    type: ADD
-  }
-}
-export const minus = () => {
-  return {
-    type: MINUS
-  }
-}
 export const fetch = (data) => {
   return {
-    type: FETCH,
+    type: 'FETCH',
     data
   }
 }
 
-// 异步的action
-export function asyncAdd () {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(add())
-    }, 2000)
-  }
-}
-
-export function asyncGrapqlFetch() {
+export function fetchRecommendGoods() {
   return async dispatch => {
     const query = gql`
       {

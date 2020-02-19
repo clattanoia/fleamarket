@@ -4,9 +4,7 @@ import {View, Button, Text, Image} from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtAvatar } from 'taro-ui'
 
-import CustomButton from '../../components/button'
-
-import { add, minus, asyncAdd, asyncGrapqlFetch } from '../../actions/counter'
+import { fetchRecommendGoods } from '../../actions/recommend'
 
 import './index.scss'
 import goods from '../../assets/goods.jpg'
@@ -22,20 +20,29 @@ import avatar from '../../assets/avatar.png'
 //
 // #endregion
 
+interface User {
+  name: string,
+  avatar: string
+}
+
+interface Goods {
+  id: string,
+  title: string,
+  image: string,
+  price: number,
+  tag: string,
+  user: User,
+}
+
 type PageStateProps = {
-  counter: {
-    num: number
+  recommend: {
+    recommendList: Array<Goods>,
     data: any
   }
 }
 
 type PageDispatchProps = {
-  add: () => void
-  dec: () => void
-  asyncAdd: () => void
-  asyncGrapqlFetch: () => Function
-  // asyncGraphqlAdd: () => any
-  // asyncGet: () => any
+  fetchRecommendGoods: () => Function
 }
 
 type PageOwnProps = {}
@@ -48,27 +55,12 @@ interface Index {
   props: IProps;
 }
 
-@connect(({ counter }) => ({
-  counter
+@connect(({ recommend }) => ({
+  recommend
 }), (dispatch) => ({
-  add () {
-    dispatch(add())
-  },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
-  },
-  asyncGrapqlFetch () {
-    dispatch(asyncGrapqlFetch())
+  fetchRecommendGoods () {
+    dispatch(fetchRecommendGoods())
   }
-  // asyncGraphqlAdd() {
-  //   dispatch(asyncGraphqlAdd())
-  // },
-  // asyncGet() {
-  //   dispatch(asyncGet())
-  // }
 }))
 class Index extends Component {
 
@@ -137,13 +129,8 @@ class Index extends Component {
             </View>
           )}
         </View>
-        <Button className='add_btn' onClick={this.props.add}>+</Button>
-        <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-        <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-        <Button className='dec_btn' onClick={this.props.asyncGrapqlFetch}>fetch</Button>
-        <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>{JSON.stringify(this.props.counter.data, null, 4)}</Text></View>
-        <CustomButton />
+        <Button className='dec_btn' onClick={this.props.fetchRecommendGoods}>fetch</Button>
+        <View><Text>{JSON.stringify(this.props.recommend.data, null, 4)}</Text></View>
       </View>
     )
   }

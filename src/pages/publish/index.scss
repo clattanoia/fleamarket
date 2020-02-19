@@ -4,9 +4,10 @@
   .form_btn{
     width: calc(100% - 20px);
     margin: 30px auto;
-    .at-button--primary {
+    .at-button--normal {
       background-color: $baseColor;
       border-color: $baseColor;
+      color: white;
     }
   }
 }

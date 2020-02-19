@@ -1,13 +1,15 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
+import {View, Button, Text, Image} from '@tarojs/components'
 import { connect } from '@tarojs/redux'
+import { AtAvatar } from 'taro-ui'
 
 import CustomButton from '../../components/button'
 
 import { add, minus, asyncAdd, asyncGrapqlFetch } from '../../actions/counter'
 
 import './index.scss'
+import goods from '../../assets/goods.jpg'
 
 // #region 书写注意
 //
@@ -93,6 +95,26 @@ class Index extends Component {
   render () {
     return (
       <View className='index'>
+        <Text className='category'>看推荐</Text>
+        <View className='wrapper-list'>
+          <View className='list-item'>
+            <Image className='goods-image' src={goods} />
+            <Text className='goods-name'>榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机</Text>
+            <View className='detail'>
+              <Text className='goods-price'><Text className='unit'>￥</Text>2700</Text>
+              <Text className='goods-tag'>家电</Text>
+            </View>
+            <AtAvatar circle size="small" image='https://jdc.jd.com/img/200'></AtAvatar>
+          </View>
+          <View className='list-item'>
+            <Image className='goods-image' src={goods} />
+            <Text className='goods-name'>榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机</Text>
+            <View className='detail'>
+              <Text className='goods-price'><Text className='unit'>￥</Text>2700</Text>
+              <Text className='goods-tag'>家电</Text>
+            </View>
+          </View>
+        </View>
         <Button className='add_btn' onClick={this.props.add}>+</Button>
         <Button className='dec_btn' onClick={this.props.dec}>-</Button>
         <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>

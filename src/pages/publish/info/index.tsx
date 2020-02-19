@@ -1,4 +1,3 @@
-// import Taro, { Component } from '@tarojs/taro'
 import Taro, { memo, useState } from '@tarojs/taro'
 import { View ,Text} from '@tarojs/components'
 import { AtInput,AtTextarea }  from 'taro-ui'
@@ -21,10 +20,30 @@ function PublishInfo(props: InProps) {
     return value
   }
 
+  const validPrice = (val) => {
+    const reg = /[^\d.]/g
+    const numVal = val.replace(reg,'')
+    const numValArr = numVal.split('.')
+    const isFloat = numValArr.length > 1
+    const intergeNum = numValArr[0]
+    let intergeStr = ''
+    if(intergeNum.substr(0,1) === '0' && intergeNum.length > 1 ){
+      intergeStr = intergeNum.substr(1,10)
+    } else {
+      intergeStr = intergeNum.toString().substr(0,9)
+    }
+    if(!isFloat){
+      return intergeStr
+    }
+    const floatNum = numValArr[1].substr(0,2)
+    return `${intergeStr}.${floatNum}`
+  }
+
   const handleChangePrice = (value) => {
-    setPrice(value)
-    props.setVal('price',value)
-    return value
+    const realVal = validPrice(value)
+    setPrice(realVal)
+    props.setVal('price',realVal)
+    return realVal
   }
 
   const handleChangeDetail = (event) => {
@@ -32,7 +51,6 @@ function PublishInfo(props: InProps) {
     setDetail(value)
     props.setVal('detail',value)
   }
-
 
   return (
     <View className="publish_info">

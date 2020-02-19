@@ -33,34 +33,12 @@ export default class Publish extends Component {
     return true
   }
 
-  validPrice = (val) => {
-    const reg = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/
-    let msg = ''
-    if(val > Math.pow(2,53)){
-      msg = '价格不能大于9007199254740992'
-    }
-    if(!reg.test(val)){
-      msg = '请输入正确的价格'
-    }
-    if(msg){
-      this.setState({
-        showToast:true,
-        toastText:msg
-      })
-      return false
-    }
-    return true
-  }
-
   handleSubmit = () => {
     const {title,price,detail} = this.state
     if(!this.validRequired(title,'title')){
       return
     }
     if(!this.validRequired(price,'price')){
-      return
-    }
-    if(!this.validPrice(price)){
       return
     }
     if(!this.validRequired(detail,'detail')){

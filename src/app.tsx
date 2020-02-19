@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
 
+import * as auth from './utils/auth'
 import Index from './pages/index'
 
 import configStore from './store'
@@ -25,7 +26,7 @@ class App extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    debug: true,
+    debug: false,
     pages: [
       'pages/index/index',
       'pages/publish/index',
@@ -55,15 +56,12 @@ class App extends Component {
         selectedIconPath: 'assets/profile_selected.png',
         pagePath: 'pages/profile/index'
       }]
-    },
-    permission: {
-      'scope.userLocation': {
-        desc: '你的位置信息将用于小程序位置接口的效果展示'
-      }
     }
   }
 
-  componentDidMount() { }
+  componentDidMount() {
+    auth.authLogin()
+  }
 
   componentDidShow() { }
 

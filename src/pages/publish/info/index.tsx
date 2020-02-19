@@ -78,7 +78,9 @@ function PublishInfo(props: InProps) {
             placeholder='请输入期望价格'
             value={price}
             onChange={handleChangePrice}
-          />
+          >
+            <Text>￥</Text>
+          </AtInput>
         </View>
       </View>
       <View className='form_line'>

@@ -1,5 +1,6 @@
 @import "./theme.scss";
 
+//发布信息
 .at-input {
   margin: 0;
 }
@@ -7,4 +8,7 @@
   border: 0 solid $borderColor;
   border-bottom-width: 1PX;
   padding-left: 0;
+}
+.at-input__children text{
+  color: $baseColor;
 }

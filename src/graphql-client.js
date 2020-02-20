@@ -4,6 +4,8 @@ import ApolloClient from 'apollo-boost'
 const client = new ApolloClient({
   uri: 'https://miniprogram.yacnlee.top/graphql',
   fetch: async (url, options) => {
+    // console.log(url)
+    // console.log(options)
     try {
       const { data, statusCode } = await Taro.request({
         url,

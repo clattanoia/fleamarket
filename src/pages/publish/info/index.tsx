@@ -5,7 +5,7 @@ import { AtInput,AtTextarea }  from 'taro-ui'
 import './index.scss'
 
 interface InProps {
-  setVal: (key,value) => void
+  onSetVal: (key,value) => void
 }
 
 function PublishInfo(props: InProps) {
@@ -16,7 +16,7 @@ function PublishInfo(props: InProps) {
 
   const handleChangeTitle = (value) => {
     setTitle(value)
-    props.setVal('title',value)
+    props.onSetVal('title',value)
     return value
   }
 
@@ -42,14 +42,14 @@ function PublishInfo(props: InProps) {
   const handleChangePrice = (value) => {
     const realVal = validPrice(value)
     setPrice(realVal)
-    props.setVal('price',realVal)
+    props.onSetVal('price',realVal)
     return realVal
   }
 
   const handleChangeDetail = (event) => {
     const value = event.target.value
     setDetail(value)
-    props.setVal('detail',value)
+    props.onSetVal('detail',value)
   }
 
   return (
@@ -74,7 +74,7 @@ function PublishInfo(props: InProps) {
           <AtInput
             name='price'
             title=''
-            type='number'
+            type='text'
             placeholder='请输入期望价格'
             value={price}
             onChange={handleChangePrice}

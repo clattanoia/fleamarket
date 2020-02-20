@@ -1,7 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
-
-import * as auth from './utils/auth'
 import Index from './pages/index'
 
 import configStore from './store'
@@ -38,29 +36,28 @@ class App extends Component {
       navigationBarTextStyle: 'white',
       navigationBarBackgroundColor: '#fe5155',
     },
-    tabBar: {
-      selectedColor: '#fe5155',
-      list: [{
-        text: '首页',
-        iconPath: 'assets/home.png',
-        selectedIconPath: 'assets/home_selected.png',
-        pagePath: 'pages/index/index'
-      }, {
-        text: '发布',
-        iconPath: 'assets/publish.png',
-        selectedIconPath: 'assets/publish.png',
-        pagePath: 'pages/publish/index'
-      }, {
-        text: '我的',
-        iconPath: 'assets/profile.png',
-        selectedIconPath: 'assets/profile_selected.png',
-        pagePath: 'pages/profile/index'
-      }]
-    }
+    // tabBar: {
+    //   selectedColor: '#fe5155',
+    //   list: [{
+    //     text: '首页',
+    //     iconPath: 'assets/home.png',
+    //     selectedIconPath: 'assets/home_selected.png',
+    //     pagePath: 'pages/index/index'
+    //   }, {
+    //     text: '发布',
+    //     iconPath: 'assets/publish.png',
+    //     selectedIconPath: 'assets/publish.png',
+    //     pagePath: 'pages/publish/index'
+    //   }, {
+    //     text: '我的',
+    //     iconPath: 'assets/profile.png',
+    //     selectedIconPath: 'assets/profile_selected.png',
+    //     pagePath: 'pages/profile/index'
+    //   }]
+    // }
   }
 
   componentDidMount() {
-    auth.authLogin()
   }
 
   componentDidShow() { }

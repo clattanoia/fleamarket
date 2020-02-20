@@ -15,14 +15,14 @@
     }
     .form_line_content {
       flex: 1;
-      // .at-input {
-      //   margin: 0;
-      // }
-      // .at-textarea {
-      //   border: 0 solid $borderColor;
-      //   border-bottom-width: 1PX;
-      //   padding-left: 0;
-      // }
+      .at-input {
+        margin: 0;
+      }
+      .at-textarea {
+        border: 0 solid $borderColor;
+        border-bottom-width: 1PX;
+        padding-left: 0;
+      }
     }
     // .price_symbol {
     //   color: $baseColor;

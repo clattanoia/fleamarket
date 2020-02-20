@@ -1,5 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+import TabBar from '../../components/tabBar'
 
 export default class Profile extends Component {
 
@@ -28,6 +29,7 @@ export default class Profile extends Component {
     return (
       <View>
         <Text>Hello profile!</Text>
+        <TabBar  current={2} />
       </View>
     )
   }

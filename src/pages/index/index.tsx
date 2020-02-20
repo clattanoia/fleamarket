@@ -5,6 +5,7 @@ import { connect } from '@tarojs/redux'
 import { AtAvatar } from 'taro-ui'
 
 import { fetchRecommendGoods } from '../../actions/recommend'
+import TabBar from '../../components/tabBar'
 
 import './index.scss'
 import goods from '../../assets/goods.jpg'
@@ -131,6 +132,7 @@ class Index extends Component {
         </View>
         <Button className='dec_btn' onClick={this.props.fetchRecommendGoods}>fetch</Button>
         <View><Text>{JSON.stringify(this.props.recommend.data, null, 4)}</Text></View>
+        <TabBar current={0} />
       </View>
     )
   }

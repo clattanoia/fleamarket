@@ -2,6 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtButton,AtToast }  from 'taro-ui'
 
+import TabBar from '../../components/tabBar'
 import PublishInfo from './info'
 import './index.scss'
 
@@ -66,12 +67,13 @@ export default class Publish extends Component {
   render () {
     return (
       <View className="publish">
-        <PublishInfo setVal={this.setVal} />
+        <PublishInfo onSetVal={this.setVal} />
 
         <View className="form_btn">
           <AtButton type="primary" onClick={this.handleSubmit}>发布</AtButton>
         </View>
         <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleClose} hasMask status="error"></AtToast>
+        <TabBar  current={1} />
       </View>
     )
   }

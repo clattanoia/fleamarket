@@ -18,7 +18,7 @@ function TabBar(props: InProps) {
   const getInfo = async () => {
     try {
       const info = await Taro.getUserInfo()
-      GlobalData.authInfo = info.userInfo
+      GlobalData.authInfo = {...GlobalData.authInfo,...info.userInfo}
       return true
     } catch(err){
       setIsOpened(true)
@@ -39,9 +39,9 @@ function TabBar(props: InProps) {
       if(isGetInfo){
         authLogin.default()
       }
-      // Taro.navigateTo({
-      //   url: '/pages/publish/index'
-      // })
+      Taro.navigateTo({
+        url: '/pages/publish/index'
+      })
     }
     if(value===2 && props.current!==2){
       authLogin.default()

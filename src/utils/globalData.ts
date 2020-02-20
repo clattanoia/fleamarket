@@ -7,7 +7,7 @@ let authInfo: Auth.InAuthInfo
 
 export const GlobalData: InGlobalData = {
   set authInfo(newAuthInfo) {
-    authInfo = newAuthInfo
+    authInfo = {...authInfo,...newAuthInfo}
   },
   get authInfo(): Auth.InAuthInfo {
     return authInfo

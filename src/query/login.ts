@@ -9,5 +9,11 @@ mutation AuthLogin($code: String!) {
 }
 `
 
-
-export const a = {}
+export const countQuery = gql`
+{
+  cat(id: 1) {
+    id
+    name
+  }
+}
+`

@@ -1,35 +1,27 @@
 import Taro from '@tarojs/taro'
 // import client from '../graphql-client'
-// import {loginQuery} from '../query/login'
+// import {countQuery} from '../query/login'
 
 export default async function authLogin() {
-  // const {userInfo} = await Taro.getUserInfo()
-  // console.log(userInfo)
-  // const { code } = await Taro.login()
-  // console.log(code)
-
-  // const { data } = await client.query({loginQuery, variables: {code,...userInfo}})
-  // console.log(data)
-
   try {
     Taro.checkSession({
       success: function () {
         // console.log(res)
       },
       fail: async function () {
-        // const {userInfo} = await Taro.getUserInfo()
-        // console.log(userInfo)
         // const { code } = await Taro.login()
         // console.log(code)
-        // // TODO 获取openID+sessionkey
-
+        // const {userInfo} = await Taro.getUserInfo()
+        // console.log(userInfo)
         // try {
-        //   const { data } = await client.query({loginQuery, variables: {}})
+        //   const { data } = await client.query({countQuery, variables: {}})
+        //   // const { data } = await client.query({loginQuery, variables: {code,...userInfo}})
+        //   console.log('--------checkSession------success---------------------------')
         //   console.log(data)
         // } catch (error) {
+        //   console.log('--------checkSession------error---------------------------')
         //   throw error
         // }
-
       }
     })
 

@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import {View, Button, Text, Image} from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtAvatar } from 'taro-ui'
 
@@ -8,8 +8,6 @@ import { fetchRecommendGoods } from '../../actions/recommend'
 import TabBar from '../../components/tabBar'
 
 import './index.scss'
-import goods from '../../assets/goods.jpg'
-import avatar from '../../assets/avatar.png'
 
 // #region 书写注意
 //
@@ -22,23 +20,22 @@ import avatar from '../../assets/avatar.png'
 // #endregion
 
 interface User {
-  name: string,
-  avatar: string
+  nickname: string,
+  avatarUrl: string
 }
 
 interface Goods {
   id: string,
   title: string,
-  image: string,
+  coverUrl: string,
   price: number,
-  tag: string,
-  user: User,
+  categoryName: string,
+  owner: User,
 }
 
 type PageStateProps = {
   recommend: {
     recommendList: Array<Goods>,
-    data: any
   }
 }
 
@@ -76,32 +73,10 @@ class Index extends Component {
     navigationBarTitleText: '骚窝跳蚤平台'
   }
 
-  state = {
-    goodsList: [{
-      id: 1,
-      title: '榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机',
-      image: goods,
-      price: 2700,
-      tag: '家电',
-      user: {
-        name: '昵称',
-        avatar: avatar
-      }
-    }, {
-      id: 2,
-      title: '榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机榨汁机',
-      image: goods,
-      price: 2700,
-      tag: '家电',
-      user: {
-        name: '昵称',
-        avatar: avatar
-      }
-    }]
-  }
+  componentWillReceiveProps () {}
 
-  componentWillReceiveProps () {
-    // console.log(this.props, nextProps)
+  componentDidMount() {
+    this.props.fetchRecommendGoods()
   }
 
   componentWillUnmount () { }
@@ -115,23 +90,23 @@ class Index extends Component {
       <View className='index'>
         <Text className='category'>看推荐</Text>
         <View className='wrapper-list'>
-          { this.state.goodsList.map(item =>
-            <View className='list-item' key={item.id}>
-              <Image className='goods-image' src={item.image} />
-              <Text className='goods-name'>{item.title}</Text>
-              <View className='detail'>
-                <Text className='goods-price'><Text className='unit'>￥</Text>{item.price}</Text>
-                <Text className='goods-tag'>{item.tag}</Text>
+          { this.props.recommend.recommendList.length === 0 ?
+            <Text>暂无信息</Text> :
+            this.props.recommend.recommendList.map(item =>
+              <View className='list-item' key={item.id}>
+                <Image className='goods-image' src={item.coverUrl} />
+                <Text className='goods-name'>{item.title}</Text>
+                <View className='detail'>
+                  <Text className='goods-price'><Text className='unit'>￥</Text>{item.price}</Text>
+                  <Text className='goods-tag'>{item.categoryName}</Text>
+                </View>
+                <View className='user-info'>
+                  <AtAvatar circle size="small" image={item.owner.avatarUrl}></AtAvatar>
+                  <Text className='name'>{item.owner.nickname}</Text>
+                </View>
               </View>
-              <View className='user-info'>
-                <AtAvatar circle size="small" image={item.user.avatar}></AtAvatar>
-                <Text className='name'>{item.user.name}</Text>
-              </View>
-            </View>
-          )}
+            )}
         </View>
-        <Button className='dec_btn' onClick={this.props.fetchRecommendGoods}>fetch</Button>
-        <View><Text>{JSON.stringify(this.props.recommend.data, null, 4)}</Text></View>
         <TabBar current={0} />
       </View>
     )

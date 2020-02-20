@@ -12,9 +12,17 @@ export function fetchRecommendGoods() {
   return async dispatch => {
     const query = gql`
       {
-        cat(id: 1) {
-          id
-          name
+        goods {
+          title,
+          price,
+          coverUrl,
+          categoryName,
+          createTime,
+          updateTime,
+          owner {
+            nickname,
+            avatarUrl
+          }
         }
       }
     `

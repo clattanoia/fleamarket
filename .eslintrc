@@ -24,7 +24,8 @@
     "@typescript-eslint/no-empty-function": ["warn"],
     "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/quotes": ["error", "single"],
-    "@typescript-eslint/semi": ["error", "never"]
+    "@typescript-eslint/semi": ["error", "never"],
+    "taro/this-props-function": 0
   },
   "parserOptions": {
     "ecmaFeatures": {

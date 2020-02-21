@@ -11,6 +11,7 @@ const requiredTips = {
   title: '标题不能为空',
   price:'价格不能为空',
   detail:'详情不能为空',
+  selectedCategory: '分类不能为空',
 }
 
 export default class Publish extends Component {
@@ -37,7 +38,7 @@ export default class Publish extends Component {
   }
 
   handleSubmit = () => {
-    const {title,price,detail} = this.state
+    const {title, price, detail, selectedCategory} = this.state
     if(!this.validRequired(title,'title')){
       return
     }
@@ -45,6 +46,9 @@ export default class Publish extends Component {
       return
     }
     if(!this.validRequired(detail,'detail')){
+      return
+    }
+    if(!this.validRequired(selectedCategory,'selectedCategory')){
       return
     }
   }

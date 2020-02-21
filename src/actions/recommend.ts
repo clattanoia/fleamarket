@@ -13,12 +13,11 @@ export function fetchRecommendGoods() {
     const query = gql`
       {
         goods {
+          id,
           title,
           price,
           coverUrl,
           categoryName,
-          createTime,
-          updateTime,
           owner {
             nickname,
             avatarUrl

@@ -35,7 +35,7 @@ interface Goods {
 
 type PageStateProps = {
   recommend: {
-    recommendList: Array<Goods>,
+    goods: Array<Goods>,
   }
 }
 
@@ -85,17 +85,23 @@ class Index extends Component {
 
   componentDidHide () { }
 
+  onClickEvent() {
+    Taro.navigateTo({
+      url: '/pages/detail/index'
+    })
+  }
+
   render () {
     return (
       <View className='index'>
         <Text className='category'>看推荐</Text>
         <View className='wrapper-list'>
-          { this.props.recommend.recommendList.length === 0 ?
-            <Text>暂无信息</Text> :
-            this.props.recommend.recommendList.map(item =>
+          { this.props.recommend.goods.length === 0 ?
+            <View className='no-goods'><Text>暂无信息</Text></View> :
+            this.props.recommend.goods.map(item =>
               <View className='list-item' key={item.id}>
-                <Image className='goods-image' src={item.coverUrl} />
-                <Text className='goods-name'>{item.title}</Text>
+                <Image className='goods-image' src={item.coverUrl} onClick={this.onClickEvent} />
+                <Text className='goods-name' onClick={this.onClickEvent}>{item.title}</Text>
                 <View className='detail'>
                   <Text className='goods-price'><Text className='unit'>￥</Text>{item.price}</Text>
                   <Text className='goods-tag'>{item.categoryName}</Text>

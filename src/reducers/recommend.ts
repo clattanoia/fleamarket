@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  recommendList: [],
+  goods: [],
 }
 
 export default function recommend (state = INITIAL_STATE, action) {
@@ -7,7 +7,7 @@ export default function recommend (state = INITIAL_STATE, action) {
     case 'FETCH':
       return {
         ...state,
-        data: action.data
+        goods: action.data.goods
       }
     default:
       return state

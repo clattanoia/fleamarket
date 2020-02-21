@@ -22,7 +22,7 @@ type AuthLoginParams = {
 }
 
 export const loginQuery = gql`
-mutation ($loginInput: AuthLoginParams){
+mutation ($loginInput: LoginInput){
   login(loginInput: $loginInput) {
     token
   }

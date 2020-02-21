@@ -1,5 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
+import { AtIcon } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import {View, Picker, Text} from '@tarojs/components'
 
@@ -80,13 +81,13 @@ class Category extends Component {
           <View className='form_line_content'>
             <Picker className='picker' mode='selector' range={this.state.selector} onChange={this.onCategoryChange} value={0}>
               {this.props.selectedCategory ?
-                <View>
+                <View className='right-container'>
                   <Text className='category'>{this.props.selectedCategory}</Text>
-                  <Text className="icon iconfont">&#xe658;</Text>
+                  <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
                 </View> :
-                <View>
+                <View className='right-container'>
                   <Text className='category'>选择分类</Text>
-                  <Text className="icon iconfont">&#xe658;</Text>
+                  <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
                 </View>
               }
             </Picker>

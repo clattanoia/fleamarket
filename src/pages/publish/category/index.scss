@@ -30,9 +30,20 @@
 
       .picker {
         color: #999898;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .right-container {
+          display: flex;
+        }
 
         .category {
           margin-right: 10px;
+        }
+
+        .at-icon {
+          display: block;
         }
       }
     }

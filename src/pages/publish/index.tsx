@@ -21,6 +21,7 @@ export default class Publish extends Component {
     detail:'',
     showToast: false,
     toastText: '',
+    selectedCategory: '',
   }
 
   validRequired = (val,name) => {
@@ -69,7 +70,7 @@ export default class Publish extends Component {
     return (
       <View className="publish">
         <PublishInfo onSetVal={this.setVal} />
-        <Category />
+        <Category onSetVal={this.setVal} selectedCategory={this.state.selectedCategory} />
 
         <View className="form_btn">
           <AtButton type="primary" onClick={this.handleSubmit}>发布</AtButton>

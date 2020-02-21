@@ -14,14 +14,17 @@ interface Category {
 type PageStateProps = {
   category: {
     category: Array<Category>,
-  }
+  },
 }
 
 type PageDispatchProps = {
   fetchCategories: () => Function
 }
 
-type PageOwnProps = {}
+type PageOwnProps = {
+  onSetVal: (key,value) => void,
+  selectedCategory: string
+}
 
 type PageState = {}
 
@@ -41,7 +44,6 @@ interface Category {
 class Category extends Component {
 
   state = {
-    selectedCategory: '',
     selector: ['美国', '中国', '巴西', '日本']
   }
 
@@ -60,9 +62,7 @@ class Category extends Component {
   componentDidHide () { }
 
   onCategoryChange = (e) => {
-    this.setState({
-      selectedCategory: this.state.selector[e.detail.value]
-    })
+    this.props.onSetVal('selectedCategory', this.state.selector[e.detail.value])
   }
 
   render () {
@@ -75,9 +75,9 @@ class Category extends Component {
           </View>
           <View className='form_line_content'>
             <Picker className='picker' mode='selector' range={this.state.selector} onChange={this.onCategoryChange} value={0}>
-              {this.state.selectedCategory ?
+              {this.props.selectedCategory ?
                 <View>
-                  <Text className='category'>{this.state.selectedCategory}</Text>
+                  <Text className='category'>{this.props.selectedCategory}</Text>
                   <Text className="icon iconfont">&#xe658;</Text>
                 </View> :
                 <View>

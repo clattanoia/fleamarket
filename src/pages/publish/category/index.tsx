@@ -1,16 +1,57 @@
+import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
-import {View, Picker} from '@tarojs/components'
+import { connect } from '@tarojs/redux'
+import {View, Picker, Text} from '@tarojs/components'
 
-export default class Category extends Component {
+import { fetchCategories } from '../../../actions/category'
+import './index.scss'
+
+interface Category {
+  id: string,
+  name: string,
+}
+
+type PageStateProps = {
+  category: {
+    category: Array<Category>,
+  }
+}
+
+type PageDispatchProps = {
+  fetchCategories: () => Function
+}
+
+type PageOwnProps = {}
+
+type PageState = {}
+
+type IProps = PageStateProps & PageDispatchProps & PageOwnProps
+
+interface Category {
+  props: IProps;
+}
+
+@connect(({ category }) => ({
+  category
+}), (dispatch) => ({
+  fetchCategories () {
+    dispatch(fetchCategories())
+  }
+}))
+class Category extends Component {
 
   state = {
-    selectedCategory: '美国',
+    selectedCategory: '',
     selector: ['美国', '中国', '巴西', '日本']
   }
 
   componentWillMount () {}
 
-  componentDidMount () { }
+  componentDidMount () {
+    if (this.props.category.category.length === 0) {
+      this.props.fetchCategories()
+    }
+  }
 
   componentWillUnmount () { }
 
@@ -26,13 +67,30 @@ export default class Category extends Component {
 
   render () {
     return (
-      <View>
-        <Picker mode='selector' range={this.state.selector} onChange={this.onCategoryChange} value={0}>
-          <View className='picker'>
-            当前选择：{this.state.selectedCategory}
+      <View className='category'>
+        <View className='form_line'>
+          <View>
+            <Text className='form_line_required'>*</Text>
+            <Text className='form_line_label'>分类</Text>
           </View>
-        </Picker>
+          <View className='form_line_content'>
+            <Picker className='picker' mode='selector' range={this.state.selector} onChange={this.onCategoryChange} value={0}>
+              {this.state.selectedCategory ?
+                <View>
+                  <Text className='category'>{this.state.selectedCategory}</Text>
+                  <Text className="icon iconfont">&#xe658;</Text>
+                </View> :
+                <View>
+                  <Text className='category'>选择分类</Text>
+                  <Text className="icon iconfont">&#xe658;</Text>
+                </View>
+              }
+            </Picker>
+          </View>
+        </View>
       </View>
     )
   }
 }
+
+export default Category as ComponentClass<PageOwnProps, PageState>

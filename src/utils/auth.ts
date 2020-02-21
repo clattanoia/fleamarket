@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import client from '../graphql-client'
-import {loginQueryBff} from '../query/login'
+import {loginQuery} from '../query/login'
 import {GlobalData} from './globalData'
 
 // export async function authLogin() {
@@ -35,40 +35,19 @@ import {GlobalData} from './globalData'
 
 export async function authLogin() {
 
-  const { code } = await Taro.login()
-  const userData = await Taro.getUserInfo()
-  const {platform} = await Taro.getSystemInfo()
-  GlobalData.authInfo = {code,userData,platform}
-  const loginInput = GlobalData.authInfo
-  // console.log(loginInput)
-  // const loginInput = {
-  //   code: "js_code",
-  //   userData: {
-  //     encryptedData: "encryptedData",
-  //     iv: "iv",
-  //     rawData: "rawData",
-  //     signature: "signature",
-  //     userInfo: {
-  //       nickname: "Allen",
-  //       country: "china",
-  //       province: "sichuan",
-  //       city: "chengdu",
-  //       avatarUrl: "https://avatarUrl.png",
-  //       gender: 0,
-  //       language: "zh_cn"
-  //     }
-  //   },
-  //   phoneData: {
-  //    encryptedData: "encryptedData",
-  //   iv: "iv"
-  //   },
-  //   platform: "wechat"
-  // }
-
   try {
-    const { data } = await client.mutate({mutation:loginQueryBff, variables: {loginInput}})
-    // console.log('--------login------success---------------------------')
-    // console.log(data)
+    const { code } = await Taro.login()
+    const userData = await Taro.getUserInfo()
+    delete userData['errMsg']
+    const {platform} = await Taro.getSystemInfo()
+    GlobalData.authInfo = {code,userData,platform}
+    const loginInput = GlobalData.authInfo
+
+    const { data } = await client.mutate({mutation:loginQuery, variables: {loginInput}})
+    Taro.setStorage({
+      key:'token',
+      data: data.token
+    })
     return true || data
   } catch (error) {
     throw error

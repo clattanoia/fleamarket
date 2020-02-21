@@ -1,13 +1,5 @@
 import { gql } from 'apollo-boost'
 
-export const loginQuery = gql`
-mutation AuthLogin($loginInput: AuthLoginParams) {
-  authLogin(authInfo: $authInfo) {
-    token
-  }
-}
-`
-
 type AuthLoginParams = {
   code: string
   userData: {
@@ -26,17 +18,12 @@ type AuthLoginParams = {
       language: string
     }
   }
-  phoneData: {
-    encryptedData: string
-    iv: string
-    errMsg: string
-  }
   platform: string
 }
 
-export const loginQueryBff = gql`
-mutation {
-  login(loginInput: AuthLoginParams) {
+export const loginQuery = gql`
+mutation ($loginInput: AuthLoginParams){
+  login(loginInput: $loginInput) {
     token
   }
 }

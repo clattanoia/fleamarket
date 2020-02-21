@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  category: [],
+  categories: [],
 }
 
 export default function category (state = INITIAL_STATE, action) {
@@ -7,7 +7,7 @@ export default function category (state = INITIAL_STATE, action) {
     case 'FETCH':
       return {
         ...state,
-        category: action.data.category
+        categories: action.data.categories
       }
     default:
       return state

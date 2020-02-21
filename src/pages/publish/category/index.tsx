@@ -13,12 +13,12 @@ interface Category {
 
 type PageStateProps = {
   category: {
-    category: Array<Category>,
+    categories: Array<Category>,
   },
 }
 
 type PageDispatchProps = {
-  fetchCategories: () => Function
+  fetchCategories: (callback) => Function
 }
 
 type PageOwnProps = {
@@ -37,21 +37,25 @@ interface Category {
 @connect(({ category }) => ({
   category
 }), (dispatch) => ({
-  fetchCategories () {
-    dispatch(fetchCategories())
+  fetchCategories (callback) {
+    dispatch(fetchCategories(callback))
   }
 }))
 class Category extends Component {
 
   state = {
-    selector: ['美国', '中国', '巴西', '日本']
+    selector: []
   }
 
   componentWillMount () {}
 
   componentDidMount () {
-    if (this.props.category.category.length === 0) {
-      this.props.fetchCategories()
+    if (this.props.category.categories.length === 0) {
+      this.props.fetchCategories((data) => {
+        this.setState({
+          selector: data.categories.map(item => item.name)
+        })
+      })
     }
   }
 

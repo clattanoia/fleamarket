@@ -8,11 +8,11 @@ export const fetch = (data) => {
   }
 }
 
-export function fetchCategories() {
+export function fetchCategories(callback) {
   return async dispatch => {
     const query = gql`
       {
-        category {
+        categories {
           id,
           name,
         }
@@ -22,6 +22,7 @@ export function fetchCategories() {
     try {
       const { data } = await client.query({query, variables: {}})
       dispatch(fetch(data))
+      callback(data)
     } catch (error) {
       throw error
     }

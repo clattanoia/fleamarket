@@ -1,8 +1,16 @@
+@import "../../styles/theme.scss";
+
 .get-auth{
   display: block;
-  // opacity: 0;
-  // width:0;
-  // height: 0;
-  // line-height: 0;
-  // font-size: 0;
+  button {
+    background-color: $baseColor;
+    border-color: $baseColor;
+    color: white;
+    margin: 20px auto;
+  }
+  .get-auth-text{
+    margin: 20px auto 50px;
+    display: block;
+    text-align: center;
+  }
 }

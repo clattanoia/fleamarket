@@ -12,4 +12,10 @@
 .at-input__children text{
   color: $baseColor;
 }
+.at-button--normal {
+  background-color: $baseColor;
+  border-color: $baseColor;
+  color: white;
+}
 //发布信息 end
+

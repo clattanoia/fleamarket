@@ -1,6 +1,6 @@
 
 interface InGlobalData {
-  authInfo: Auth.InAuthInfo
+  authInfo?: Auth.InAuthInfo
 }
 
 let authInfo: Auth.InAuthInfo
@@ -15,3 +15,6 @@ export const GlobalData: InGlobalData = {
 }
 
 export const a = []
+
+
+

@@ -39,6 +39,11 @@ export async function authLogin() {
     const { code } = await Taro.login()
     const userData = await Taro.getUserInfo()
     delete userData['errMsg']
+    const {userInfo} = userData
+    const nickname = userInfo.nickName
+    delete userInfo['nickName']
+    const newUserInfo = {...userInfo,nickname}
+    userData.userInfo = newUserInfo
     const {platform} = await Taro.getSystemInfo()
     GlobalData.authInfo = {code,userData,platform}
     const loginInput = GlobalData.authInfo
@@ -46,7 +51,7 @@ export async function authLogin() {
     const { data } = await client.mutate({mutation:loginQuery, variables: {loginInput}})
     Taro.setStorage({
       key:'token',
-      data: data.token
+      data: data.login.token
     })
     return true || data
   } catch (error) {

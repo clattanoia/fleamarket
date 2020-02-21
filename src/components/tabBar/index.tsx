@@ -39,10 +39,12 @@ function TabBar(props: InProps) {
       }
     }
     if(value===2 && props.current!==2){
-      authLogin()
-      Taro.navigateTo({
-        url: '/pages/profile/index'
-      })
+      const isAuth = await isAuthUser()
+      if(isAuth){
+        Taro.navigateTo({
+          url: '/pages/profile/index'
+        })
+      }
     }
   }
 

@@ -5,7 +5,7 @@ import {
   ADD,
   MINUS,
   FETCH
-} from '../constants/counter'
+} from '../constants'
 
 export const add = () => {
   return {

@@ -1,9 +1,10 @@
 import { gql } from 'apollo-boost'
 import client from '../graphql-client'
+import FETCH_RECOMMEND from '../constants'
 
 export const fetch = (data) => {
   return {
-    type: 'FETCH',
+    type: FETCH_RECOMMEND,
     data
   }
 }

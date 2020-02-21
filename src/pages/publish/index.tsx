@@ -4,6 +4,7 @@ import { AtButton,AtToast }  from 'taro-ui'
 
 import TabBar from '../../components/tabBar'
 import PublishInfo from './info'
+import Category from './category'
 import './index.scss'
 
 const requiredTips = {
@@ -19,7 +20,7 @@ export default class Publish extends Component {
     price:'',
     detail:'',
     showToast: false,
-    toastText: ''
+    toastText: '',
   }
 
   validRequired = (val,name) => {
@@ -68,6 +69,7 @@ export default class Publish extends Component {
     return (
       <View className="publish">
         <PublishInfo onSetVal={this.setVal} />
+        <Category />
 
         <View className="form_btn">
           <AtButton type="primary" onClick={this.handleSubmit}>发布</AtButton>

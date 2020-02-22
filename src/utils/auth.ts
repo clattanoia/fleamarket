@@ -33,7 +33,11 @@ import {GlobalData} from './globalData'
 //   }
 // }
 
-export async function authLogin() {
+interface Inprops {
+  callback?: () => void
+}
+
+export async function authLogin(props: Inprops) {
 
   try {
     const { code } = await Taro.login()
@@ -53,7 +57,8 @@ export async function authLogin() {
       key:'token',
       data: data.login.token
     })
-    return true || data
+    props.callback && props.callback()
+    return true
   } catch (error) {
     throw error
   }

@@ -9,42 +9,44 @@ interface InProps {
   current: number
 }
 
+
 function TabBar(props: InProps) {
+  const pageUrl = ['/pages/index/index','/pages/publish/index','/pages/profile/index']
 
   const [isOpened,setIsOpened] = useState(false)
   const [isOpenedTel,setIsOpenedTel] = useState(false)
+  const [toUrl,setToUrl] = useState('')
+  let currentUrl = ''
+
+  const gotoPage = () => {
+    Taro.navigateTo({
+      url: currentUrl || toUrl
+    })
+  }
 
   const isAuthUser = async () => {
     const isAuth = await isAuthUserInfo()
     setIsOpened(!isAuth)
     if(isAuth){
-      return authLogin()
+      authLogin({callback:gotoPage})
     }
-    return isAuth
   }
 
 
-  const handleClick = async (value) => {
+  const handleClick = (value) => {
+    currentUrl = pageUrl[value]
+    setToUrl(currentUrl)
     if(value===0 && props.current!==0){
-      Taro.navigateTo({
-        url: '/pages/index/index'
-      })
+      gotoPage()
+      return
     }
     if(value===1 && props.current!==1){
-      const isAuth = await isAuthUser()
-      if(isAuth){
-        Taro.navigateTo({
-          url: '/pages/publish/index'
-        })
-      }
+      isAuthUser()
+      return
     }
     if(value===2 && props.current!==2){
-      const isAuth = await isAuthUser()
-      if(isAuth){
-        Taro.navigateTo({
-          url: '/pages/profile/index'
-        })
-      }
+      isAuthUser()
+      return
     }
   }
 
@@ -57,7 +59,7 @@ function TabBar(props: InProps) {
     const {detail} = res
     const {errMsg} = detail
     if(errMsg.indexOf(':ok') > -1){
-      authLogin()
+      authLogin({callback:gotoPage})
     }
   }
 

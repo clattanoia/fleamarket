@@ -8,7 +8,6 @@ interface Inprops {
 }
 
 export async function authLogin(props: Inprops) {
-
   try {
     const { code } = await Taro.login()
     const userData = await Taro.getUserInfo()

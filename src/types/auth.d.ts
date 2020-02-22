@@ -13,7 +13,8 @@ declare namespace Auth {
         country: string
         gender: number
         language: string
-        nickname: string
+        nickname?: string
+        nickName?: string
         province: string
       }
       errMsg: string

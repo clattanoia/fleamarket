@@ -10,6 +10,7 @@ import './index.scss'
 interface Category {
   id: string,
   name: string,
+  icon: string
 }
 
 type PageStateProps = {

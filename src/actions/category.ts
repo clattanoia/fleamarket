@@ -16,6 +16,7 @@ export function fetchCategories(callback) {
         categories {
           id,
           name,
+          icon
         }
       }
     `

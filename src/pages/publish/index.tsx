@@ -5,6 +5,7 @@ import { AtButton,AtToast }  from 'taro-ui'
 import TabBar from '../../components/tabBar'
 import PublishInfo from './info'
 import Category from './category'
+import PublishImages from './images'
 import './index.scss'
 
 const requiredTips = {
@@ -74,6 +75,7 @@ export default class Publish extends Component {
     return (
       <View className="publish">
         <PublishInfo onSetVal={this.setVal} />
+        <PublishImages  onSetVal={this.setVal} />
         <Category onSetVal={this.setVal} selectedCategory={this.state.selectedCategory} />
 
         <View className="form_btn">

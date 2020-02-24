@@ -1,6 +1,8 @@
 @import "../../styles/theme.scss";
 
 .publish {
+  width: 100%;
+  background-color: $greyBg;
   .form_btn{
     width: calc(100% - 20px);
     margin: 30px auto;
@@ -9,5 +11,10 @@
       border-color: $baseColor;
       color: white;
     }
+  }
+  .publish_img {
+    width: 100%;
+    background-color: white;
+    margin: 30px 0;
   }
 }

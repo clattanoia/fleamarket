@@ -1,6 +1,8 @@
 @import "../../../styles/theme.scss";
 
 .publish_info {
+  width:100%;
+  background-color: white;
   .form_line{
     display: flex;
     flex-direction: row;

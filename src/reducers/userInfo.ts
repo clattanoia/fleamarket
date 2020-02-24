@@ -18,7 +18,7 @@ export default function category (state = INITIAL_STATE, action) {
             'type': 'EMAIL'
           },
           {
-            'content': '',
+            'content': 'PHONE',
             'id': 'PHONE',
             'type': 'PHONE'
           },

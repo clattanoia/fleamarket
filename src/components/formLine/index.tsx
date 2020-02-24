@@ -7,7 +7,7 @@ import './index.scss'
 
 interface InProps {
   title: string,
-  children: ReactNodeLike
+  children: ReactNodeLike,
 }
 
 function FormLine(props: InProps) {

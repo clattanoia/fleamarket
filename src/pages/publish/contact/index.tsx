@@ -54,8 +54,22 @@ class Contact extends Component {
         label: CONTACT_MAPPING[item.type],
       }))
 
-    this.setState({ contactOptions })
+    this.setState({
+      contactOptions,
+    })
   }
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   console.log(nextProps.selectedContacts, prevState.checkedOptions)
+  //   // 没错，这是一个static
+  //   if (nextProps.selectedContacts.join('') !== prevState.checkedOptions) {
+  //     console.log('联系方式更新了')
+  //     return {
+  //       checkedOptions: nextProps.selectedContacts
+  //     }
+  //   }
+  //   return null
+  // }
 
   onClose(): void {
     this.setState({isOpen: false })
@@ -65,7 +79,8 @@ class Contact extends Component {
     this.setState({ isOpen: true })
   }
 
-  handleChange(): void {
+  handleChange = (val): void => {
+    this.props.onSetVal('selectedContacts', val)
   }
 
   renderContactText(): ReactNodeLike {
@@ -85,11 +100,16 @@ class Contact extends Component {
           </View>
         </FormLine>
         <AtFloatLayout isOpened={this.state.isOpen} title="选择联系方式" onClose={this.onClose}>
-          <AtCheckbox
-            options={this.state.contactOptions}
-            selectedList={this.props.selectedContacts}
-            onChange={this.handleChange}
-          />
+          {
+            this.state.contactOptions.length > 0 ?
+              <AtCheckbox
+                options={this.state.contactOptions}
+                selectedList={this.props.selectedContacts}
+                onChange={this.handleChange}
+              />
+              :
+              <View className="contact-placeholder">请先设置联系方式</View>
+          }
         </AtFloatLayout>
       </View>
     )

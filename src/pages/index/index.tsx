@@ -5,6 +5,7 @@ import { connect } from '@tarojs/redux'
 import { AtAvatar } from 'taro-ui'
 
 import { fetchRecommendGoods } from '../../actions/recommend'
+import { fetchUserInfo } from '../../actions/userInfo'
 import TabBar from '../../components/tabBar'
 
 import './index.scss'
@@ -40,7 +41,8 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  fetchRecommendGoods: () => Function
+  fetchRecommendGoods: () => Function,
+  fetchUserInfo: () => Function,
 }
 
 type PageOwnProps = {}
@@ -58,6 +60,9 @@ interface Index {
 }), (dispatch) => ({
   fetchRecommendGoods () {
     dispatch(fetchRecommendGoods())
+  },
+  fetchUserInfo () {
+    dispatch(fetchUserInfo())
   }
 }))
 class Index extends Component {
@@ -77,6 +82,7 @@ class Index extends Component {
 
   componentDidMount() {
     this.props.fetchRecommendGoods()
+    this.props.fetchUserInfo()
   }
 
   componentWillUnmount () { }

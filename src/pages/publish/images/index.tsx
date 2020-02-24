@@ -13,6 +13,7 @@ function PublishImages(props: InProps) {
   const [files,setFiles] = useState([])
 
   const onChange = (files) => {
+    // console.log(files)
     setFiles(files)
     props.onSetVal('img',files)
   }
@@ -28,6 +29,8 @@ function PublishImages(props: InProps) {
   return (
     <View className="publish_images">
       <AtImagePicker
+        length={4}
+        count={10}
         files={files}
         onChange={onChange}
         onFail={onFail}

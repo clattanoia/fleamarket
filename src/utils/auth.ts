@@ -13,8 +13,7 @@ export async function authLogin(props: Inprops) {
     const userData = await Taro.getUserInfo()
     delete userData['errMsg']
     delete userData['userInfo']
-    const {platform} = await Taro.getSystemInfo()
-    GlobalData.authInfo = {code,userData,platform}
+    GlobalData.authInfo = {code,userData,platform:'WECHAT'}
     const loginInput = GlobalData.authInfo
 
     const { data } = await client.mutate({mutation:loginQuery, variables: {loginInput}})

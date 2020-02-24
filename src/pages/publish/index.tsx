@@ -5,6 +5,7 @@ import { AtButton,AtToast }  from 'taro-ui'
 import TabBar from '../../components/tabBar'
 import PublishInfo from './info'
 import Category from './category'
+import Contact from './contact'
 import PublishImages from './images'
 import './index.scss'
 
@@ -13,6 +14,7 @@ const requiredTips = {
   price:'价格不能为空',
   detail:'详情不能为空',
   selectedCategory: '分类不能为空',
+  selectedContacts: '联系方式不能为空',
 }
 
 export default class Publish extends Component {
@@ -24,6 +26,7 @@ export default class Publish extends Component {
     showToast: false,
     toastText: '',
     selectedCategory: '',
+    selectedContacts: [],
   }
 
   validRequired = (val,name) => {
@@ -52,6 +55,9 @@ export default class Publish extends Component {
     if(!this.validRequired(selectedCategory,'selectedCategory')){
       return
     }
+    if(!this.validRequired(selectedCategory,'selectedContacts')){
+      return
+    }
   }
 
   handleClose = () => {
@@ -77,7 +83,7 @@ export default class Publish extends Component {
         <PublishInfo onSetVal={this.setVal} />
         <PublishImages  onSetVal={this.setVal} />
         <Category onSetVal={this.setVal} selectedCategory={this.state.selectedCategory} />
-
+        <Contact onSetVal={this.setVal} selectedContacts={this.state.selectedContacts} />
         <View className="form_btn">
           <AtButton type="primary" onClick={this.handleSubmit}>发布</AtButton>
         </View>

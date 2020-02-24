@@ -1,0 +1,43 @@
+@import "../../styles/theme.scss";
+
+.form_line{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+
+  .form_line_required {
+    color: $baseColor;
+    width: 30px;
+    height: 72.8px;
+    line-height: 72.8px;
+  }
+
+  .form_line_label {
+    color: #101010;
+    width: 80px;
+    height: 72.8px;
+    line-height: 72.8px;
+    margin-left: 10px;
+  }
+
+  .form_line_content {
+    height: 72.8px;
+    line-height: 72.8px;
+    margin-right: 20px;
+    color: #999898;
+
+    .right-container {
+      display: flex;
+    }
+
+    .value {
+      margin-right: 10px;
+    }
+
+    .at-icon {
+      display: block;
+    }
+  }
+}

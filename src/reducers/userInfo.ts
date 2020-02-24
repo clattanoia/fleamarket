@@ -13,14 +13,19 @@ export default function category (state = INITIAL_STATE, action) {
         'city': 'string',
         'contacts': [
           {
-            'content': 'string',
+            'content': 'EMAIL',
             'id': 'EMAIL',
             'type': 'EMAIL'
           },
           {
-            'content': 'string',
+            'content': '',
             'id': 'PHONE',
             'type': 'PHONE'
+          },
+          {
+            content: 'WECHAT',
+            id: 'WECHAT',
+            type: 'WECHAT'
           }
         ],
         'country': 'string',

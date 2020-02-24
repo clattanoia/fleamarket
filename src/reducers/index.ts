@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import recommend from './recommend'
 import category from './category'
-import userinfo from './userInfo'
+import userInfo from './userInfo'
 
 export default combineReducers({
   recommend,
   category,
-  userinfo,
+  userInfo,
 })

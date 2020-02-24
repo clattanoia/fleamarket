@@ -16,7 +16,9 @@ const client = new ApolloClient({
         data: options.body,
         header: { ...headers, authorization: token }
       })
-      if ( statusCode === 401){
+      const {errors} = data
+      const clientStasusCode = errors ? errors[0].message.statusCode : statusCode
+      if ( clientStasusCode === 401){
         Taro.removeStorage({
           key: 'token',
           success: function () {

@@ -23,6 +23,7 @@ function PublishImages(props: InProps) {
   const onChange = (files) => {
     // console.log(files)
     const len = files.length
+    // FileSystemManager.readfile()
     Taro.getImageInfo({
       src: files[len-1].url,
       success: function () {

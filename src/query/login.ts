@@ -1,18 +1,27 @@
 import { gql } from 'apollo-boost'
 
 export const loginQuery = gql`
-mutation ($loginInput: LoginInput){
+mutation ($loginInput: LoginInput!){
   login(loginInput: $loginInput) {
     token
   }
 }
 `
 
-export const countQuery = gql`
-{
-  cat(id: 1) {
+export const userInfoQuery = gql`
+query($id: String) {
+  user(id: $id) {
     id
-    name
-  }
-}
+    unionId
+    nickname
+    brief
+    country
+    province
+    city
+    avatarUrl
+    gender
+    lastVisitTime
+    platform
+    contacts {id}
+}}
 `

@@ -75,13 +75,8 @@ page {
 
         .goods-price {
           color: $baseColor;
-          font-size: 40px;
+          font-size: 28px;
           font-weight: bold;
-          max-width: 208px;
-          overflow : hidden;
-          text-overflow: ellipsis;
-          display: block;
-          white-space: nowrap;
 
           .unit {
             font-size: 24px;
@@ -91,11 +86,11 @@ page {
         .goods-tag {
           display: block;
           text-align: center;
-          width: 116px;
+          width: 104px;
           height: 34px;
           background-color: #ffe8e8;
           color: #e51c23;
-          font-size: 24px;
+          font-size: 22px;
         }
       }
 

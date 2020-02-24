@@ -1,9 +1,13 @@
 import Taro from '@tarojs/taro'
+import { useDispatch } from '@tarojs/redux'
 import client from '../graphql-client'
 import {loginQuery} from '../query/login'
 import {GlobalData} from './globalData'
 import configStore from '../store'
 import {fetch} from '../actions/recommend'
+import {SET_AUTH_INFO} from '../constants'
+
+const dispatch = useDispatch()
 
 const store = configStore()
 
@@ -15,6 +19,17 @@ const taroEnv = {
   'WEAPP':'WECHAT'
 }
 
+
+export async function isAuthUserInfo() {
+  let isAuthUserInfo = false
+  await Taro.getSetting({
+    success(res) {
+      isAuthUserInfo = !!res.authSetting['scope.userInfo']
+    }
+  })
+  return isAuthUserInfo
+}
+
 export async function authLogin(props: Inprops) {
   try {
     const token = Taro.getStorageSync('token')
@@ -22,7 +37,16 @@ export async function authLogin(props: Inprops) {
       props.callback && props.callback()
       return
     }
+
     const { code } = await Taro.login()
+
+
+    const isAuth = await isAuthUserInfo()
+    if(!isAuth){
+      dispatch({type:SET_AUTH_INFO,payload:true})
+      return
+    }
+
     const userData = await Taro.getUserInfo()
     delete userData['errMsg']
     delete userData['userInfo']
@@ -40,14 +64,4 @@ export async function authLogin(props: Inprops) {
   } catch (error) {
     throw error
   }
-}
-
-export async function isAuthUserInfo() {
-  let isAuthUserInfo = false
-  await Taro.getSetting({
-    success(res) {
-      isAuthUserInfo = !!res.authSetting['scope.userInfo']
-    }
-  })
-  return isAuthUserInfo
 }

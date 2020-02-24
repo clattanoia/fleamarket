@@ -2,7 +2,9 @@ import Taro, { memo,useState} from '@tarojs/taro'
 import {View,Text,Button} from '@tarojs/components'
 import { AtTabBar,AtFloatLayout } from 'taro-ui'
 
-import {isAuthUserInfo,authLogin} from '../../utils/auth'
+import AuthInfoLayout from '../authInfo'
+
+import {authLogin} from '../../utils/auth'
 import './index.scss'
 
 interface InProps {
@@ -14,7 +16,6 @@ function TabBar(props: InProps) {
 
   const pageUrl = ['/pages/index/index','/pages/publish/index','/pages/profile/index']
 
-  const [isOpened,setIsOpened] = useState(false)
   const [isOpenedTel,setIsOpenedTel] = useState(false)
   const [toUrl,setToUrl] = useState('')
   let currentUrl = ''
@@ -25,15 +26,6 @@ function TabBar(props: InProps) {
     })
   }
 
-  const isAuthUser = async () => {
-    const isAuth = await isAuthUserInfo()
-    setIsOpened(!isAuth)
-    if(isAuth){
-      authLogin({callback:gotoPage})
-    }
-  }
-
-
   const handleClick = (value) => {
     currentUrl = pageUrl[value]
     setToUrl(currentUrl)
@@ -42,26 +34,17 @@ function TabBar(props: InProps) {
       return
     }
     if(value===1 && props.current!==1){
-      isAuthUser()
+      authLogin({callback:gotoPage})
       return
     }
     if(value===2 && props.current!==2){
-      isAuthUser()
+      authLogin({callback:gotoPage})
       return
     }
   }
 
   const handleClose = () => {
-    setIsOpened(false)
-  }
-
-  const clickAuthBtn = (res) => {
-    setIsOpened(false)
-    const {detail} = res
-    const {errMsg} = detail
-    if(errMsg.indexOf(':ok') > -1){
-      authLogin({callback:gotoPage})
-    }
+    setIsOpenedTel(false)
   }
 
   const clickAuthTelBtn = () => {
@@ -84,12 +67,7 @@ function TabBar(props: InProps) {
         current={props.current}
       />
 
-      <AtFloatLayout isOpened={isOpened} title="获取授权" onClose={handleClose}>
-        <View className='get-auth'>
-          <Text className='get-auth-text'>该操作需要您的微信信息，请授权后，再次操作</Text>
-          <Button open-type='getUserInfo' onGetUserInfo={clickAuthBtn} >获取微信授权</Button>
-        </View>
-      </AtFloatLayout>
+      <AuthInfoLayout authCallback={gotoPage} />
 
       <AtFloatLayout isOpened={isOpenedTel} title="获取授权" onClose={handleClose}>
         <View className='get-auth'>

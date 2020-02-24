@@ -29,34 +29,49 @@ export default class Publish extends Component {
     selectedContacts: [],
   }
 
-  validRequired = (val,name) => {
+  validRequired = (val) => {
     if (!val.length){
-      const text = requiredTips[name]
-      this.setState({
-        showToast: true,
-        toastText: text
-      })
+      return false
+    }
+    return true
+  }
+
+  showErrorMessage = (name) => {
+    const text = requiredTips[name]
+    this.setState({
+      showToast: true,
+      toastText: text
+    })
+  }
+
+  vaildInput = (isShowErrorMessage = false) => {
+    const {title, price, detail, selectedCategory} = this.state
+    if(!this.validRequired(title)){
+      isShowErrorMessage && this.showErrorMessage('title')
+      return false
+    }
+    if(!this.validRequired(price)){
+      isShowErrorMessage && this.showErrorMessage('price')
+      return false
+    }
+    if(!this.validRequired(detail)){
+      isShowErrorMessage && this.showErrorMessage('detail')
+      return false
+    }
+    if(!this.validRequired(selectedCategory)){
+      isShowErrorMessage && this.showErrorMessage('selectedCategory')
+      return false
+    }
+    if(!this.validRequired(selectedCategory)){
+      isShowErrorMessage && this.showErrorMessage('selectedContacts')
       return false
     }
     return true
   }
 
   handleSubmit = () => {
-    const {title, price, detail, selectedCategory} = this.state
-    if(!this.validRequired(title,'title')){
-      return
-    }
-    if(!this.validRequired(price,'price')){
-      return
-    }
-    if(!this.validRequired(detail,'detail')){
-      return
-    }
-    if(!this.validRequired(selectedCategory,'selectedCategory')){
-      return
-    }
-    if(!this.validRequired(selectedCategory,'selectedContacts')){
-      return
+    if (this.vaildInput(true)) {
+      // todo
     }
   }
 
@@ -85,7 +100,7 @@ export default class Publish extends Component {
         <Category onSetVal={this.setVal} selectedCategory={this.state.selectedCategory} />
         <Contact onSetVal={this.setVal} selectedContacts={this.state.selectedContacts} />
         <View className="form_btn">
-          <AtButton type="primary" onClick={this.handleSubmit}>发布</AtButton>
+          <AtButton type="primary" onClick={this.handleSubmit} disabled={!this.vaildInput()}>发布</AtButton>
         </View>
         <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleClose} hasMask status="error"></AtToast>
         <TabBar  current={1} />

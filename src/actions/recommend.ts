@@ -1,6 +1,6 @@
-import { gql } from 'apollo-boost'
 import client from '../graphql-client'
 import { FETCH_RECOMMEND } from '../constants'
+import { recommendListQuery } from '../query/recommend'
 
 export const fetch = (data) => {
   return {
@@ -11,21 +11,7 @@ export const fetch = (data) => {
 
 export function fetchRecommendGoods() {
   return async dispatch => {
-    const query = gql`
-      {
-        goods {
-          id,
-          title,
-          price,
-          coverUrl,
-          categoryName,
-          owner {
-            nickname,
-            avatarUrl
-          }
-        }
-      }
-    `
+    const query = recommendListQuery
 
     try {
       const { data } = await client.query({query, variables: {}})

@@ -58,6 +58,10 @@ class Category extends Component {
           selector: data.categories.map(item => item.name)
         })
       })
+    } else {
+      this.setState({
+        selector: this.props.category.categories.map(item => item.name)
+      })
     }
   }
 

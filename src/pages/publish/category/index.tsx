@@ -6,6 +6,7 @@ import {View, Picker, Text} from '@tarojs/components'
 
 import { fetchCategories } from '../../../actions/category'
 import './index.scss'
+import FormLine from '../../../components/formLine'
 
 interface Category {
   id: string,
@@ -78,20 +79,14 @@ class Category extends Component {
   render () {
     return (
       <View className='category'>
-        <View className='form_line'>
-          <View>
-            <Text className='form_line_required'>*</Text>
-            <Text className='form_line_label'>分类</Text>
-          </View>
-          <View className='form_line_content'>
-            <Picker className='picker' mode='selector' range={this.state.selector} onChange={this.onCategoryChange} value={0}>
-              <View className='right-container'>
-                <Text className='category'>{this.props.selectedCategory ? this.props.selectedCategory : '选择分类'}</Text>
-                <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
-              </View>
-            </Picker>
-          </View>
-        </View>
+        <FormLine title="分类">
+          <Picker className='picker' mode='selector' range={this.state.selector} onChange={this.onCategoryChange} value={0}>
+            <View className='right-container'>
+              <Text className='category'>{this.props.selectedCategory ? this.props.selectedCategory : '选择分类'}</Text>
+              <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
+            </View>
+          </Picker>
+        </FormLine>
       </View>
     )
   }

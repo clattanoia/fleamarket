@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost'
 import client from '../graphql-client'
-import FETCH_RECOMMEND from '../constants'
+import { FETCH_RECOMMEND } from '../constants'
 
 export const fetch = (data) => {
   return {

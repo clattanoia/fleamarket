@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost'
 import client from '../graphql-client'
-import FETCH_CATEGORIES from '../constants'
+import { FETCH_CATEGORIES } from '../constants'
 
 export const fetch = (data) => {
   return {

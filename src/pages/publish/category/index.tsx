@@ -85,16 +85,10 @@ class Category extends Component {
           </View>
           <View className='form_line_content'>
             <Picker className='picker' mode='selector' range={this.state.selector} onChange={this.onCategoryChange} value={0}>
-              {this.props.selectedCategory ?
-                <View className='right-container'>
-                  <Text className='category'>{this.props.selectedCategory}</Text>
-                  <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
-                </View> :
-                <View className='right-container'>
-                  <Text className='category'>选择分类</Text>
-                  <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
-                </View>
-              }
+              <View className='right-container'>
+                <Text className='category'>{this.props.selectedCategory ? this.props.selectedCategory : '选择分类'}</Text>
+                <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
+              </View>
             </Picker>
           </View>
         </View>

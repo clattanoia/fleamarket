@@ -27,20 +27,20 @@ page {
     }
   }
 
+  .no-goods {
+    height: calc(100% - 100px);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .wrapper-list {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     max-height: calc(100% - 100px);
     overflow: scroll;
-
-    .no-goods {
-      height: 100%;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
 
     .list-item {
       margin-top: 10px;

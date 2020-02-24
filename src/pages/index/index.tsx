@@ -101,10 +101,10 @@ class Index extends Component {
     return (
       <View className='index'>
         <Text className='category'>看推荐</Text>
-        <View className='wrapper-list'>
-          { this.props.recommend.goods.length === 0 ?
-            <View className='no-goods'><Text>暂无信息</Text></View> :
-            this.props.recommend.goods.map(item =>
+        {this.props.recommend.goods.length === 0 ?
+          <View className='no-goods'><Text>暂无信息</Text></View> :
+          <View className='wrapper-list'>
+            {this.props.recommend.goods.map(item =>
               <View className='list-item' key={item.id}>
                 <Image className='goods-image' src={item.coverUrl} onClick={this.onClickEvent} />
                 <Text className='goods-name' onClick={this.onClickEvent}>{item.title}</Text>
@@ -118,7 +118,8 @@ class Index extends Component {
                 </View>
               </View>
             )}
-        </View>
+          </View>
+        }
         <TabBar current={0} />
       </View>
     )

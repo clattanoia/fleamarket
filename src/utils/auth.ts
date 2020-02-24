@@ -12,11 +12,7 @@ export async function authLogin(props: Inprops) {
     const { code } = await Taro.login()
     const userData = await Taro.getUserInfo()
     delete userData['errMsg']
-    const {userInfo} = userData
-    const nickname = userInfo.nickName
-    delete userInfo['nickName']
-    const newUserInfo = {...userInfo,nickname}
-    userData.userInfo = newUserInfo
+    delete userData['userInfo']
     const {platform} = await Taro.getSystemInfo()
     GlobalData.authInfo = {code,userData,platform}
     const loginInput = GlobalData.authInfo

@@ -11,6 +11,7 @@ interface InProps {
 
 
 function TabBar(props: InProps) {
+
   const pageUrl = ['/pages/index/index','/pages/publish/index','/pages/profile/index']
 
   const [isOpened,setIsOpened] = useState(false)

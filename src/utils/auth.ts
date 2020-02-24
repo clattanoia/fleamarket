@@ -2,18 +2,32 @@ import Taro from '@tarojs/taro'
 import client from '../graphql-client'
 import {loginQuery} from '../query/login'
 import {GlobalData} from './globalData'
+import configStore from '../store'
+import {fetch} from '../actions/recommend'
+
+const store = configStore()
 
 interface Inprops {
   callback?: () => void
 }
 
+const taroEnv = {
+  'WEAPP':'WECHAT'
+}
+
 export async function authLogin(props: Inprops) {
   try {
+    const token = Taro.getStorageSync('token')
+    if (token){
+      props.callback && props.callback()
+      return
+    }
     const { code } = await Taro.login()
     const userData = await Taro.getUserInfo()
     delete userData['errMsg']
     delete userData['userInfo']
-    GlobalData.authInfo = {code,userData,platform:'WECHAT'}
+    const platform = taroEnv[Taro.getEnv()] || 'WECHAT'
+    GlobalData.authInfo = {code,userData,platform}
     const loginInput = GlobalData.authInfo
 
     const { data } = await client.mutate({mutation:loginQuery, variables: {loginInput}})
@@ -21,8 +35,8 @@ export async function authLogin(props: Inprops) {
       key:'token',
       data: data.login.token
     })
+    store.dispatch(fetch({data:{goods:[]}}))
     props.callback && props.callback()
-    return true
   } catch (error) {
     throw error
   }

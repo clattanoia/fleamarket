@@ -1,0 +1,74 @@
+@import "../../styles/theme.scss";
+page {
+  height: 100%;
+  overflow: hidden;
+
+  .detail {
+    padding: 30px;
+    height: 100%;
+    overflow-y: auto;
+    background: $greyBg;
+
+    .price-container {
+      color: $baseColor;
+      margin: 40px 0;
+      font-weight: bold;
+
+      .unit {
+        font-size: 30px;
+        margin-right: 5px;
+      }
+      .price {
+        font-size: 40px;
+      }
+    }
+
+    .detial-container {
+      padding-bottom: 120px;
+
+      .title {
+        border-left: solid 10rpx $baseColor;
+        padding-left: 20rpx;
+        margin-bottom: 20rpx;
+        font-size: 36rpx;
+        font-weight: bold;
+      }
+
+      .description {
+        margin: 20px 0;
+        line-height: 1.47;
+        font-size: 36px;
+      }
+
+      .pictures {
+        display: flex;
+        flex-direction: column;
+
+        .picture {
+          height: 400px;
+          width: 100%;
+          margin-bottom: 15px;
+        }
+      }
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 100px;
+      background: #fff;
+      box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      
+      .contact-btn {
+        background: $baseColor;
+        color: #fff;
+        width: 300rpx;
+        height: 80rpx;
+      }
+    }
+  }
+}

@@ -1,7 +1,21 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image, Button } from '@tarojs/components'
+
+import avatarUrl from '../../assets/avatar.png'
+import Avatar from '../../components/avatar'
+import Tag from '../../components/tag'
+import './index.scss'
 
 export default class GoodsDetail extends Component {
+
+  state = {
+    userInfo: {
+      avatarUrl: avatarUrl,
+      nickname: 'nickname'
+    },
+    price: 2700,
+    description: '李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾',
+  }
 
   componentWillMount () {}
 
@@ -21,13 +35,43 @@ export default class GoodsDetail extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: 'detail',
+    navigationBarTitleText: '帖子详情',
   }
 
   render () {
     return (
-      <View>
-        <Text>Hello detail!</Text>
+      <View className="detail">
+        <Avatar
+          avatarSize={80}
+          nameSize={36}
+          {...this.state.userInfo}
+        />
+        <View className="price-container">
+          <Text className="unit">￥</Text>
+          <Text className="price">
+            {this.state.price}
+          </Text>
+        </View>
+        <View className="detial-container">
+          <View className="title">
+            <Text>商品详情</Text>
+          </View>
+          <View className="status-tags">
+            <Tag tagName="出售" style={{ marginRight: '10rpx' }} />
+            <Tag tagName="已下架" style={{ marginRight: '10rpx' }} />
+          </View>
+          <View className="description">
+            {this.state.description}
+          </View>
+          <View className="pictures">
+            <Image className="picture" src={this.state.userInfo.avatarUrl} />
+            <Image className="picture" src={this.state.userInfo.avatarUrl} />
+            <Image className="picture" src={this.state.userInfo.avatarUrl} />
+          </View>
+        </View>
+        <View className="footer">
+          <Button className="contact-btn">获取联系方式</Button>
+        </View>
       </View>
     )
   }

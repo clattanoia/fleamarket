@@ -1,6 +1,6 @@
-import { gql } from 'apollo-boost'
 import client from '../graphql-client'
 import { FETCH_USERINFO } from '../constants'
+import { userInfoQuery } from '../query/userInfo'
 
 export const fetch = (data) => {
   return {
@@ -11,20 +11,13 @@ export const fetch = (data) => {
 
 export function fetchUserInfo() {
   return async dispatch => {
-    const query = gql`
-      {
-        categories {
-          id,
-          name,
-          icon
-        }
-      }
-    `
+    const query = userInfoQuery
 
     try {
       const { data } = await client.query({query, variables: {}})
       dispatch(fetch(data))
     } catch (error) {
+      // console.log('error-->', error)
       throw error
     }
   }

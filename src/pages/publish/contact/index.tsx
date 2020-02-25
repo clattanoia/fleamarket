@@ -37,7 +37,7 @@ interface Contact {
 }
 
 @connect(({ userInfo }) => ({
-  contacts: userInfo.contacts
+  contacts: userInfo.contacts,
 }))
 class Contact extends Component {
 
@@ -71,7 +71,7 @@ class Contact extends Component {
   //   return null
   // }
 
-  onClose(): void {
+  onClose = (): void => {
     this.setState({isOpen: false })
   }
 
@@ -91,6 +91,7 @@ class Contact extends Component {
   }
 
   render () {
+    // console.log(this.state.contactOptions)
     return (
       <View className='contact'>
         <FormLine title="联系方式">

@@ -6,7 +6,7 @@ export default function category (state = INITIAL_STATE, action) {
   switch (action.type) {
     case FETCH_USERINFO:
       return {
-        // ...state,
+        ...state,
         // userInfo: action.data.userInfo
         'avatarUrl': 'string',
         'brief': 'string',

@@ -1,7 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
 import {AtFloatLayout, AtIcon, AtCheckbox} from 'taro-ui'
-import { connect } from '@tarojs/redux'
 import {Text, View} from '@tarojs/components'
 import {ReactNodeLike} from 'prop-types'
 
@@ -11,24 +10,20 @@ import FormLine from '../../../components/formLine'
 import './index.scss'
 
 
-interface ContactItem {
-  id: string,
-  content: string,
-  type: string
-}
-
-type PageStateProps = {
-  contacts: Array<ContactItem>,
-}
+type PageStateProps = {}
 
 type PageDispatchProps = {}
 
 type PageOwnProps = {
   onSetVal: (key,value) => void,
-  selectedContacts: string[]
+  selectedContacts: string[],
+  contacts: Array<Contact.InContact>,
 }
 
-type PageState = {}
+type PageState = {
+  isOpen: boolean,
+  contactOptions: [],
+}
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
@@ -36,9 +31,6 @@ interface Contact {
   props: IProps;
 }
 
-@connect(({ userInfo }) => ({
-  contacts: userInfo.contacts,
-}))
 class Contact extends Component {
 
   state = {
@@ -59,18 +51,6 @@ class Contact extends Component {
     })
   }
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   console.log(nextProps.selectedContacts, prevState.checkedOptions)
-  //   // 没错，这是一个static
-  //   if (nextProps.selectedContacts.join('') !== prevState.checkedOptions) {
-  //     console.log('联系方式更新了')
-  //     return {
-  //       checkedOptions: nextProps.selectedContacts
-  //     }
-  //   }
-  //   return null
-  // }
-
   onClose = (): void => {
     this.setState({isOpen: false })
   }
@@ -85,13 +65,12 @@ class Contact extends Component {
 
   renderContactText(): ReactNodeLike {
     const { selectedContacts } = this.props
-    const contactText = selectedContacts ? selectedContacts.map(item => CONTACT_MAPPING[item]).join('，') : '选择分类'
+    const contactText = selectedContacts && selectedContacts.length ? selectedContacts.map(item => CONTACT_MAPPING[item]).join('，') : '选择分类'
 
     return <Text className='value'>{contactText}</Text>
   }
 
   render () {
-    // console.log(this.state.contactOptions)
     return (
       <View className='contact'>
         <FormLine title="联系方式">

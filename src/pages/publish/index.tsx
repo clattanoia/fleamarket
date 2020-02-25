@@ -1,12 +1,16 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtButton,AtToast }  from 'taro-ui'
+import {connect} from '@tarojs/redux'
+import {ComponentClass} from 'react'
 
 import TabBar from '../../components/tabBar'
 import PublishInfo from './info'
 import Category from './category'
 import Contact from './contact'
 import PublishImages from './images'
+import { cleanArrayEmpty } from '../../utils/helper'
+
 import './index.scss'
 
 const requiredTips = {
@@ -17,14 +21,40 @@ const requiredTips = {
   selectedContacts: '联系方式不能为空',
 }
 
-export default class Publish extends Component {
+
+
+type UserInfo = {
+  contacts: Contact.InContact[],
+}
+
+type PageStateProps = {
+  userInfo: UserInfo
+}
+
+type PageDispatchProps = {}
+
+type PageOwnProps = {}
+
+type PageState = {}
+
+type IProps = PageStateProps & PageDispatchProps & PageOwnProps
+
+interface Publish {
+  props: IProps;
+}
+
+@connect(({ userInfo }) => ({
+  userInfo: userInfo,
+}))
+class Publish extends Component {
 
   state = {
+    toastText: '',
+    showToast: false,
+
     title: '',
     price:'',
     detail:'',
-    showToast: false,
-    toastText: '',
     selectedCategory: '',
     selectedContacts: [],
   }
@@ -73,6 +103,12 @@ export default class Publish extends Component {
     if (this.vaildInput(true)) {
       // todo
     }
+    // transform contact type to id
+    const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
+      const matchedContact: Contact.InContact | undefined = this.props.userInfo.contacts.find(contact => contact.type === item)
+      return matchedContact ? matchedContact.id : undefined
+    }))
+    console.log(contactIds)
   }
 
   handleClose = () => {
@@ -98,7 +134,11 @@ export default class Publish extends Component {
         <PublishInfo onSetVal={this.setVal} />
         <PublishImages  onSetVal={this.setVal} />
         <Category onSetVal={this.setVal} selectedCategory={this.state.selectedCategory} />
-        <Contact onSetVal={this.setVal} selectedContacts={this.state.selectedContacts} />
+        <Contact
+          contacts={this.props.userInfo.contacts}
+          onSetVal={this.setVal}
+          selectedContacts={this.state.selectedContacts}
+        />
         <View className="form_btn">
           <AtButton type="primary" onClick={this.handleSubmit} disabled={!this.vaildInput()}>发布</AtButton>
         </View>
@@ -108,3 +148,5 @@ export default class Publish extends Component {
     )
   }
 }
+
+export default Publish as ComponentClass<PageOwnProps, PageState>

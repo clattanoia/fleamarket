@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import client from '../graphql-client'
 import {loginQuery} from '../query/login'
 import {GlobalData} from './globalData'
-import {fetch} from '../actions/recommend'
+import { fetchUserInfo } from '../actions/userInfo'
 import { setAuthInfo } from '../actions/global'
 import {store} from '../store/store'
 
@@ -53,7 +53,8 @@ export async function authLogin(props: Inprops) {
       key:'token',
       data: data.login.token
     })
-    store.dispatch(fetch({data:{goods:[]}}))
+    // tslint:disable-next-line
+    store.dispatch(fetchUserInfo())
     props.callback && props.callback()
   } catch (error) {
     throw error

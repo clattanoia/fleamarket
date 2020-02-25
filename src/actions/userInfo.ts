@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux'
 import client from '../graphql-client'
 import { FETCH_USERINFO } from '../constants'
 import { userInfoQuery } from '../query/userInfo'
@@ -10,7 +11,7 @@ export const fetch = (data) => {
 }
 
 export function fetchUserInfo() {
-  return async dispatch => {
+  return async (dispatch: Dispatch) => {
     const query = userInfoQuery
 
     try {

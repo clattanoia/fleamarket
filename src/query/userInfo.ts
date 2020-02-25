@@ -4,7 +4,6 @@ export const userInfoQuery = gql`
   query($id: String) {
     user(id: $id) {
       id
-      unionId
       nickname
       brief
       country
@@ -14,17 +13,12 @@ export const userInfoQuery = gql`
       gender
       lastVisitTime
       platform
-      contacts {id}
+      contacts {
+        id
+        type
+        content
+      }
     }
   }
 `
 
-// export const userInfoQuery = gql`
-//   {
-//     categories {
-//       id,
-//       name,
-//       icon
-//     }
-//   }
-// `

@@ -65,7 +65,7 @@ class Contact extends Component {
 
   renderContactText(): ReactNodeLike {
     const { selectedContacts } = this.props
-    const contactText = selectedContacts && selectedContacts.length ? selectedContacts.map(item => CONTACT_MAPPING[item]).join('，') : '选择分类'
+    const contactText = selectedContacts && selectedContacts.length ? selectedContacts.map(item => CONTACT_MAPPING[item]).join('，') : '选择联系方式'
 
     return <Text className='value'>{contactText}</Text>
   }

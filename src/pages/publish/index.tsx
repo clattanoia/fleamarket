@@ -147,7 +147,7 @@ class Publish extends Component {
   }
 
   config: Config = {
-    navigationBarTitleText: 'publish',
+    navigationBarTitleText: '出售',
   }
 
   render () {

@@ -47,7 +47,8 @@ interface Category {
 class Category extends Component {
 
   state = {
-    selector: []
+    selector: [],
+    selected: '',
   }
 
   componentWillMount () {}
@@ -73,7 +74,12 @@ class Category extends Component {
   componentDidHide () { }
 
   onCategoryChange = (e) => {
-    this.props.onSetVal('selectedCategory', this.state.selector[e.detail.value])
+    const value = this.state.selector[e.detail.value]
+    const item = this.props.category.categories.find(item => item.name === value)
+    this.setState({
+      selected: value
+    })
+    this.props.onSetVal('selectedCategory', item && item.id)
   }
 
   render () {
@@ -82,7 +88,7 @@ class Category extends Component {
         <FormLine title="分类">
           <Picker className='picker' mode='selector' range={this.state.selector} onChange={this.onCategoryChange} value={0}>
             <View className='right-container'>
-              <Text className='category'>{this.props.selectedCategory ? this.props.selectedCategory : '选择分类'}</Text>
+              <Text className='category'>{this.state.selected ? this.state.selected : '选择分类'}</Text>
               <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
             </View>
           </Picker>

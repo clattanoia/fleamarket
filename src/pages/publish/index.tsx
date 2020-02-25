@@ -9,6 +9,8 @@ import PublishInfo from './info'
 import Category from './category'
 import Contact from './contact'
 import PublishImages from './images'
+import client from '../../graphql-client'
+import { publishMutation } from '../../query/publish'
 import { cleanArrayEmpty } from '../../utils/helper'
 
 import './index.scss'
@@ -99,9 +101,28 @@ class Publish extends Component {
     return true
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     if (this.vaildInput(true)) {
-      // todo
+      const publishInfo = {
+        owner: this.props.unionId,
+        title: this.state.title,
+        price: this.state.price,
+        description: this.state.detail,
+        category: this.state.selectedCategory,
+        coverUrl: 'string',
+        pictures: [],
+        contacts: [],
+      }
+
+      try {
+        // todo
+        const { data } = await client.mutate({mutation:publishMutation, variables: { publishInfo }})
+        Taro.navigateTo({
+          url: '/pages/detail/index?id=' + data.id
+        })
+      } catch (e) {
+        throw e
+      }
     }
     // transform contact type to id
     const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {

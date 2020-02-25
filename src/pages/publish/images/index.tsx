@@ -18,7 +18,7 @@ function PublishImages(props: InProps) {
     // FileSystemManager.readfile()
     // const imgUrl = files[len-1].url
     setFiles(files)
-    props.onSetVal('img',files)
+    props.onSetVal('imgUrls',files)
 
   }
   const onFail = (mes) => {
@@ -26,6 +26,8 @@ function PublishImages(props: InProps) {
     throw(mes)
   }
   const onImageClick = (index, file) => {
+    // const {qiniuToken} = props
+    // console.log(qiniuToken)
     // console.log(index, file)
     throw({index,file})
     // Taro.chooseImage({
@@ -39,6 +41,28 @@ function PublishImages(props: InProps) {
     //     console.log(tempFilePaths)
     //   }
     // })
+    //   Taro.uploadFile({
+    //     url: 'http://q67pnvkzx.bkt.clouddn.com',
+    //     name: 'file.jpg',
+    //     filePath: file.url,
+    //     header: {
+    //       "Content-Type": "multipart/form-data"
+    //     },
+    //    formData: {
+    //      token: qiniuToken,
+    //    },
+    //    success: function(res) {
+    //      let data = JSON.parse(res.data)
+
+  //      console.log('qiniu');
+  //      console.log(res);
+  //      console.log(data);
+  //      // to do ...
+  //    },
+  //    fail: function(res) {
+  //      console.log(res)
+  //    }
+  //  });
   }
 
   return (

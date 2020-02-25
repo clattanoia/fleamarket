@@ -5,3 +5,10 @@ mutation ($publishInput: PublishInput!){
   publish(publishInput: $publishInput)
 }
 `
+
+export const getQiniuTokenQuery = gql`
+{
+  qiniuToken {
+    token
+  }
+}`

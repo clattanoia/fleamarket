@@ -10,8 +10,9 @@ import Category from './category'
 import Contact from './contact'
 import PublishImages from './images'
 import client from '../../graphql-client'
-import { publishMutation } from '../../query/publish'
+import { publishMutation,getQiniuTokenQuery } from '../../query/publish'
 import { cleanArrayEmpty } from '../../utils/helper'
+import { upload } from '../../utils/qiniuUploader'
 
 import './index.scss'
 
@@ -54,12 +55,64 @@ class Publish extends Component {
   state = {
     toastText: '',
     showToast: false,
-
     title: '',
     price:'',
     detail:'',
     selectedCategory: '',
     selectedContacts: [],
+    qiniuToken:'',
+    imgUrls: []
+  }
+
+  componentDidMount(){
+    this.getToken()
+  }
+
+  getToken = async () => {
+    const qiniuToken = Taro.getStorageSync('qiniuToken')
+    if(qiniuToken){
+      this.setState({qiniuToken})
+      return
+    }
+    const { data } = await client.query({query:getQiniuTokenQuery, variables: {}})
+    const qiniuTokenNew = data.qiniuToken.token
+    Taro.setStorageSync('qiniuToken',qiniuTokenNew)
+    this.setState({qiniuToken:qiniuTokenNew})
+  }
+
+  uploadPic = () => {
+    const {imgUrls,qiniuToken} = this.state
+    const filePath = imgUrls[0] && imgUrls[0].url
+    upload({
+      filePath: filePath,
+      options: {
+        region: 'ECN',       // 可选(默认为'ECN')
+        domain: 'q67pnvkzx.bkt.clouddn.com',
+        uptoken: qiniuToken,
+        shouldUseQiniuFileName: true // 默认false
+      },
+      before: () => {
+        // console.log('before upload');
+      },
+      success: () => {
+        // console.log(res)
+        // console.log(res.imageURL)
+        // console.log('file url is: ' + res.fileUrl);
+      },
+      fail: () => {
+        // console.log('error:' + err);
+      },
+      progress: () => {
+        // console.log('上传进度', res.progress)
+        // console.log('已经上传的数据长度', res.totalBytesSent)
+        // console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+      },
+      complete: () => {
+        // 上传结束
+        // console.log('upload complete');
+        // console.log(res)
+      }
+    })
   }
 
   validRequired = (val) => {
@@ -103,6 +156,7 @@ class Publish extends Component {
   }
 
   handleSubmit = async () => {
+    this.uploadPic()
     if (!this.vaildInput(true)) return
     // transform contact type to id
     const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
@@ -123,6 +177,9 @@ class Publish extends Component {
 
     try {
       const { data } = await client.mutate({mutation:publishMutation, variables: { publishInput }})
+      Taro.removeStorage({
+        key: 'qiniuToken'
+      })
       Taro.redirectTo({
         url: '/pages/detail/index?id=' + data.publish
       })
@@ -152,7 +209,7 @@ class Publish extends Component {
     return (
       <View className="publish">
         <PublishInfo onSetVal={this.setVal} />
-        <PublishImages  onSetVal={this.setVal} />
+        <PublishImages  onSetVal={this.setVal} qiniuToken={this.state.qiniuToken} />
         <Category onSetVal={this.setVal} selectedCategory={this.state.selectedCategory} />
         <Contact
           contacts={this.props.userInfo.contacts}
@@ -160,7 +217,8 @@ class Publish extends Component {
           selectedContacts={this.state.selectedContacts}
         />
         <View className="form_btn">
-          <AtButton type="primary" onClick={this.handleSubmit} disabled={!this.vaildInput()}>发布</AtButton>
+          {/* <AtButton type="primary" onClick={this.handleSubmit} disabled={!this.vaildInput()}>发布</AtButton> */}
+          <AtButton type="primary" onClick={this.handleSubmit}>发布</AtButton>
         </View>
         <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleClose} hasMask status="error"></AtToast>
         <TabBar  current={1} />

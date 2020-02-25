@@ -55,7 +55,7 @@ interface Index {
   props: IProps;
 }
 
-@connect(({ recommend }) => ({
+@connect(({recommend}) => ({
   recommend
 }), (dispatch) => ({
   fetchRecommendGoods () {

@@ -14,16 +14,12 @@ function PublishImages(props: InProps) {
 
   const onChange = (files) => {
     // console.log(files)
-    const len = files.length
+    // const len = files.length
     // FileSystemManager.readfile()
-    Taro.getImageInfo({
-      src: files[len-1].url,
-      success: function () {
-        // console.log(res)
-      }
-    })
+    // const imgUrl = files[len-1].url
     setFiles(files)
     props.onSetVal('img',files)
+
   }
   const onFail = (mes) => {
     // console.log(mes)
@@ -32,12 +28,24 @@ function PublishImages(props: InProps) {
   const onImageClick = (index, file) => {
     // console.log(index, file)
     throw({index,file})
+    // Taro.chooseImage({
+    //   count: 1,
+    //   sizeType: ['original', 'compressed'],
+    //   sourceType: ['album', 'camera'],
+    //   success (res) {
+    //     // tempFilePath可以作为img标签的src属性显示图片
+    //     const tempFilePaths = res.tempFilePaths
+    //     console.log(res)
+    //     console.log(tempFilePaths)
+    //   }
+    // })
   }
 
   return (
     <View className="publish_images">
       <AtImagePicker
         multiple={false}
+        showAddBtn={files.length<10}
         length={4}
         count={10}
         files={files}

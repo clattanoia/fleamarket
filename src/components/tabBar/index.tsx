@@ -1,10 +1,8 @@
 import Taro, { memo,useState} from '@tarojs/taro'
 import {View,Text,Button} from '@tarojs/components'
 import { AtTabBar,AtFloatLayout } from 'taro-ui'
-import { useDispatch } from '@tarojs/redux'
 import AuthInfoLayout from '../authInfo'
-import {SET_AUTH_INFO} from '../../constants'
-import {authLogin,isAuthUserInfo} from '../../utils/auth'
+import {authLogin} from '../../utils/auth'
 import './index.scss'
 
 interface InProps {
@@ -15,7 +13,6 @@ interface InProps {
 function TabBar(props: InProps) {
 
   const pageUrl = ['/pages/index/index','/pages/publish/index','/pages/profile/index']
-  const dispatch = useDispatch()
 
   const [isOpenedTel,setIsOpenedTel] = useState(false)
   const [toUrl,setToUrl] = useState('')
@@ -27,14 +24,6 @@ function TabBar(props: InProps) {
     })
   }
 
-  const isAuthUser = async () => {
-    const isAuth = await isAuthUserInfo()
-    dispatch({type:SET_AUTH_INFO,payload:!isAuth})
-    if(isAuth){
-      authLogin({callback:gotoPage})
-    }
-  }
-
   const handleClick = (value) => {
     currentUrl = pageUrl[value]
     setToUrl(currentUrl)
@@ -43,13 +32,11 @@ function TabBar(props: InProps) {
       return
     }
     if(value===1 && props.current!==1){
-      isAuthUser()
-      // authLogin({callback:gotoPage})
+      authLogin({callback:gotoPage})
       return
     }
     if(value===2 && props.current!==2){
-      isAuthUser()
-      // authLogin({callback:gotoPage})
+      authLogin({callback:gotoPage})
       return
     }
   }

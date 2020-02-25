@@ -1,15 +1,10 @@
 import Taro from '@tarojs/taro'
-// import { useDispatch } from '@tarojs/redux'
 import client from '../graphql-client'
 import {loginQuery} from '../query/login'
 import {GlobalData} from './globalData'
-import configStore from '../store'
 import {fetch} from '../actions/recommend'
-// import {SET_AUTH_INFO} from '../constants'
-// const dispatch = useDispatch()
 import { setAuthInfo } from '../actions/global'
-
-const store = configStore()
+import {store} from '../store/store'
 
 interface Inprops {
   callback?: () => void
@@ -40,11 +35,9 @@ export async function authLogin(props: Inprops) {
 
     const { code } = await Taro.login()
 
-
     const isAuth = await isAuthUserInfo()
     if(!isAuth){
       store.dispatch(setAuthInfo(true))
-      // dispatch({type:SET_AUTH_INFO,payload:true})
       return
     }
 

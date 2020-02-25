@@ -23,4 +23,15 @@
     display: block;
   }
 
+  .checkbox-layout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .contact-checkbox-confirm {
+    width: 80px;
+  }
+
 }

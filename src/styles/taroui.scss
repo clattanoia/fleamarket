@@ -17,5 +17,15 @@
   border-color: $baseColor;
   color: white;
 }
+
+.at-checkbox__option--selected .at-checkbox__icon-cnt {
+  background-color: $baseColor;
+  color: #fff;
+}
+
+.at-button--secondary {
+  border-color: $baseColor;
+  color: $baseColor;
+}
 //发布信息 end
 

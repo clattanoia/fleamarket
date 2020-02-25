@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
-import {AtFloatLayout, AtIcon, AtCheckbox} from 'taro-ui'
+import {AtFloatLayout, AtIcon, AtCheckbox, AtButton} from 'taro-ui'
 import {Text, View} from '@tarojs/components'
 import {ReactNodeLike} from 'prop-types'
 
@@ -35,7 +35,8 @@ class Contact extends Component {
 
   state = {
     isOpen: false,
-    contactOptions: []
+    contactOptions: [],
+    checkedOptions: [],
   }
 
   componentDidMount(): void {
@@ -48,11 +49,20 @@ class Contact extends Component {
 
     this.setState({
       contactOptions,
+      checkedOptions: this.props.selectedContacts,
     })
   }
 
   onClose = (): void => {
-    this.setState({isOpen: false })
+    this.setState({
+      isOpen: false,
+      checkedOptions: this.props.selectedContacts,
+    })
+  }
+
+  onConfirm = (): void => {
+    this.setState({ isOpen: false })
+    this.props.onSetVal('selectedContacts', this.state.checkedOptions)
   }
 
   handleValueClick(): void {
@@ -60,7 +70,9 @@ class Contact extends Component {
   }
 
   handleChange = (val): void => {
-    this.props.onSetVal('selectedContacts', val)
+    this.setState({
+      checkedOptions: val,
+    })
   }
 
   renderContactText(): ReactNodeLike {
@@ -79,12 +91,21 @@ class Contact extends Component {
             <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
           </View>
         </FormLine>
-        <AtFloatLayout isOpened={this.state.isOpen} title="选择联系方式" onClose={this.onClose}>
+        <AtFloatLayout isOpened={this.state.isOpen} onClose={this.onClose}>
+          <View className="checkbox-layout-header">
+            <Text>请选择联系方式</Text>
+            <AtButton
+              className="contact-checkbox-confirm"
+              type="secondary"
+              size="small"
+              onClick={this.onConfirm}
+            >确定</AtButton>
+          </View>
           {
             this.state.contactOptions.length > 0 ?
               <AtCheckbox
                 options={this.state.contactOptions}
-                selectedList={this.props.selectedContacts}
+                selectedList={this.state.checkedOptions}
                 onChange={this.handleChange}
               />
               :

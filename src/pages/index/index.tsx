@@ -4,10 +4,11 @@ import { View, Text, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtAvatar } from 'taro-ui'
 
-import { fetchRecommendGoods } from '../../actions/recommend'
 import { fetchUserInfo } from '../../actions/userInfo'
 import { fetchCategories } from '../../actions/category'
 import TabBar from '../../components/tabBar'
+import client from '../../graphql-client'
+import { recommendListQuery } from '../../query/recommend'
 
 import './index.scss'
 
@@ -35,14 +36,14 @@ interface Goods {
   owner: User,
 }
 
+interface State {
+  goods: Array<Goods>,
+}
+
 type PageStateProps = {
-  recommend: {
-    goods: Array<Goods>,
-  }
 }
 
 type PageDispatchProps = {
-  fetchRecommendGoods: () => Function,
   fetchUserInfo: () => Function,
   fetchCategories: () => Function,
 }
@@ -57,12 +58,8 @@ interface Index {
   props: IProps;
 }
 
-@connect(({recommend}) => ({
-  recommend
+@connect(() => ({
 }), (dispatch) => ({
-  fetchRecommendGoods () {
-    dispatch(fetchRecommendGoods())
-  },
   fetchUserInfo () {
     dispatch(fetchUserInfo())
   },
@@ -83,10 +80,18 @@ class Index extends Component {
     navigationBarTitleText: '骚窝跳蚤平台'
   }
 
+  state: State = {
+    goods: []
+  }
+
   componentWillReceiveProps () {}
 
-  componentDidMount() {
-    this.props.fetchRecommendGoods()
+  async componentDidMount() {
+    const query = recommendListQuery
+    const { data } = await client.query({query, variables: {}})
+    this.setState({
+      goods: data.goods
+    })
     this.props.fetchUserInfo()
     this.props.fetchCategories()
   }
@@ -107,10 +112,10 @@ class Index extends Component {
     return (
       <View className='index'>
         <Text className='category'>看推荐</Text>
-        {this.props.recommend.goods.length === 0 ?
+        {this.state.goods.length === 0 ?
           <View className='no-goods'><Text>暂无信息</Text></View> :
           <View className='wrapper-list'>
-            {this.props.recommend.goods.map(item =>
+            {this.state.goods.map(item =>
               <View className='list-item' key={item.id}>
                 <Image className='goods-image' src={item.coverUrl} onClick={this.onClickEvent} />
                 <Text className='goods-name' onClick={this.onClickEvent}>{item.title}</Text>

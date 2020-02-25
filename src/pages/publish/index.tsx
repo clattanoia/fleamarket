@@ -103,34 +103,32 @@ class Publish extends Component {
   }
 
   handleSubmit = async () => {
-    if (this.vaildInput(true)) {
-      // transform contact type to id
-      const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
-        const matchedContact: Contact.InContact | undefined = this.props.userInfo.contacts.find(contact => contact.type === item)
-        return matchedContact ? matchedContact.id : undefined
-      }))
+    if (!this.vaildInput(true)) return
+    // transform contact type to id
+    const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
+      const matchedContact: Contact.InContact | undefined = this.props.userInfo.contacts.find(contact => contact.type === item)
+      return matchedContact ? matchedContact.id : undefined
+    }))
 
-      const publishInfo = {
-        owner: this.props.userInfo.id,
-        title: this.state.title,
-        price: this.state.price,
-        description: this.state.detail,
-        category: this.state.selectedCategory,
-        coverUrl: 'string',
-        pictures: [],
-        contacts: contactIds,
-      }
-
-      try {
-        const { data } = await client.mutate({mutation:publishMutation, variables: { publishInfo }})
-        Taro.navigateTo({
-          url: '/pages/detail/index?id=' + data.publish
-        })
-      } catch (e) {
-        throw e
-      }
+    const publishInput = {
+      owner: this.props.userInfo.id,
+      title: this.state.title,
+      price: Number(this.state.price),
+      description: this.state.detail,
+      category: this.state.selectedCategory,
+      coverUrl: 'https://img.alicdn.com/bao/uploaded/i4/2555955104/TB26NINyY9YBuNjy0FgXXcxcXXa_!!2555955104.png',
+      pictures: ['https://img.alicdn.com/bao/uploaded/i4/2555955104/TB26NINyY9YBuNjy0FgXXcxcXXa_!!2555955104.png'],
+      contacts: contactIds,
     }
 
+    try {
+      const { data } = await client.mutate({mutation:publishMutation, variables: { publishInput }})
+      Taro.redirectTo({
+        url: '/pages/detail/index?id=' + data.publish
+      })
+    } catch (e) {
+      throw e
+    }
   }
 
   handleClose = () => {

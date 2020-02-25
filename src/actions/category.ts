@@ -9,14 +9,13 @@ export const fetch = (data) => {
   }
 }
 
-export function fetchCategories(callback) {
+export function fetchCategories() {
   return async dispatch => {
     const query = categoryQuery
 
     try {
       const { data } = await client.query({query, variables: {}})
       dispatch(fetch(data))
-      callback(data)
     } catch (error) {
       throw error
     }

@@ -6,6 +6,7 @@ import { AtAvatar } from 'taro-ui'
 
 import { fetchRecommendGoods } from '../../actions/recommend'
 import { fetchUserInfo } from '../../actions/userInfo'
+import { fetchCategories } from '../../actions/category'
 import TabBar from '../../components/tabBar'
 
 import './index.scss'
@@ -43,6 +44,7 @@ type PageStateProps = {
 type PageDispatchProps = {
   fetchRecommendGoods: () => Function,
   fetchUserInfo: () => Function,
+  fetchCategories: () => Function,
 }
 
 type PageOwnProps = {}
@@ -63,6 +65,9 @@ interface Index {
   },
   fetchUserInfo () {
     dispatch(fetchUserInfo())
+  },
+  fetchCategories() {
+    dispatch(fetchCategories())
   }
 }))
 class Index extends Component {
@@ -83,6 +88,7 @@ class Index extends Component {
   componentDidMount() {
     this.props.fetchRecommendGoods()
     this.props.fetchUserInfo()
+    this.props.fetchCategories()
   }
 
   componentWillUnmount () { }

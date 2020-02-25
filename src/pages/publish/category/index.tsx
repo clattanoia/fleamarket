@@ -4,7 +4,6 @@ import { AtIcon } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import {View, Picker, Text} from '@tarojs/components'
 
-import { fetchCategories } from '../../../actions/category'
 import './index.scss'
 import FormLine from '../../../components/formLine'
 
@@ -21,7 +20,6 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  fetchCategories: (callback) => Function
 }
 
 type PageOwnProps = {
@@ -39,10 +37,6 @@ interface Category {
 
 @connect(({ category }) => ({
   category
-}), (dispatch) => ({
-  fetchCategories (callback) {
-    dispatch(fetchCategories(callback))
-  }
 }))
 class Category extends Component {
 
@@ -54,17 +48,9 @@ class Category extends Component {
   componentWillMount () {}
 
   componentDidMount () {
-    if (this.props.category.categories.length === 0) {
-      this.props.fetchCategories((data) => {
-        this.setState({
-          selector: data.categories.map(item => item.name)
-        })
-      })
-    } else {
-      this.setState({
-        selector: this.props.category.categories.map(item => item.name)
-      })
-    }
+    this.setState({
+      selector: this.props.category.categories.map(item => item.name)
+    })
   }
 
   componentWillUnmount () { }

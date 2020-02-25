@@ -209,7 +209,7 @@ class Publish extends Component {
     return (
       <View className="publish">
         <PublishInfo onSetVal={this.setVal} />
-        <PublishImages  onSetVal={this.setVal} qiniuToken={this.state.qiniuToken} />
+        <PublishImages  onSetVal={this.setVal} />
         <Category onSetVal={this.setVal} selectedCategory={this.state.selectedCategory} />
         <Contact
           contacts={this.props.userInfo.contacts}
@@ -217,8 +217,7 @@ class Publish extends Component {
           selectedContacts={this.state.selectedContacts}
         />
         <View className="form_btn">
-          {/* <AtButton type="primary" onClick={this.handleSubmit} disabled={!this.vaildInput()}>发布</AtButton> */}
-          <AtButton type="primary" onClick={this.handleSubmit}>发布</AtButton>
+          <AtButton type="primary" onClick={this.handleSubmit} disabled={!this.vaildInput()}>发布</AtButton>
         </View>
         <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleClose} hasMask status="error"></AtToast>
         <TabBar  current={1} />

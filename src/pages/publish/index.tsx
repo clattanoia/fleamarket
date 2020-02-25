@@ -27,6 +27,7 @@ const requiredTips = {
 
 type UserInfo = {
   contacts: Contact.InContact[],
+  id: string,
 }
 
 type PageStateProps = {
@@ -77,7 +78,7 @@ class Publish extends Component {
   }
 
   vaildInput = (isShowErrorMessage = false) => {
-    const {title, price, detail, selectedCategory} = this.state
+    const {title, price, detail, selectedCategory, selectedContacts} = this.state
     if(!this.validRequired(title)){
       isShowErrorMessage && this.showErrorMessage('title')
       return false
@@ -94,7 +95,7 @@ class Publish extends Component {
       isShowErrorMessage && this.showErrorMessage('selectedCategory')
       return false
     }
-    if(!this.validRequired(selectedCategory)){
+    if(!this.validRequired(selectedContacts)){
       isShowErrorMessage && this.showErrorMessage('selectedContacts')
       return false
     }
@@ -103,33 +104,33 @@ class Publish extends Component {
 
   handleSubmit = async () => {
     if (this.vaildInput(true)) {
+      // transform contact type to id
+      const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
+        const matchedContact: Contact.InContact | undefined = this.props.userInfo.contacts.find(contact => contact.type === item)
+        return matchedContact ? matchedContact.id : undefined
+      }))
+
       const publishInfo = {
-        owner: this.props.unionId,
+        owner: this.props.userInfo.id,
         title: this.state.title,
         price: this.state.price,
         description: this.state.detail,
         category: this.state.selectedCategory,
         coverUrl: 'string',
         pictures: [],
-        contacts: [],
+        contacts: contactIds,
       }
 
       try {
-        // todo
         const { data } = await client.mutate({mutation:publishMutation, variables: { publishInfo }})
         Taro.navigateTo({
-          url: '/pages/detail/index?id=' + data.id
+          url: '/pages/detail/index?id=' + data.publish
         })
       } catch (e) {
         throw e
       }
     }
-    // transform contact type to id
-    const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
-      const matchedContact: Contact.InContact | undefined = this.props.userInfo.contacts.find(contact => contact.type === item)
-      return matchedContact ? matchedContact.id : undefined
-    }))
-    console.log(contactIds)
+
   }
 
   handleClose = () => {

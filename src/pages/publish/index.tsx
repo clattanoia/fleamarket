@@ -24,7 +24,8 @@ const errorMessage = {
   selectedContacts: '联系方式不能为空',
   invalidParameters: '参数错误',
   systemError: '服务异常',
-  invalidUser: '用户已被禁用'
+  invalidUser: '用户已被禁用',
+  images: '最多上传10张图片（JPG/PNG）,图片不能大于10M'
 }
 
 
@@ -225,7 +226,7 @@ class Publish extends Component {
     return (
       <View className="publish">
         <PublishInfo onSetVal={this.setVal} />
-        <PublishImages  onSetVal={this.setVal} />
+        <PublishImages  onSetVal={this.setVal} showErrorMessage={this.showErrorMessage} />
         <Category onSetVal={this.setVal} selectedCategory={this.state.selectedCategory} />
         <Contact
           contacts={this.props.userInfo.contacts}

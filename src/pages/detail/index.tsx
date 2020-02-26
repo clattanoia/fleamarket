@@ -1,34 +1,44 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Image, Button } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
 
 import Avatar from '../../components/avatar'
 import Tag from '../../components/tag'
 import ExtendedContainer from '../../components/extendedContainer'
-import { GoodDetail } from '../../constants/types'
 import DetailPreload from './components/detailPreload'
-import { detailQuery } from '../../query/detail'
+import Contact from './contact'
+
+import { GoodDetail } from '../../constants/types'
+import { detailQuery, contactsQuery } from '../../query/detail'
 import client from '../../graphql-client'
 import { Status } from '../../constants/enums'
 
 import './index.scss'
 
-class GoodsDetail extends Component<{}, {
+type PageState = {
   detail: GoodDetail | null
-}> {
+  isOpen: boolean
+  contacts: Contact.InContact[]
+}
+
+class GoodsDetail extends Component<{}, PageState> {
   config: Config = {
     navigationBarTitleText: '帖子详情',
   }
 
   state = {
-    detail: null
+    detail: null,
+    isOpen: false,
+    contacts: [],
   }
 
   async componentDidMount () {
     const { id } = this.$router.params
-    const { data } = await client.query({query: detailQuery, variables: { id }})
+    const { data: { goods } } = await client.query({query: detailQuery, variables: { id }})
     this.setState({
-      detail: data.goods
+      detail: goods
     })
+    this.getContacts(goods.owner.id, goods.contacts)
   }
 
   genSaleStatus = (status: Status) => {
@@ -39,6 +49,27 @@ class GoodsDetail extends Component<{}, {
         return '已下架'
       case Status.FREEZE:
         return '冻结'
+    }
+  }
+
+  showContact = (): void => {
+    this.setState({
+      isOpen: true
+    })
+  }
+
+  closeContact = (): void => {
+    this.setState({
+      isOpen: false
+    })
+  }
+
+  getContacts = async(userId, ids): Promise<void>  => {
+    try {
+      const { data: { contacts } } = await client.query({query: contactsQuery, variables: { userId, ids }})
+      this.setState({ contacts })
+    } catch (error) {
+      throw error
     }
   }
 
@@ -78,8 +109,9 @@ class GoodsDetail extends Component<{}, {
           </View>
         </View>
         <View className="footer">
-          <Button className="contact-btn">获取联系方式</Button>
+          <AtButton type='primary' className="contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
         </View>
+        <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
       </View>
     ) : <DetailPreload />
   }

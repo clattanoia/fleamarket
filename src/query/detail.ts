@@ -24,3 +24,13 @@ query($id: String!) {
     }
   }
 `
+
+export const contactsQuery = gql`
+  query($userId: String!, $ids: [String]!) {
+    contacts(userId: $userId, ids: $ids) {
+      id
+      content
+      type
+    }
+  }
+`

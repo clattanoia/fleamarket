@@ -105,9 +105,9 @@ class Index extends Component {
 
   componentDidHide () { }
 
-  onClickEvent() {
+  onClickEvent(id: string) {
     Taro.navigateTo({
-      url: '/pages/detail/index'
+      url: '/pages/detail/index?id='+id
     })
   }
 
@@ -120,8 +120,8 @@ class Index extends Component {
           <View className='wrapper-list'>
             {this.state.goods.map(item =>
               <View className='list-item' key={item.id}>
-                <Image className='goods-image' src={item.coverUrl} onClick={this.onClickEvent} />
-                <Text className='goods-name' onClick={this.onClickEvent}>{item.title}</Text>
+                <Image className='goods-image' src={item.coverUrl} onClick={() => {this.onClickEvent(item.id)}} />
+                <Text className='goods-name' onClick={() => {this.onClickEvent(item.id)}}>{item.title}</Text>
                 <View className='detail'>
                   <Text className='goods-price'><Text className='unit'>￥</Text>{item.price}</Text>
                   <Text className='goods-tag'>{item.categoryName}</Text>

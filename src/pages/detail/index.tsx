@@ -8,7 +8,6 @@ import ExtendedContainer from '../../components/extendedContainer'
 import './index.scss'
 
 export default class GoodsDetail extends Component {
-
   state = {
     userInfo: {
       avatarUrl: avatarUrl,
@@ -18,7 +17,9 @@ export default class GoodsDetail extends Component {
     description: '李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾',
   }
 
-  componentWillMount () {}
+  componentWillMount () {
+    console.log(this.$router.params) // 输出 { id: 2, type: 'test' }
+  }
 
   componentDidMount () { }
 

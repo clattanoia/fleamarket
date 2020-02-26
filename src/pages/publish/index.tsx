@@ -86,7 +86,6 @@ class Publish extends Component {
   uploadPic = async() => {
     const {imagesUrls,qiniuToken} = this.state
     const urlCount = imagesUrls.length
-    this.setLoading(true)
     const newImg = await new Promise((resolve,reject)=>{
       try {
         const newImageUrls: Publish.InPickerImageFiles[] = []
@@ -183,7 +182,6 @@ class Publish extends Component {
     const qiniuImages = await this.uploadPic()
     if(typeof qiniuImages === 'string'){
       this.showErrorMessage('uploadError')
-      this.setLoading(false)
       return false
     }
     const qiniuUrls = []
@@ -203,12 +201,13 @@ class Publish extends Component {
   }
 
   handleSubmit = async () => {
-    const toUploadUrls = await this.validImage()
-    if(!toUploadUrls){
-      return
-    }
     if (!this.vaildInput(true)) return
     this.setLoading(true)
+    const toUploadUrls = await this.validImage()
+    if(!toUploadUrls){
+      this.setLoading(false)
+      return
+    }
     // transform contact type to id
     const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
       const matchedContact: Contact.InContact | undefined = this.props.userInfo.contacts.find(contact => contact.type === item)
@@ -282,7 +281,7 @@ class Publish extends Component {
           <AtButton
             type="primary"
             onClick={this.handleSubmit}
-            disabled={this.vaildInput()}
+            disabled={!this.vaildInput()}
             loading={this.state.isPublishing}
           >发布</AtButton>
         </View>

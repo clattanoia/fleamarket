@@ -44,7 +44,7 @@ class Contact extends Component {
       .filter(item => item.content)
       .map(item => ({
         value: item.type,
-        label: CONTACT_MAPPING[item.type],
+        label: `${CONTACT_MAPPING[item.type]}（${item.content}）`,
       }))
 
     this.setState({

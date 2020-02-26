@@ -92,8 +92,11 @@ class Index extends Component {
     this.setState({
       goods: data.goods
     })
-    this.props.fetchUserInfo()
     this.props.fetchCategories()
+
+    if (Taro.getStorageSync('token')) {
+      this.props.fetchUserInfo()
+    }
   }
 
   componentWillUnmount () { }

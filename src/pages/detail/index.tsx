@@ -1,57 +1,62 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 
-import avatarUrl from '../../assets/avatar.png'
 import Avatar from '../../components/avatar'
 import Tag from '../../components/tag'
 import ExtendedContainer from '../../components/extendedContainer'
+import { GoodDetail } from '../../constants/types'
+import DetailPreload from './components/detailPreload'
+import { detailQuery } from '../../query/detail'
+import client from '../../graphql-client'
+import { Status } from '../../constants/enums'
+
 import './index.scss'
 
-export default class GoodsDetail extends Component {
-  state = {
-    userInfo: {
-      avatarUrl: avatarUrl,
-      nickname: 'nickname'
-    },
-    price: 2700,
-    description: '李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾李源春的垃圾',
-  }
-
-  componentWillMount () {
-    console.log(this.$router.params) // 输出 { id: 2, type: 'test' }
-  }
-
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
+class GoodsDetail extends Component<{}, {
+  detail: GoodDetail | null
+}> {
   config: Config = {
     navigationBarTitleText: '帖子详情',
   }
 
+  state = {
+    detail: null
+  }
+
+  async componentDidMount () {
+    const { id } = this.$router.params
+    const { data } = await client.query({query: detailQuery, variables: { id }})
+    this.setState({
+      detail: data.goods
+    })
+  }
+
+  genSaleStatus = (status: Status) => {
+    switch(status) {
+      case Status.FOR_SALE:
+        return '出售'
+      case Status.SALE_OUT:
+        return '已下架'
+      case Status.FREEZE:
+        return '冻结'
+    }
+  }
+
   render () {
-    return (
+    const { detail } = this.state
+    return detail !== null ? (
       <View className="detail">
         <Avatar
+          userId={detail.owner.id}
+          avatarUrl={detail.owner.avatarUrl}
+          nickname={detail.owner.nickname}
           avatarSize={80}
           nameSize={36}
-          {...this.state.userInfo}
         />
         <View className="price-container">
           <Text className="unit">￥</Text>
           <Text className="price">
-            {this.state.price}
+            {detail.price}
           </Text>
         </View>
         <View className="detial-container">
@@ -59,22 +64,25 @@ export default class GoodsDetail extends Component {
             <Text>商品详情</Text>
           </View>
           <View className="status-tags">
-            <Tag tagName="出售" style={{ marginRight: '10rpx' }} />
-            <Tag tagName="已下架" style={{ marginRight: '10rpx' }} />
+            <Tag tagName={this.genSaleStatus(detail.status)} />
           </View>
           <View className="description">
-            <ExtendedContainer maxLine={2} content={this.state.description} />
+            <ExtendedContainer maxLine={2} content={detail.description} />
           </View>
           <View className="pictures">
-            <Image className="picture" src={this.state.userInfo.avatarUrl} />
-            <Image className="picture" src={this.state.userInfo.avatarUrl} />
-            <Image className="picture" src={this.state.userInfo.avatarUrl} />
+            {
+              detail.pictures.length > 0
+                ? detail.pictures.map(pic => (<Image key={pic} className="picture" src={pic} />))
+                : null
+            }
           </View>
         </View>
         <View className="footer">
           <Button className="contact-btn">获取联系方式</Button>
         </View>
       </View>
-    )
+    ) : <DetailPreload />
   }
 }
+
+export default GoodsDetail

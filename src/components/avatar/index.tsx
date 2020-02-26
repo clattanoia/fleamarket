@@ -5,6 +5,7 @@ import { ITouchEvent } from '@tarojs/components/types/common'
 import './index.scss'
 
 interface InProps {
+  userId: string;
   avatarUrl: string;
   nickname: string;
   avatarSize?: number;
@@ -19,7 +20,7 @@ function Avatar(props: InProps) {
   const defaultSize = 100
   const defaultNameSize = 36
   return (
-    <View className="avatar" onClick={props.onClick ? props.onClick : () => {}}>
+    <View className="avatar" onClick={props.onClick ? props.onClick : () => {}} data-id={props.userId}>
       <Image
         style={{
           width: `${props.avatarSize || defaultSize}rpx`,

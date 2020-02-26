@@ -7,7 +7,7 @@ import './index.scss'
 interface InProps {
   content: string;
   maxLine: number;
-  removeSwitch?: boolean;
+  needSwitch?: boolean;
   style?: {
     [key: string]: string
   };
@@ -15,13 +15,26 @@ interface InProps {
 
 class ExtendedContainer extends Component<InProps, {
   extend: boolean;
+  needSwitch: boolean
 }> {
 
   constructor(props: InProps) {
     super(props)
     this.state = {
       extend: false,
+      needSwitch: true
     }
+  }
+
+  componentDidMount () {
+    const query = Taro.createSelectorQuery().in(this.$scope)
+    query.select('#switch').boundingClientRect()
+    query.select('#content').boundingClientRect().exec(res => {
+      const [ switchDom, contentDom ] = res
+      if ((contentDom.height / switchDom.height) < this.props.maxLine) {
+        this.setState({ needSwitch: false })
+      }
+    })
   }
 
   genStyle = () => {
@@ -42,15 +55,15 @@ class ExtendedContainer extends Component<InProps, {
 
   render () {
     const style = this.genStyle()
-    const { content, removeSwitch } = this.props
-    const { extend } = this.state
+    const { content } = this.props
+    const { extend, needSwitch } = this.state
     return (
       <View className="extend-container">
-        <View className="content" style={style as CSSProperties}>{content}</View>
+        <View id="content" className="content" style={style as CSSProperties}>{content}</View>
         {
-          removeSwitch ? null : (
-            <Text className="switch" onClick={this.toggle}>{extend ? '收起' : '展开'}</Text>
-          )
+          needSwitch ? (
+            <Text id="switch" className="switch" onClick={this.toggle}>{extend ? '收起' : '展开'}</Text>
+          ) : null
         }
       </View>
     )

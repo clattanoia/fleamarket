@@ -6,6 +6,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
+    word-break: break-all;
   }
 
   .switch {

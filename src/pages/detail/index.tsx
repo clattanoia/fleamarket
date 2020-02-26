@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { AtButton, AtFloatLayout } from 'taro-ui'
 
 import Avatar from '../../components/avatar'
 import Tag from '../../components/tag'
@@ -111,7 +111,9 @@ class GoodsDetail extends Component<{}, PageState> {
         <View className="footer">
           <AtButton type='primary' className="contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
         </View>
-        <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
+        <AtFloatLayout isOpened={this.state.isOpen} onClose={this.closeContact}>
+          <Contact contacts={this.state.contacts} />
+        </AtFloatLayout>
       </View>
     ) : <DetailPreload />
   }

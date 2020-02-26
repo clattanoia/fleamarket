@@ -1,8 +1,14 @@
 @import "../../../styles/theme.scss";
 
 .contact {
+  display: block;
   .contact-title {
+    margin: 20px auto 50px;
     text-align: center;
     font-size: 32px;
+  }
+  .contact-item {
+    font-size: 36px;
+    margin: 10px 50px;
   }
 }

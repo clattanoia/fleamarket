@@ -1,6 +1,7 @@
 @import "./theme.scss";
+$color-brand: $baseColor;
+@import "~taro-ui/dist/style/index.scss";
 
-//发布信息
 .at-input {
   margin: 0;
 }
@@ -9,23 +10,5 @@
   border-bottom-width: 1PX;
   padding-left: 0;
 }
-.at-input__children text{
-  color: $baseColor;
-}
-.at-button--normal {
-  background-color: $baseColor;
-  border-color: $baseColor;
-  color: white;
-}
 
-.at-checkbox__option--selected .at-checkbox__icon-cnt {
-  background-color: $baseColor;
-  color: #fff;
-}
-
-.at-button--secondary {
-  border-color: $baseColor;
-  color: $baseColor;
-}
-//发布信息 end
 

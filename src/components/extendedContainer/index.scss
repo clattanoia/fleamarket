@@ -1,0 +1,16 @@
+@import "../../styles/theme.scss";
+.extend-container {
+ 
+  .content {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+  }
+
+  .switch {
+    color: $baseColor;
+    margin-top: 10px;
+    display: inline-block;
+  }
+}

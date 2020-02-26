@@ -4,6 +4,7 @@ import { View, Text, Image, Button } from '@tarojs/components'
 import avatarUrl from '../../assets/avatar.png'
 import Avatar from '../../components/avatar'
 import Tag from '../../components/tag'
+import ExtendedContainer from '../../components/extendedContainer'
 import './index.scss'
 
 export default class GoodsDetail extends Component {
@@ -61,7 +62,7 @@ export default class GoodsDetail extends Component {
             <Tag tagName="已下架" style={{ marginRight: '10rpx' }} />
           </View>
           <View className="description">
-            {this.state.description}
+            <ExtendedContainer maxLine={2} content={this.state.description} />
           </View>
           <View className="pictures">
             <Image className="picture" src={this.state.userInfo.avatarUrl} />

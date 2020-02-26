@@ -9,6 +9,9 @@ interface InProps {
   nickname: string;
   avatarSize?: number;
   nameSize?: number;
+  style?: {
+    [key: string]: string
+  };
   onClick?: (event: ITouchEvent) => any;
 }
 

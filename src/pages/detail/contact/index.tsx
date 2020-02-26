@@ -1,7 +1,9 @@
 import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
 import { ReactNodeLike } from 'prop-types'
+import { BaseEventOrigFunction } from '@tarojs/components/types/common'
 
 import { CONTACT_MAPPING } from '../../../constants/contact'
 
@@ -13,6 +15,7 @@ type PageDispatchProps = {}
 
 type PageOwnProps = {
   contacts: Contact.InContact[]
+  onClose: BaseEventOrigFunction<void>
 }
 
 type PageState = {}
@@ -46,6 +49,9 @@ class Contact extends Component {
             :
             <View className='contact-default'>这个人很懒，什么都没留下</View>
         }
+        <View className="contact-btn">
+          <AtButton type='primary' size='small' onClick={this.props.onClose}>取消</AtButton>
+        </View>
       </View>
     )
   }

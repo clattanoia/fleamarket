@@ -1,14 +1,25 @@
 @import "../../../styles/theme.scss";
 
 .contact {
+  height: 100%;
   display: block;
+  position: relative;
   .contact-title {
     margin: 20px auto 50px;
     text-align: center;
     font-size: 32px;
   }
+  .contact-default {
+    text-align: center;
+    font-size: 36px;
+  }
   .contact-item {
     font-size: 36px;
     margin: 10px 50px;
+  }
+  .contact-btn {
+    bottom: 0;
+    width: 200px;
+    padding-top: 200px auto 0px;
   }
 }

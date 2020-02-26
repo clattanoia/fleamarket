@@ -112,7 +112,7 @@ class GoodsDetail extends Component<{}, PageState> {
           <AtButton type='primary' className="contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
         </View>
         <AtFloatLayout isOpened={this.state.isOpen} onClose={this.closeContact}>
-          <Contact contacts={this.state.contacts} />
+          <Contact contacts={this.state.contacts} onClose={this.closeContact} />
         </AtFloatLayout>
       </View>
     ) : <DetailPreload />

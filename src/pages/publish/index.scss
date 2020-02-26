@@ -1,7 +1,12 @@
 @import "../../styles/theme.scss";
+page {
+  height: 100%;
+}
 
 .publish {
   width: 100%;
+  height: calc(100% - 100px);
+  overflow: scroll;
   background-color: $greyBg;
   .form_btn{
     width: calc(100% - 20px);

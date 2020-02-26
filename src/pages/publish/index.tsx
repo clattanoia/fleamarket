@@ -64,7 +64,8 @@ class Publish extends Component {
     selectedCategory: '',
     selectedContacts: [],
     qiniuToken:'',
-    imgUrls: []
+    imgUrls: [],
+    isPublishing: false,
   }
 
   componentDidMount(){
@@ -159,6 +160,9 @@ class Publish extends Component {
   }
 
   handleSubmit = async () => {
+    this.setState({
+      isPublishing: true
+    })
     this.uploadPic()
     if (!this.vaildInput(true)) return
     // transform contact type to id
@@ -180,6 +184,9 @@ class Publish extends Component {
 
     try {
       const { data } = await client.mutate({mutation:publishMutation, variables: { publishInput }})
+      this.setState({
+        isPublishing: false
+      })
       Taro.removeStorage({
         key: 'qiniuToken'
       })
@@ -226,9 +233,21 @@ class Publish extends Component {
           selectedContacts={this.state.selectedContacts}
         />
         <View className="form_btn">
-          <AtButton type="primary" onClick={this.handleSubmit} disabled={!this.vaildInput()}>发布</AtButton>
+          <AtButton
+            type="primary"
+            onClick={this.handleSubmit}
+            disabled={!this.vaildInput()}
+            loading={this.state.isPublishing}
+          >发布</AtButton>
         </View>
-        <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleClose} hasMask status="error"></AtToast>
+        <AtToast
+          isOpened={this.state.showToast}
+          text={this.state.toastText}
+          onClose={this.handleClose}
+          hasMask
+          status="error"
+        >
+        </AtToast>
         <TabBar  current={1} />
       </View>
     )

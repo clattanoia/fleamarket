@@ -134,7 +134,7 @@ function doUpload({
         const fileUrl = config.qiniuImageURLPrefix + '/' + dataObject.key
         dataObject.fileUrl = fileUrl
         dataObject.imageURL = fileUrl
-        console.log(dataObject)
+        // console.log(dataObject)
         success && success(dataObject)
       } catch (e) {
         console.log('parse JSON failed, origin String is: ' + dataString)

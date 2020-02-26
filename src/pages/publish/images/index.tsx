@@ -41,7 +41,7 @@ function PublishImages(props: InProps) {
       currentFiles = files.slice(0,10)
     }
     setFiles(currentFiles)
-    props.onSetVal('imgUrls',currentFiles)
+    props.onSetVal('imagesUrls',currentFiles)
   }
   const onFail = (mes) => {
     throw(mes)

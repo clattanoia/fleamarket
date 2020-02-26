@@ -20,12 +20,14 @@ const errorMessage = {
   title: '标题不能为空',
   price:'价格不能为空',
   detail:'详情不能为空',
+  imagesUrls: '图片不能为空',
   selectedCategory: '分类不能为空',
   selectedContacts: '联系方式不能为空',
   invalidParameters: '参数错误',
   systemError: '服务异常',
   invalidUser: '用户已被禁用',
-  images: '最多上传10张图片（JPG/PNG）,图片不能大于10M'
+  images: '最多上传10张图片（JPG/PNG）,图片不能大于10M',
+  uploadError: '图片上传失败'
 }
 
 
@@ -66,7 +68,7 @@ class Publish extends Component {
     selectedCategory: '',
     selectedContacts: [],
     qiniuToken:'',
-    imgUrls: [],
+    imagesUrls: [],
     isPublishing: false,
   }
 
@@ -75,50 +77,61 @@ class Publish extends Component {
   }
 
   getToken = async () => {
-    const qiniuToken = Taro.getStorageSync('qiniuToken')
-    if(qiniuToken){
-      this.setState({qiniuToken})
-      return
-    }
     const { data } = await client.query({query:getQiniuTokenQuery, variables: {}})
     const qiniuTokenNew = data.qiniuToken.token
     Taro.setStorageSync('qiniuToken',qiniuTokenNew)
     this.setState({qiniuToken:qiniuTokenNew})
   }
 
-  uploadPic = () => {
-    const {imgUrls,qiniuToken} = this.state
-    const filePath = imgUrls[0] && imgUrls[0].url
-    upload({
-      filePath: filePath,
-      options: {
-        region: 'ECN',       // 可选(默认为'ECN')
-        domain: 'q67pnvkzx.bkt.clouddn.com',
-        uptoken: qiniuToken,
-        shouldUseQiniuFileName: true // 默认false
-      },
-      before: () => {
-        // console.log('before upload');
-      },
-      success: () => {
-        // console.log(res)
-        // console.log(res.imageURL)
-        // console.log('file url is: ' + res.fileUrl);
-      },
-      fail: () => {
-        // console.log('error:' + err);
-      },
-      progress: () => {
-        // console.log('上传进度', res.progress)
-        // console.log('已经上传的数据长度', res.totalBytesSent)
-        // console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
-      },
-      complete: () => {
-        // 上传结束
-        // console.log('upload complete');
-        // console.log(res)
+  uploadPic = async() => {
+    const {imagesUrls,qiniuToken} = this.state
+    const urlCount = imagesUrls.length
+    this.setLoading(true)
+    const newImg = await new Promise((resolve,reject)=>{
+      try {
+        const newImageUrls: Publish.InPickerImageFiles[] = []
+        imagesUrls.forEach(async (imageUrl: Publish.InPickerImageFiles,index: number) => {
+          const filePath = imageUrl.url
+          const qiniuUrl = await this.uploadQiniu(filePath,qiniuToken,index)
+          imageUrl.qiniuUrl = qiniuUrl
+          newImageUrls.push(imageUrl)
+          if(index === (urlCount - 1)){
+            resolve(newImageUrls)
+          }
+        })
+      } catch(err) {
+        reject('error')
       }
     })
+    return newImg
+  }
+
+  uploadQiniu = async(filePath: string,qiniuToken: string) => {
+    const qiniuUrl = await new Promise((resolve,reject)=>{
+      upload({
+        filePath: filePath,
+        options: {
+          region: 'ECN',
+          domain: 'q67pnvkzx.bkt.clouddn.com',
+          uptoken: qiniuToken,
+          shouldUseQiniuFileName: true
+        },
+        before: () => {
+        },
+        success: (res) => {
+          const qiniuUrl = `http://${res.imageURL}`
+          return resolve(qiniuUrl)
+        },
+        fail: () => {
+          return reject('')
+        },
+        progress: () => {
+        },
+        complete: () => {
+        }
+      })
+    })
+    return qiniuUrl
   }
 
   validRequired = (val) => {
@@ -138,7 +151,7 @@ class Publish extends Component {
   }
 
   vaildInput = (isShowErrorMessage = false) => {
-    const {title, price, detail, selectedCategory, selectedContacts} = this.state
+    const {title, price, detail, selectedCategory, selectedContacts,imagesUrls} = this.state
     if(!this.validRequired(title)){
       isShowErrorMessage && this.showErrorMessage('title')
       return false
@@ -149,6 +162,10 @@ class Publish extends Component {
     }
     if(!this.validRequired(detail)){
       isShowErrorMessage && this.showErrorMessage('detail')
+      return false
+    }
+    if(!this.validRequired(imagesUrls)){
+      isShowErrorMessage && this.showErrorMessage('imagesUrls')
       return false
     }
     if(!this.validRequired(selectedCategory)){
@@ -162,12 +179,36 @@ class Publish extends Component {
     return true
   }
 
-  handleSubmit = async () => {
-    this.setState({
-      isPublishing: true
+  validImage = async() => {
+    const qiniuImages = await this.uploadPic()
+    if(typeof qiniuImages === 'string'){
+      this.showErrorMessage('uploadError')
+      this.setLoading(false)
+      return false
+    }
+    const qiniuUrls = []
+    qiniuImages.forEach(item=>{
+      qiniuUrls.push(item.qiniuUrl)
     })
-    this.uploadPic()
+    // if(qiniuImages.length > qiniuUrls.length){
+    //   this.showErrorMessage('uploadError')
+    // }
+    return qiniuUrls
+  }
+
+  setLoading = (val) => {
+    this.setState({
+      isPublishing: val
+    })
+  }
+
+  handleSubmit = async () => {
+    const toUploadUrls = await this.validImage()
+    if(!toUploadUrls){
+      return
+    }
     if (!this.vaildInput(true)) return
+    this.setLoading(true)
     // transform contact type to id
     const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
       const matchedContact: Contact.InContact | undefined = this.props.userInfo.contacts.find(contact => contact.type === item)
@@ -180,8 +221,8 @@ class Publish extends Component {
       price: Number(this.state.price),
       description: this.state.detail,
       category: this.state.selectedCategory,
-      coverUrl: 'https://img.alicdn.com/bao/uploaded/i4/2555955104/TB26NINyY9YBuNjy0FgXXcxcXXa_!!2555955104.png',
-      pictures: ['https://img.alicdn.com/bao/uploaded/i4/2555955104/TB26NINyY9YBuNjy0FgXXcxcXXa_!!2555955104.png'],
+      coverUrl: toUploadUrls[0],
+      pictures: toUploadUrls,
       contacts: contactIds,
     }
 
@@ -204,6 +245,8 @@ class Publish extends Component {
         error = 'invalidUser'
       }
       this.showErrorMessage(error)
+    } finally {
+      this.setLoading(false)
     }
   }
 
@@ -239,7 +282,7 @@ class Publish extends Component {
           <AtButton
             type="primary"
             onClick={this.handleSubmit}
-            disabled={!this.vaildInput()}
+            disabled={this.vaildInput()}
             loading={this.state.isPublishing}
           >发布</AtButton>
         </View>

@@ -16,12 +16,15 @@ import { upload } from '../../utils/qiniuUploader'
 
 import './index.scss'
 
-const requiredTips = {
+const errorMessage = {
   title: '标题不能为空',
   price:'价格不能为空',
   detail:'详情不能为空',
   selectedCategory: '分类不能为空',
   selectedContacts: '联系方式不能为空',
+  invalidParameters: '参数错误',
+  systemError: '服务异常',
+  invalidUser: '用户已被禁用'
 }
 
 
@@ -123,7 +126,7 @@ class Publish extends Component {
   }
 
   showErrorMessage = (name) => {
-    const text = requiredTips[name]
+    const text = errorMessage[name]
     this.setState({
       showToast: true,
       toastText: text
@@ -184,7 +187,13 @@ class Publish extends Component {
         url: '/pages/detail/index?id=' + data.publish
       })
     } catch (e) {
-      throw e
+      let error = 'systemError'
+      if (e.message.indexOf('400') > -1) {
+        error = 'invalidParameters'
+      } else if (e.message.indexOf('403') > -1) {
+        error = 'invalidUser'
+      }
+      this.showErrorMessage(error)
     }
   }
 

@@ -59,6 +59,7 @@ class Publish extends Component {
   state = {
     toastText: '',
     showToast: false,
+    toastStatus: 'error',
     title: '',
     price:'',
     detail:'',
@@ -131,7 +132,8 @@ class Publish extends Component {
     const text = errorMessage[name]
     this.setState({
       showToast: true,
-      toastText: text
+      toastText: text,
+      toastStatus: name === 'images' ? '' : 'error'
     })
   }
 
@@ -241,14 +243,7 @@ class Publish extends Component {
             loading={this.state.isPublishing}
           >发布</AtButton>
         </View>
-        <AtToast
-          isOpened={this.state.showToast}
-          text={this.state.toastText}
-          onClose={this.handleClose}
-          hasMask
-          status="error"
-        >
-        </AtToast>
+        <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleClose} hasMask status={this.state.toastStatus}></AtToast>
         <TabBar  current={1} />
       </View>
     )

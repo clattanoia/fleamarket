@@ -104,7 +104,7 @@ class GoodsDetail extends Component<{}, PageState> {
           <View className="pictures">
             {
               (detail as any).pictures.length > 0
-                ? (detail as any).pictures.map(pic => (<Image key={pic} className="picture" src={pic} />))
+                ? (detail as any).pictures.map(pic => (<Image key={pic} className="picture" mode="widthFix" src={pic} />))
                 : null
             }
           </View>

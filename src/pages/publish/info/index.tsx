@@ -2,7 +2,7 @@ import Taro, { memo, useState } from '@tarojs/taro'
 import { View ,Text} from '@tarojs/components'
 import { AtInput,AtTextarea }  from 'taro-ui'
 
-import {setLineCode} from '../../../utils/textareaValue'
+import {setLineCode,getLineText} from '../../../utils/textareaValue'
 
 import './index.scss'
 
@@ -16,6 +16,9 @@ function PublishInfo(props: InProps) {
   const [title,setTitle] = useState('')
   const [price,setPrice] = useState('')
   const [detail,setDetail] = useState('')
+  const [showTextarea,setShowTextarea] = useState(false)
+  const [textareaCode,setTextareaCode] = useState('')
+
 
   const handleChangeTitle = (value) => {
     setTitle(value)
@@ -53,7 +56,12 @@ function PublishInfo(props: InProps) {
     const value = event.target.value
     const publishValue = setLineCode(value)
     setDetail(value)
+    setTextareaCode(publishValue)
     props.onSetVal('detail',publishValue)
+  }
+
+  const showEdit = (val) => ()=> {
+    setShowTextarea(val)
   }
 
   return (
@@ -95,7 +103,7 @@ function PublishInfo(props: InProps) {
           }}
           >
             {detail.length > 0 ?
-              <View className="textarea--detail">{detail}</View> :
+              <View className="textarea--detail">{getLineText(textareaCode)}</View> :
               <View className="textarea--detail textarea--detail__placeholder">请输入详情</View>
             }
             <View className="textarea--text__counter">{detail.length}/500</View>
@@ -112,6 +120,32 @@ function PublishInfo(props: InProps) {
               height={260}
             />
           </View>
+          {/* {
+            showTextarea ? (
+              <AtTextarea
+                value={detail}
+                onChange={handleChangeDetail}
+                maxLength={500}
+                placeholder='请输入详情'
+                height={260}
+                onBlur={showEdit(false)}
+              />
+            ) : (
+              <View onClick={showEdit(true)} className="form_textarea">
+                {
+                  textareaCode ? (
+                    <Text className="form_textarea_conteng">
+                      {getLineText(textareaCode)}
+                    </Text>
+                  ) : (
+                    <Text className="form_textarea_placeholder">
+                      请输入详情
+                    </Text>
+                  )
+                }
+              </View>
+            )
+          } */}
         </View>
       </View>
     </View>

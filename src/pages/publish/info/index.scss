@@ -55,5 +55,25 @@
     //   color: $baseColor;
     // }
   }
+  .form_textarea {
+    height: 336px;
+    border-bottom: 1PX solid $borderColor;
+    overflow: auto;
+    text {
+      display: block;
+    }
+    .form_textarea_conteng{
+      color:$inputColor;
+      padding:18px;
+      padding-left:0;
+      line-height: 1.2;
+      font-size: 32px;
+    }
+    .form_textarea_placeholder{
+      line-height: 72.8px;
+      color:$inputPlaceholderColor;
+      opacity: .5;
+    }
+  }
 }
 

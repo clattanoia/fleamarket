@@ -3,7 +3,10 @@
 .contact {
   height: 100%;
   display: block;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   .contact-title {
     margin: 20px auto 50px;
     text-align: center;
@@ -15,11 +18,10 @@
   }
   .contact-item {
     font-size: 36px;
-    margin: 10px 50px;
+    margin: 10px 0;
   }
   .contact-btn {
-    bottom: 0;
     width: 200px;
-    padding-top: 200px auto 0px;
+    margin: 50px 0;
   }
 }

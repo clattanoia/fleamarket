@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtButton, AtFloatLayout } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 
 import Avatar from '../../components/avatar'
 import Tag from '../../components/tag'
@@ -12,6 +12,7 @@ import { GoodDetail } from '../../constants/types'
 import { detailQuery, contactsQuery } from '../../query/detail'
 import client from '../../graphql-client'
 import { Status } from '../../constants/enums'
+import {authLogin} from '../../utils/auth'
 
 import './index.scss'
 
@@ -32,9 +33,9 @@ class GoodsDetail extends Component<{}, PageState> {
     contacts: [],
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const { id } = this.$router.params
-    const { data: { goods } } = await client.query({query: detailQuery, variables: { id }})
+    const { data: { goods } } = await client.query({ query: detailQuery, variables: { id } })
     this.setState({
       detail: goods
     })
@@ -42,7 +43,7 @@ class GoodsDetail extends Component<{}, PageState> {
   }
 
   genSaleStatus = (status: Status) => {
-    switch(status) {
+    switch (status) {
       case Status.FOR_SALE:
         return '出售'
       case Status.SALE_OUT:
@@ -53,9 +54,14 @@ class GoodsDetail extends Component<{}, PageState> {
   }
 
   showContact = (): void => {
-    this.setState({
-      isOpen: true
-    })
+    if (Taro.getStorageSync('token')) {
+      this.setState({
+        isOpen: true
+      })
+    } else {
+      authLogin({})
+      console.log('session过期啦')
+    }
   }
 
   closeContact = (): void => {
@@ -64,16 +70,16 @@ class GoodsDetail extends Component<{}, PageState> {
     })
   }
 
-  getContacts = async(userId, ids): Promise<void>  => {
+  getContacts = async (userId, ids): Promise<void> => {
     try {
-      const { data: { contacts } } = await client.query({query: contactsQuery, variables: { userId, ids }})
+      const { data: { contacts } } = await client.query({ query: contactsQuery, variables: { userId, ids } })
       this.setState({ contacts })
     } catch (error) {
       throw error
     }
   }
 
-  render () {
+  render() {
     const { detail } = this.state
     return detail !== null ? (
       <View className="detail">
@@ -112,9 +118,7 @@ class GoodsDetail extends Component<{}, PageState> {
         <View className="footer">
           <AtButton type='primary' className="contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
         </View>
-        <AtFloatLayout isOpened={this.state.isOpen} onClose={this.closeContact}>
-          <Contact contacts={this.state.contacts} onClose={this.closeContact} />
-        </AtFloatLayout>
+        <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
       </View>
     ) : <DetailPreload />
   }

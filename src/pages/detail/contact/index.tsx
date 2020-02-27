@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { AtButton, AtFloatLayout } from 'taro-ui'
 import { ReactNodeLike } from 'prop-types'
 import { BaseEventOrigFunction } from '@tarojs/components/types/common'
 
@@ -14,6 +14,7 @@ type PageStateProps = {}
 type PageDispatchProps = {}
 
 type PageOwnProps = {
+  isOpen: boolean
   contacts: Contact.InContact[]
   onClose: BaseEventOrigFunction<void>
 }
@@ -38,21 +39,24 @@ class Contact extends Component {
   }
 
   render() {
+    const { isOpen, contacts, onClose } = this.props
     return (
-      <View className='contact'>
-        <View className='contact-title'>
-          <Text className='contact-title'>这是发帖者提供的联系方式，赶快联系他吧～</Text>
+      <AtFloatLayout isOpened={isOpen} onClose={onClose}>
+        <View className='contact'>
+          <View className='contact-title'>
+            <Text className='contact-title'>这是发帖者提供的联系方式，赶快联系他吧～</Text>
+          </View>
+          {
+            contacts && contacts.length > 0 ?
+              this.renderContactItem(contacts)
+              :
+              <View className='contact-default'>这个人很懒，什么都没留下</View>
+          }
+          <View className="contact-btn">
+            <AtButton type='primary' size='small' onClick={onClose}>取消</AtButton>
+          </View>
         </View>
-        {
-          this.props.contacts.length > 0 ?
-            this.renderContactItem(this.props.contacts)
-            :
-            <View className='contact-default'>这个人很懒，什么都没留下</View>
-        }
-        <View className="contact-btn">
-          <AtButton type='primary' size='small' onClick={this.props.onClose}>取消</AtButton>
-        </View>
-      </View>
+      </AtFloatLayout>
     )
   }
 }

@@ -98,7 +98,7 @@ function PublishInfo(props: InProps) {
       <View className='form_line'>
         <Text className='form_line_label'>*</Text>
         <View className='form_line_content'>
-          <View className="at-textarea textarea--text" style={{
+          {/* <View className="at-textarea textarea--text" style={{
             display: this.props.maskShow ? 'block' : 'none',
           }}
           >
@@ -119,8 +119,8 @@ function PublishInfo(props: InProps) {
               placeholder='请输入详情'
               height={260}
             />
-          </View>
-          {/* {
+          </View> */}
+          {
             showTextarea ? (
               <AtTextarea
                 value={detail}
@@ -131,21 +131,22 @@ function PublishInfo(props: InProps) {
                 onBlur={showEdit(false)}
               />
             ) : (
-              <View onClick={showEdit(true)} className="form_textarea">
+              <View onClick={showEdit(true)} className="at-textarea textarea--text form_textarea">
                 {
                   textareaCode ? (
-                    <Text className="form_textarea_conteng">
+                    <Text className="textarea--detail">
                       {getLineText(textareaCode)}
                     </Text>
                   ) : (
-                    <Text className="form_textarea_placeholder">
+                    <Text className="textarea--detail textarea--detail__placeholder">
                       请输入详情
                     </Text>
                   )
                 }
+                <View className="textarea--text__counter">{detail.length}/500</View>
               </View>
             )
-          } */}
+          }
         </View>
       </View>
     </View>

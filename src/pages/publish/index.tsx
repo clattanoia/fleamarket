@@ -69,6 +69,7 @@ class Publish extends Component {
     selectedContacts: [],
     qiniuToken:'',
     imagesUrls: [],
+    // qiniuUrls: [],
     isPublishing: false,
   }
 
@@ -91,7 +92,7 @@ class Publish extends Component {
         const newImageUrls: Publish.InPickerImageFiles[] = []
         imagesUrls.forEach(async (imageUrl: Publish.InPickerImageFiles,index: number) => {
           const filePath = imageUrl.url
-          const qiniuUrl = await this.uploadQiniu(filePath,qiniuToken,index)
+          const qiniuUrl = await this.uploadQiniu(filePath,qiniuToken)
           imageUrl.qiniuUrl = qiniuUrl
           newImageUrls.push(imageUrl)
           if(index === (urlCount - 1)){
@@ -184,14 +185,18 @@ class Publish extends Component {
       this.showErrorMessage('uploadError')
       return false
     }
-    const qiniuUrls = []
-    qiniuImages.forEach(item=>{
-      qiniuUrls.push(item.qiniuUrl)
+    const urls = new Promise((resolve)=>{
+      const qiniuUrls = []
+      this.setState({
+        imagesUrls:qiniuImages
+      },()=>{
+        qiniuImages.map(item=>{
+          qiniuUrls.push(item.qiniuUrl)
+        })
+        resolve(qiniuUrls)
+      })
     })
-    // if(qiniuImages.length > qiniuUrls.length){
-    //   this.showErrorMessage('uploadError')
-    // }
-    return qiniuUrls
+    return urls
   }
 
   setLoading = (val) => {

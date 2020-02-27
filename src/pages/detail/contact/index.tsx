@@ -32,7 +32,7 @@ class Contact extends Component {
     return <View>
       {contacts.map(contact => (<View key={contact} className='contact-item'>
         <Text>{CONTACT_MAPPING[contact.type]}：</Text>
-        <Text>{contact.content}</Text>
+        <Text selectable>{contact.content}</Text>
       </View>))}
     </View>
 

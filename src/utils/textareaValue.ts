@@ -1,4 +1,7 @@
 export function getLineText(publishValue){
+  if(typeof publishValue !== 'string'){
+    return ''
+  }
   const valueText = publishValue.replace(/<br\/>/g, '\n').replace(/&nbsp;/g, ' ')
   return valueText
 }

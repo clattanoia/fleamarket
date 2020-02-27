@@ -18,6 +18,7 @@ function PublishInfo(props: InProps) {
   const [detail,setDetail] = useState('')
   const [showTextarea,setShowTextarea] = useState(false)
   const [textareaCode,setTextareaCode] = useState('')
+  const [textareaFocus,setTextareaFocus] = useState(false)
 
 
   const handleChangeTitle = (value) => {
@@ -62,6 +63,7 @@ function PublishInfo(props: InProps) {
 
   const showEdit = (val) => ()=> {
     setShowTextarea(val)
+    setTextareaFocus(val)
   }
 
   return (
@@ -129,6 +131,7 @@ function PublishInfo(props: InProps) {
                 placeholder='请输入详情'
                 height={260}
                 onBlur={showEdit(false)}
+                focus={textareaFocus}
               />
             ) : (
               <View onClick={showEdit(true)} className="at-textarea textarea--text form_textarea">

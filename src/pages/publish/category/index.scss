@@ -4,22 +4,26 @@
   width:100%;
   background-color: white;
 
-  .picker {
-    color: #999898;
+  .right-container {
     display: flex;
-    justify-content: center;
+  }
+
+  .category {
+    margin-right: 10px;
+  }
+
+  .at-icon {
+    display: block;
+  }
+
+  .radio-layout-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 15px;
+  }
 
-    .right-container {
-      display: flex;
-    }
-
-    .category {
-       margin-right: 10px;
-    }
-
-    .at-icon {
-      display: block;
-    }
+  .category-radio-confirm {
+    width: 80px;
   }
 }

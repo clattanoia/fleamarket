@@ -19,7 +19,7 @@ function TabBar(props: InProps) {
   let currentUrl = ''
 
   const gotoPage = () => {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: currentUrl || toUrl
     })
   }

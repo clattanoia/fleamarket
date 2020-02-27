@@ -283,7 +283,7 @@ class Publish extends Component {
           <AtButton
             type="primary"
             onClick={this.handleSubmit}
-            disabled={!this.vaildInput()}
+            disabled={!this.vaildInput() || this.state.isPublishing}
             loading={this.state.isPublishing}
           >发布</AtButton>
         </View>

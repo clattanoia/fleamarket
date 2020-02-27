@@ -52,7 +52,7 @@ function PublishImages(props: InProps) {
       <AtImagePicker
         showAddBtn={files.length<10}
         length={4}
-        count={9}
+        count={MaxImageCount - files.length}
         files={files}
         onChange={onChange}
         onFail={onFail}

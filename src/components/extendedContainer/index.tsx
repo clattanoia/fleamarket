@@ -60,8 +60,8 @@ class ExtendedContainer extends Component<InProps, {
     const { extend, needSwitch } = this.state
     return (
       <View className="extend-container">
-        <View id="content" className="content" style={style as CSSProperties}>
-          <Text>{getLineText(content)}</Text>
+        <View className="content" style={style as CSSProperties}>
+          <Text id="content">{getLineText(content)}</Text>
         </View>
         {
           needSwitch ? (

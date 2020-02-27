@@ -7,6 +7,7 @@ import {setLineCode} from '../../../utils/textareaValue'
 import './index.scss'
 
 interface InProps {
+  maskShow: boolean,
   onSetVal: (key,value) => void
 }
 
@@ -89,13 +90,28 @@ function PublishInfo(props: InProps) {
       <View className='form_line'>
         <Text className='form_line_label'>*</Text>
         <View className='form_line_content'>
-          <AtTextarea
-            value={detail}
-            onChange={handleChangeDetail}
-            maxLength={500}
-            placeholder='请输入详情'
-            height={260}
-          />
+          <View className="at-textarea textarea--text" style={{
+            display: this.props.maskShow ? 'block' : 'none',
+          }}
+          >
+            {detail.length > 0 ?
+              <View className="textarea--detail">{detail}</View> :
+              <View className="textarea--detail textarea--detail__placeholder">请输入详情</View>
+            }
+            <View className="textarea--text__counter">{detail.length}/500</View>
+          </View>
+          <View style={{
+            display: this.props.maskShow ? 'none' : 'block',
+          }}
+          >
+            <AtTextarea
+              value={detail}
+              onChange={handleChangeDetail}
+              maxLength={500}
+              placeholder='请输入详情'
+              height={260}
+            />
+          </View>
         </View>
       </View>
     </View>

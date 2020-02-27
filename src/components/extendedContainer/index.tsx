@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { CSSProperties } from 'react'
+import {getLineText} from '../../utils/textareaValue'
 
 import './index.scss'
 
@@ -59,7 +60,9 @@ class ExtendedContainer extends Component<InProps, {
     const { extend, needSwitch } = this.state
     return (
       <View className="extend-container">
-        <View id="content" className="content" style={style as CSSProperties}>{content}</View>
+        <View id="content" className="content" style={style as CSSProperties}>
+          <Text>{getLineText(content)}</Text>
+        </View>
         {
           needSwitch ? (
             <Text id="switch" className="switch" onClick={this.toggle}>{extend ? '收起' : '展开'}</Text>

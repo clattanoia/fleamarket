@@ -2,6 +2,8 @@ import Taro, { memo, useState } from '@tarojs/taro'
 import { View ,Text} from '@tarojs/components'
 import { AtInput,AtTextarea }  from 'taro-ui'
 
+import {setLineCode} from '../../../utils/textareaValue'
+
 import './index.scss'
 
 interface InProps {
@@ -48,8 +50,9 @@ function PublishInfo(props: InProps) {
 
   const handleChangeDetail = (event) => {
     const value = event.target.value
+    const publishValue = setLineCode(value)
     setDetail(value)
-    props.onSetVal('detail',value)
+    props.onSetVal('detail',publishValue)
   }
 
   return (

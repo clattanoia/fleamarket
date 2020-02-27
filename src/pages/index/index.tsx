@@ -86,12 +86,8 @@ class Index extends Component {
 
   componentWillReceiveProps () {}
 
-  async componentDidMount() {
-    const query = recommendListQuery
-    const { data } = await client.query({query, variables: {}})
-    this.setState({
-      goods: data.goods
-    })
+  componentDidMount() {
+    this.fetchRecommendList()
     this.props.fetchCategories()
 
     if (Taro.getStorageSync('token')) {
@@ -101,9 +97,19 @@ class Index extends Component {
 
   componentWillUnmount () { }
 
-  componentDidShow () { }
+  componentDidShow () {
+    this.fetchRecommendList()
+  }
 
   componentDidHide () { }
+
+  async fetchRecommendList() {
+    const query = recommendListQuery
+    const { data } = await client.query({query, variables: {}, fetchPolicy: 'no-cache'})
+    this.setState({
+      goods: data.goods
+    })
+  }
 
   onClickEvent(id: string) {
     Taro.navigateTo({

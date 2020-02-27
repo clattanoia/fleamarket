@@ -23,6 +23,7 @@ type PageDispatchProps = {
 }
 
 type PageOwnProps = {
+  isFloatLayoutOpen: boolean,
   onSetVal: (key,value) => void,
   selectedCategory: string
 }
@@ -72,6 +73,7 @@ class Category extends Component {
 
   handleValueClick(): void {
     this.setState({ isOpen: true })
+    this.props.onSetVal('isFloatLayoutOpen', true)
   }
 
   onClose = (): void => {
@@ -79,6 +81,7 @@ class Category extends Component {
       isOpen: false,
       selected: this.props.selectedCategory
     })
+    this.props.onSetVal('isFloatLayoutOpen', false)
   }
 
   onConfirm = (): void => {
@@ -88,6 +91,7 @@ class Category extends Component {
       selectedCategoryName: item && item.name
     })
     this.props.onSetVal('selectedCategory', this.state.selected)
+    this.props.onSetVal('isFloatLayoutOpen', false)
   }
 
   render () {

@@ -274,7 +274,11 @@ class Publish extends Component {
       <View className="publish">
         <PublishInfo maskShow={this.state.isFloatLayoutOpen} onSetVal={this.setVal} />
         <PublishImages  onSetVal={this.setVal} showErrorMessage={this.showErrorMessage} />
-        <Category onSetVal={this.setVal} selectedCategory={this.state.selectedCategory} />
+        <Category
+          isFloatLayoutOpen={this.state.isFloatLayoutOpen}
+          onSetVal={this.setVal}
+          selectedCategory={this.state.selectedCategory}
+        />
         <Contact
           isFloatLayoutOpen={this.state.isFloatLayoutOpen}
           contacts={this.props.userInfo.contacts}

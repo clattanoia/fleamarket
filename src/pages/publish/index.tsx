@@ -227,9 +227,6 @@ class Publish extends Component {
 
     try {
       const { data } = await client.mutate({mutation:publishMutation, variables: { publishInput }})
-      this.setState({
-        isPublishing: false
-      })
       Taro.removeStorage({
         key: 'qiniuToken'
       })

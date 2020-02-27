@@ -6,6 +6,7 @@ import Avatar from '../../components/avatar'
 import Tag from '../../components/tag'
 import ExtendedContainer from '../../components/extendedContainer'
 import DetailPreload from './components/detailPreload'
+import AuthInfoLayout from '../../components/authInfo'
 import Contact from './contact'
 
 import { GoodDetail } from '../../constants/types'
@@ -39,7 +40,6 @@ class GoodsDetail extends Component<{}, PageState> {
     this.setState({
       detail: goods
     })
-    this.getContacts(goods.owner.id, goods.contacts)
   }
 
   genSaleStatus = (status: Status) => {
@@ -53,14 +53,16 @@ class GoodsDetail extends Component<{}, PageState> {
     }
   }
 
-  showContact = (): void => {
+  showContact = async(): Promise<void> => {
     if (Taro.getStorageSync('token')) {
+      const detail = this.state.detail
+      const contacts = await this.getContacts(detail.owner.id, detail.contacts)
       this.setState({
+        contacts,
         isOpen: true
       })
     } else {
-      authLogin({})
-      console.log('session过期啦')
+      authLogin({callback: this.showContact})
     }
   }
 
@@ -70,14 +72,16 @@ class GoodsDetail extends Component<{}, PageState> {
     })
   }
 
-  getContacts = async (userId, ids): Promise<void> => {
+  getContacts = async (userId, ids): Promise<Contact.InContact[]> => {
     try {
       const { data: { contacts } } = await client.query({ query: contactsQuery, variables: { userId, ids } })
-      this.setState({ contacts })
+      return contacts
     } catch (error) {
       throw error
     }
   }
+
+  gotoPage = () => {}
 
   render() {
     const { detail } = this.state
@@ -119,6 +123,7 @@ class GoodsDetail extends Component<{}, PageState> {
           <AtButton type='primary' className="contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
         </View>
         <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
+        <AuthInfoLayout authCallback={this.gotoPage} />
       </View>
     ) : <DetailPreload />
   }

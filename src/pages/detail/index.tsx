@@ -78,32 +78,33 @@ class GoodsDetail extends Component<{}, PageState> {
     return detail !== null ? (
       <View className="detail">
         <Avatar
-          userId={detail.owner.id}
-          avatarUrl={detail.owner.avatarUrl}
-          nickname={detail.owner.nickname}
+          userId={(detail as any).owner.id}
+          avatarUrl={(detail as any).owner.avatarUrl}
+          nickname={(detail as any).owner.nickname}
           avatarSize={80}
           nameSize={36}
         />
         <View className="price-container">
           <Text className="unit">￥</Text>
           <Text className="price">
-            {detail.price}
+            {(detail as any).price}
           </Text>
         </View>
         <View className="detial-container">
-          <View className="title">
+          <View className="label">
             <Text>商品详情</Text>
           </View>
           <View className="status-tags">
-            <Tag tagName={this.genSaleStatus(detail.status)} />
+            <Tag tagName={this.genSaleStatus((detail as any).status)} />
           </View>
+          <View className="title">{(detail as any).title}</View>
           <View className="description">
-            <ExtendedContainer maxLine={2} content={detail.description} />
+            <ExtendedContainer maxLine={5} content={(detail as any).description} />
           </View>
           <View className="pictures">
             {
-              detail.pictures.length > 0
-                ? detail.pictures.map(pic => (<Image key={pic} className="picture" src={pic} />))
+              (detail as any).pictures.length > 0
+                ? (detail as any).pictures.map(pic => (<Image key={pic} className="picture" src={pic} />))
                 : null
             }
           </View>

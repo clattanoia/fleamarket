@@ -23,7 +23,7 @@ type PageDispatchProps = {
 }
 
 type PageOwnProps = {
-  isFloatLayoutOpen: boolean,
+  isRadioLayoutOpen: boolean,
   onSetVal: (key,value) => void,
   selectedCategory: string
 }
@@ -45,7 +45,6 @@ class Category extends Component {
     selector: [],
     selected: '',
     selectedCategoryName: '',
-    isOpen: false,
   }
 
   componentWillMount () {}
@@ -72,26 +71,23 @@ class Category extends Component {
   }
 
   handleValueClick(): void {
-    this.setState({ isOpen: true })
-    this.props.onSetVal('isFloatLayoutOpen', true)
+    this.props.onSetVal('isRadioLayoutOpen', true)
   }
 
   onClose = (): void => {
     this.setState({
-      isOpen: false,
       selected: this.props.selectedCategory
     })
-    this.props.onSetVal('isFloatLayoutOpen', false)
+    this.props.onSetVal('isRadioLayoutOpen', false)
   }
 
   onConfirm = (): void => {
     const item = this.props.category.categories.find(item => item.id === this.state.selected)
     this.setState({
-      isOpen: false,
       selectedCategoryName: item && item.name
     })
     this.props.onSetVal('selectedCategory', this.state.selected)
-    this.props.onSetVal('isFloatLayoutOpen', false)
+    this.props.onSetVal('isRadioLayoutOpen', false)
   }
 
   render () {
@@ -103,7 +99,7 @@ class Category extends Component {
             <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
           </View>
         </FormLine>
-        <AtFloatLayout isOpened={this.state.isOpen} onClose={this.onClose}>
+        <AtFloatLayout isOpened={this.props.isRadioLayoutOpen} onClose={this.onClose}>
           <View className="radio-layout-header">
             <Text>请选择分类</Text>
             <AtButton

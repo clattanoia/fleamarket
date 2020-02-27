@@ -60,6 +60,7 @@ class Publish extends Component {
 
   state = {
     isFloatLayoutOpen: false,
+    isRadioLayoutOpen: false,
     toastText: '',
     showToast: false,
     toastStatus: 'error',
@@ -272,10 +273,10 @@ class Publish extends Component {
   render () {
     return (
       <View className="publish">
-        <PublishInfo maskShow={this.state.isFloatLayoutOpen} onSetVal={this.setVal} />
+        <PublishInfo maskShow={this.state.isFloatLayoutOpen || this.state.isRadioLayoutOpen} onSetVal={this.setVal} />
         <PublishImages  onSetVal={this.setVal} showErrorMessage={this.showErrorMessage} />
         <Category
-          isFloatLayoutOpen={this.state.isFloatLayoutOpen}
+          isRadioLayoutOpen={this.state.isRadioLayoutOpen}
           onSetVal={this.setVal}
           selectedCategory={this.state.selectedCategory}
         />

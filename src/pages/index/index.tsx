@@ -126,7 +126,9 @@ class Index extends Component {
           <View className='wrapper-list'>
             {this.state.goods.map(item =>
               <View className='list-item' key={item.id}>
-                <Image className='goods-image' src={item.coverUrl} onClick={() => {this.onClickEvent(item.id)}} />
+                <View className='goods-image'>
+                  <Image className='goods-img' mode="widthFix" src={item.coverUrl} onClick={() => {this.onClickEvent(item.id)}} />
+                </View>
                 <Text className='goods-name' onClick={() => {this.onClickEvent(item.id)}}>{item.title}</Text>
                 <View className='detail'>
                   <Text className='goods-price'><Text className='unit'>￥</Text>{item.price}</Text>

@@ -53,7 +53,7 @@ class Contact extends Component {
               <View className='contact-default'>暂无联系方式</View>
           }
           <View className="contact-btn">
-            <AtButton type='primary' size='small' onClick={onClose}>取消</AtButton>
+            <AtButton type='primary' size='small' onClick={onClose}>关闭</AtButton>
           </View>
         </View>
       </AtFloatLayout>

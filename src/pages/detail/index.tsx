@@ -25,7 +25,7 @@ type PageState = {
 
 class GoodsDetail extends Component<{}, PageState> {
   config: Config = {
-    navigationBarTitleText: '帖子详情',
+    navigationBarTitleText: '二货详情',
   }
 
   state = {

@@ -81,7 +81,9 @@ class GoodsDetail extends Component<{}, PageState> {
     }
   }
 
-  gotoPage = () => {}
+  gotoPage = () => {
+    this.showContact()
+  }
 
   render() {
     const { detail } = this.state

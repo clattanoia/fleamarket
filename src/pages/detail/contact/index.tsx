@@ -50,7 +50,7 @@ class Contact extends Component {
             contacts && contacts.length > 0 ?
               this.renderContactItem(contacts)
               :
-              <View className='contact-default'>这个人很懒，什么都没留下</View>
+              <View className='contact-default'>暂无联系方式</View>
           }
           <View className="contact-btn">
             <AtButton type='primary' size='small' onClick={onClose}>取消</AtButton>

@@ -4,12 +4,14 @@ import { AtInput,AtTextarea }  from 'taro-ui'
 
 import './index.scss'
 
+const phoneInfo = Taro.getSystemInfoSync()
+
 interface InProps {
   onSetVal: (key,value) => void
 }
 
 function PublishInfo(props: InProps) {
-
+  const [iosTextarea] = useState(phoneInfo.platform === 'ios')
   const [title,setTitle] = useState('')
   const [price,setPrice] = useState('')
   const [detail,setDetail] = useState('')
@@ -91,7 +93,7 @@ function PublishInfo(props: InProps) {
       </View>
       <View className='form_line'>
         <Text className='form_line_label'>*</Text>
-        <View className='form_line_content'>
+        <View className={`form_line_content ${iosTextarea ? 'ios-textarea' : ''}`}>
           {
             showTextarea ? (
               <AtTextarea

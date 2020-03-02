@@ -16,6 +16,12 @@
       line-height: 72.8px;
     }
     .form_line_content {
+      &.ios-textarea {
+        textarea {
+          margin-top: -15px;
+          margin-left: -5px;
+        }
+      }
       flex: 1;
       .at-input {
         margin: 0;

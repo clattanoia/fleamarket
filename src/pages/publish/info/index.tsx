@@ -15,7 +15,6 @@ function PublishInfo(props: InProps) {
   const [price,setPrice] = useState('')
   const [detail,setDetail] = useState('')
   const [showTextarea,setShowTextarea] = useState(false)
-  const [textareaFocus,setTextareaFocus] = useState(false)
 
 
   const handleChangeTitle = (value) => {
@@ -58,7 +57,6 @@ function PublishInfo(props: InProps) {
 
   const showEdit = (val) => ()=> {
     setShowTextarea(val)
-    setTextareaFocus(val)
   }
 
   return (
@@ -83,7 +81,7 @@ function PublishInfo(props: InProps) {
           <AtInput
             name='price'
             title=''
-            type='text'
+            type='digit'
             placeholder='请输入期望价格'
             value={price}
             onChange={handleChangePrice}
@@ -104,7 +102,7 @@ function PublishInfo(props: InProps) {
                 placeholder='请输入详情'
                 height={260}
                 onBlur={showEdit(false)}
-                focus={textareaFocus}
+                focus={showTextarea}
               />
             ) : (
               <View onClick={showEdit(true)} className="at-textarea textarea--text form_textarea">
@@ -114,7 +112,7 @@ function PublishInfo(props: InProps) {
                       {detail}
                     </Text>
                   ) : (
-                    <Text className="textarea--detail textarea--detail__placeholder form_textarea_placeholder">
+                    <Text className="textarea--detail textarea--detail__placeholder">
                       请输入详情
                     </Text>
                   )

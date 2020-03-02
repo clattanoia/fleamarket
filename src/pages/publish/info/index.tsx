@@ -88,7 +88,7 @@ function PublishInfo(props: InProps) {
             value={price}
             onChange={handleChangePrice}
           >
-            <Text>￥</Text>
+            <Text className="price_symbol">￥</Text>
           </AtInput>
         </View>
       </View>
@@ -114,7 +114,7 @@ function PublishInfo(props: InProps) {
                       {detail}
                     </Text>
                   ) : (
-                    <Text className="textarea--detail textarea--detail__placeholder">
+                    <Text className="textarea--detail textarea--detail__placeholder form_textarea_placeholder">
                       请输入详情
                     </Text>
                   )

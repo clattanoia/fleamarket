@@ -38,9 +38,9 @@
           overflow: auto;
           word-break: break-all;
         }
-        .textarea--detail__placeholder {
-          color: #808080;
-        }
+        // .textarea--detail__placeholder {
+        //   color: #808080;
+        // }
         .textarea--text__counter {
           padding-top: 12px;
           width: 100%;
@@ -51,12 +51,12 @@
         }
       }
     }
-    // .price_symbol {
-    //   color: $baseColor;
-    // }
+    .price_symbol {
+      color: $baseColor;
+    }
   }
   .form_textarea {
-    height: 336px;
+    // height: 336px;
     border-bottom: 1PX solid $borderColor;
     overflow: auto;
     text {
@@ -70,8 +70,8 @@
       font-size: 32px;
     }
     .form_textarea_placeholder{
-      line-height: 72.8px;
-      color:$inputPlaceholderColor;
+      // line-height: 72.8px;
+      color:#808080;
       opacity: .5;
     }
   }

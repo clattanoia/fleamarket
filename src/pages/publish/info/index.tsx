@@ -5,7 +5,6 @@ import { AtInput,AtTextarea }  from 'taro-ui'
 import './index.scss'
 
 interface InProps {
-  maskShow: boolean,
   onSetVal: (key,value) => void
 }
 

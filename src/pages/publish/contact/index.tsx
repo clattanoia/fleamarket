@@ -15,13 +15,13 @@ type PageStateProps = {}
 type PageDispatchProps = {}
 
 type PageOwnProps = {
-  isFloatLayoutOpen: boolean,
   selectedContacts: string[],
   contacts: Array<Contact.InContact>,
   onSetVal: (key,value) => void,
 }
 
 type PageState = {
+  isOpen: boolean,
   contactOptions: [],
 }
 
@@ -34,6 +34,7 @@ interface Contact {
 class Contact extends Component {
 
   state = {
+    isOpen: false,
     contactOptions: [],
     checkedOptions: [],
   }
@@ -54,18 +55,18 @@ class Contact extends Component {
 
   onClose = (): void => {
     this.setState({
+      isOpen: false,
       checkedOptions: this.props.selectedContacts,
     })
-    this.props.onSetVal('isFloatLayoutOpen', false)
   }
 
   onConfirm = (): void => {
+    this.setState({ isOpen: false })
     this.props.onSetVal('selectedContacts', this.state.checkedOptions)
-    this.props.onSetVal('isFloatLayoutOpen', false)
   }
 
   handleValueClick(): void {
-    this.props.onSetVal('isFloatLayoutOpen', true)
+    this.setState({ isOpen: true })
   }
 
   handleChange = (val): void => {
@@ -90,7 +91,7 @@ class Contact extends Component {
             <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
           </View>
         </FormLine>
-        <AtFloatLayout isOpened={this.props.isFloatLayoutOpen} onClose={this.onClose}>
+        <AtFloatLayout isOpened={this.state.isOpen} onClose={this.onClose}>
           <View className="checkbox-layout-header">
             <Text>请选择联系方式</Text>
             <AtButton

@@ -73,6 +73,7 @@ class GoodsDetail extends Component<{}, PageState> {
   }
 
   getContacts = async (userId, ids): Promise<Contact.InContact[]> => {
+    if (!ids || !ids.length) return []
     try {
       const { data: { contacts } } = await client.query({ query: contactsQuery, variables: { userId, ids } })
       return contacts

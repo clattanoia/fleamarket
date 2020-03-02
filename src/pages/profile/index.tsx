@@ -26,6 +26,7 @@ export default class Profile extends Component {
   }
 
   render () {
+    console.log(Taro.getCurrentPages())
     return (
       <View>
         <Text>Hello profile!</Text>

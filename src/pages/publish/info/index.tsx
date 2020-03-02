@@ -2,8 +2,6 @@ import Taro, { memo, useState } from '@tarojs/taro'
 import { View ,Text} from '@tarojs/components'
 import { AtInput,AtTextarea }  from 'taro-ui'
 
-import {setLineCode,getLineText} from '../../../utils/textareaValue'
-
 import './index.scss'
 
 interface InProps {
@@ -17,7 +15,6 @@ function PublishInfo(props: InProps) {
   const [price,setPrice] = useState('')
   const [detail,setDetail] = useState('')
   const [showTextarea,setShowTextarea] = useState(false)
-  const [textareaCode,setTextareaCode] = useState('')
   const [textareaFocus,setTextareaFocus] = useState(false)
 
 
@@ -55,10 +52,8 @@ function PublishInfo(props: InProps) {
 
   const handleChangeDetail = (event) => {
     const value = event.target.value
-    const publishValue = setLineCode(value)
     setDetail(value)
-    setTextareaCode(publishValue)
-    props.onSetVal('detail',publishValue)
+    props.onSetVal('detail',value)
   }
 
   const showEdit = (val) => ()=> {
@@ -100,28 +95,6 @@ function PublishInfo(props: InProps) {
       <View className='form_line'>
         <Text className='form_line_label'>*</Text>
         <View className='form_line_content'>
-          {/* <View className="at-textarea textarea--text" style={{
-            display: this.props.maskShow ? 'block' : 'none',
-          }}
-          >
-            {detail.length > 0 ?
-              <View className="textarea--detail">{getLineText(textareaCode)}</View> :
-              <View className="textarea--detail textarea--detail__placeholder">请输入详情</View>
-            }
-            <View className="textarea--text__counter">{detail.length}/500</View>
-          </View>
-          <View style={{
-            display: this.props.maskShow ? 'none' : 'block',
-          }}
-          >
-            <AtTextarea
-              value={detail}
-              onChange={handleChangeDetail}
-              maxLength={500}
-              placeholder='请输入详情'
-              height={260}
-            />
-          </View> */}
           {
             showTextarea ? (
               <AtTextarea
@@ -136,9 +109,9 @@ function PublishInfo(props: InProps) {
             ) : (
               <View onClick={showEdit(true)} className="at-textarea textarea--text form_textarea">
                 {
-                  textareaCode ? (
+                  detail ? (
                     <Text className="textarea--detail">
-                      {getLineText(textareaCode)}
+                      {detail}
                     </Text>
                   ) : (
                     <Text className="textarea--detail textarea--detail__placeholder">

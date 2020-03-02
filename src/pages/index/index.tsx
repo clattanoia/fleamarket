@@ -88,7 +88,6 @@ class Index extends Component {
   componentWillReceiveProps () {}
 
   componentDidMount() {
-    this.fetchRecommendList()
     this.props.fetchCategories()
 
     if (Taro.getStorageSync('token')) {

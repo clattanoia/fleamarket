@@ -6,6 +6,8 @@ import { connect } from '@tarojs/redux'
 import TabBar from '../../components/tabBar'
 import OperationItem from '../../components/operationItem'
 import './index.scss'
+// import client from '../../graphql-client'
+// import { profileInfoQuery } from '../../query/profile'
 
 type UserInfo = {
   avatarUrl: string,
@@ -47,6 +49,19 @@ class Profile extends Component {
     navigationBarTitleText: '个人中心',
   }
 
+  state = {
+    salesCount: 0,
+    purchaseCount: 0,
+  }
+
+  async componentDidMount() {
+    // const { data } = await client.query({ query:profileInfoQuery, variables: { userId: this.props.userInfo.id }})
+    // this.setState({
+    //   salesCount: data.salesCount,
+    //   purchaseCount: data.purchaseCount,
+    // })
+  }
+
   render() {
     return (
       <View className='profile'>
@@ -58,8 +73,8 @@ class Profile extends Component {
           </View>
         </View>
         <View className='operation-list'>
-          <OperationItem title='我的出售' count={5} icon='iconmaichu' hasDivision iconColor='#10ca2e'></OperationItem>
-          <OperationItem title='我的求购' count={5} icon='iconmairu' iconColor='#646de9'></OperationItem>
+          <OperationItem title='我的出售' count={this.state.salesCount} icon='iconmaichu' hasDivision iconColor='#10ca2e'></OperationItem>
+          <OperationItem title='我的求购' count={this.state.purchaseCount} icon='iconmairu' iconColor='#646de9'></OperationItem>
         </View>
         <View className='contract'>
           <OperationItem title='联系方式' icon='icondianhua' iconColor='#fb5d5e'></OperationItem>

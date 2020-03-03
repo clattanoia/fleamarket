@@ -23,7 +23,7 @@ function OperationItem(props: InProps) {
         <Text className='title'>{props.title}</Text>
       </View>
       <View className='right-container'>
-        {props.count && <Text className='count'>{props.count}</Text>}
+        {props.count !== null && <Text className='count'>{props.count}</Text>}
         <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
       </View>
     </View>

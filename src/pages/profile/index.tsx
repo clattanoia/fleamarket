@@ -1,8 +1,39 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import TabBar from '../../components/tabBar'
+import { View, Text, Image } from '@tarojs/components'
+import { ComponentClass } from 'react'
+import { connect } from '@tarojs/redux'
 
-export default class Profile extends Component {
+import TabBar from '../../components/tabBar'
+import './index.scss'
+
+type UserInfo = {
+  avatarUrl: string,
+  id: string,
+  nickname: string,
+  brief: string,
+}
+
+type PageStateProps = {
+  userInfo: UserInfo
+}
+
+type PageDispatchProps = {}
+
+type PageOwnProps = {}
+
+type PageState = {}
+
+type IProps = PageStateProps & PageDispatchProps & PageOwnProps
+
+interface Profile {
+  props: IProps;
+}
+
+@connect(({ userInfo }) => ({
+  userInfo: userInfo,
+}))
+
+class Profile extends Component {
 
   componentWillMount () {}
 
@@ -22,15 +53,23 @@ export default class Profile extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: 'profile',
+    navigationBarTitleText: '个人中心',
   }
 
   render () {
     return (
-      <View>
-        <Text>Hello profile!</Text>
+      <View className='profile'>
+        <View className='profile-header'>
+          <Image className="image" src={this.props.userInfo.avatarUrl} />
+          <View className='header-right'>
+            <Text className='name'>{this.props.userInfo.nickname}</Text>
+            <Text className='description'>{this.props.userInfo.brief || '这个人很懒，什么也没有留下~'}</Text>
+          </View>
+        </View>
         <TabBar  current={2} />
       </View>
     )
   }
 }
+
+export default Profile as ComponentClass<PageOwnProps, PageState>

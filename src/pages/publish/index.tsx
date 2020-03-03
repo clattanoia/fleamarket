@@ -87,21 +87,15 @@ class Publish extends Component {
   uploadPic = async() => {
     const { imagesUrls, qiniuToken } = this.state
     const urlCount = imagesUrls.length
-    console.log('-----------uploadPic-------------imagesUrls----------------')
-    console.log(imagesUrls)
     const newImg = await new Promise((resolve, reject)=>{
       try {
         const newImageUrls: Publish.InPickerImageFiles[] = []
-        imagesUrls.forEach(async (imageUrl: Publish.InPickerImageFiles, index: number) => {
+        imagesUrls.forEach(async (imageUrl: Publish.InPickerImageFiles) => {
           const filePath = imageUrl.url
           const qiniuUrl = await this.uploadQiniu(filePath, qiniuToken)
           imageUrl.qiniuUrl = qiniuUrl
           newImageUrls.push(imageUrl)
-          console.log('-----------uploadPic-------------new Promise--------index--------')
-          console.log(index)
-          if(index === (urlCount - 1)){
-            console.log('-----------uploadPic-------------end----------------',)
-            console.log(index,urlCount - 1)
+          if(newImageUrls.length === urlCount ){
             resolve(newImageUrls)
           }
         })
@@ -109,8 +103,6 @@ class Publish extends Component {
         reject('error')
       }
     })
-    console.log('-----------uploadPic-------------newImg----------------')
-    console.log(newImg)
     return newImg
   }
 
@@ -127,9 +119,7 @@ class Publish extends Component {
         before: () => {
         },
         success: (res) => {
-          console.log('-----------uploadQiniu-----------------------------')
-          console.log(res)
-          const qiniuUrl = `http://${res.imageURL}`
+          const qiniuUrl = res.domainUrl
           return resolve(qiniuUrl)
         },
         fail: () => {
@@ -191,25 +181,17 @@ class Publish extends Component {
 
   validImage = async() => {
     const qiniuImages = await this.uploadPic()
-    console.log('-----------validImage--------------qiniuImages---------------')
-    console.log(qiniuImages)
     if(typeof qiniuImages === 'string'){
       this.showErrorMessage('uploadError')
       return false
     }
     const qiniuUrls = []
-    await new Promise((resolve)=>{
-      this.setState({
-        imagesUrls:qiniuImages,
-      }, ()=>{
-        qiniuImages.map(item=>{
-          qiniuUrls.push(item.qiniuUrl)
-        })
-        resolve(qiniuUrls)
-      })
+    qiniuImages.map(item=>{
+      qiniuUrls.push(item.qiniuUrl)
     })
-    console.log('-----------validImage--------------urls---------------')
-    console.log(qiniuUrls)
+    this.setState({
+      imagesUrls:qiniuImages,
+    })
     return qiniuUrls
   }
 

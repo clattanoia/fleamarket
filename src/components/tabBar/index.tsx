@@ -56,8 +56,12 @@ function TabBar(props: InProps) {
 
   const handlePublishItemClick = (type) => {
     setPublishLayoutOpen(false)
+    const currentPage = Taro.getCurrentPages()[0]
+    // pages/publish/index /pages/publish/index
+    if( pageUrl[1].indexOf(currentPage.route) > -1 && currentPage.options.type === type) {
+      return
+    }
     toUrl = `${pageUrl[1]}?type=${type}`
-    console.log(toUrl)
     gotoPage()
   }
 

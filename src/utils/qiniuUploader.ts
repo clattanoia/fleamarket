@@ -1,3 +1,6 @@
+import client from '../graphql-client'
+import { getQiniuTokenQuery } from '../query/publish'
+
 type TokenFunction = () => string
 type AnyFunction = (...args: any[]) => any
 
@@ -213,4 +216,36 @@ export function upload(args: QiniuUploadOptions) {
     )
     return
   }
+}
+
+export const getToken = async() => {
+  const { data } = await client.query({ query: getQiniuTokenQuery, variables: {}})
+  return data.qiniuToken.token
+}
+
+export const uploadQiniu = async(filePath: string, qiniuToken: string): Promise<string> => {
+  const qiniuUrl: string = await new Promise((resolve, reject)=>{
+    upload({
+      filePath: filePath,
+      options: {
+        region: 'ECN',
+        domain: 'q67pnvkzx.bkt.clouddn.com',
+        uptoken: qiniuToken,
+        shouldUseQiniuFileName: true,
+      },
+      before: () => {
+      },
+      success: (res) => {
+        return resolve(res.domainUrl)
+      },
+      fail: () => {
+        return reject('')
+      },
+      progress: () => {
+      },
+      complete: () => {
+      },
+    })
+  })
+  return qiniuUrl
 }

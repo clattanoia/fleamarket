@@ -9,14 +9,16 @@ import PublishInfo from './info'
 import Category from './category'
 import Contact from './contact'
 import PublishImages from './images'
-import client from '../../graphql-client'
-import { publishMutation, getQiniuTokenQuery } from '../../query/publish'
+
 import { cleanArrayEmpty } from '../../utils/helper'
-import { upload } from '../../utils/qiniuUploader'
+import { getToken, uploadQiniu } from '../../utils/qiniuUploader'
+import client from '../../graphql-client'
+import { publishMutation } from '../../../.temp/query/publish'
 
 import './index.scss'
 
-const errorMessage = {
+
+const ERROR_MESSAGES = {
   title: '标题不能为空',
   price: '价格不能为空',
   detail: '详情不能为空',
@@ -35,8 +37,6 @@ const TITLE_TEXT = {
   goods: '发布出售',
 }
 
-
-
 type UserInfo = {
   contacts: Contact.InContact[],
   id: string,
@@ -50,7 +50,20 @@ type PageDispatchProps = {}
 
 type PageOwnProps = {}
 
-type PageState = {}
+type PageState = {
+
+  toastText: string,
+  showToast: false,
+  toastStatus: string,
+  isPublishing: false,
+
+  title: string,
+  price: string,
+  detail: string,
+  imagesUrls: Array<Publish.InPickerImageFiles>,
+  selectedCategory: string,
+  selectedContacts: Array<string>,
+}
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
@@ -67,94 +80,54 @@ class Publish extends Component {
     toastText: '',
     showToast: false,
     toastStatus: 'error',
+    isPublishing: false,
+
     title: '',
     price: '',
     detail: '',
+    imagesUrls: [],
     selectedCategory: '',
     selectedContacts: [],
-    qiniuToken: '',
-    imagesUrls: [],
-    // qiniuUrls: [],
-    isPublishing: false,
+  }
+
+  config: Config = {
+    navigationBarTitleText: '',
   }
 
   componentWillMount(): void {
     Taro.setNavigationBarTitle({
       title: TITLE_TEXT[this.$router.params.type] || '发布',
     })
-    console.log(this.$router.params)
+    // console.log(this.$router.params)
   }
 
-  componentDidMount(){
-    this.getToken()
-  }
+  getUploadPromises = (qiniuToken: string): Array<Promise<Publish.InPickerImageFiles>> => {
+    const { imagesUrls } = this.state
 
-  getToken = async() => {
-    const { data } = await client.query({ query: getQiniuTokenQuery, variables: {}})
-    const qiniuTokenNew = data.qiniuToken.token
-    Taro.setStorageSync('qiniuToken', qiniuTokenNew)
-    this.setState({ qiniuToken: qiniuTokenNew })
-  }
-
-  uploadPic = async() => {
-    const { imagesUrls, qiniuToken } = this.state
-    const urlCount = imagesUrls.length
-    const newImg = await new Promise((resolve, reject)=>{
-      try {
-        const newImageUrls: Publish.InPickerImageFiles[] = []
-        imagesUrls.forEach(async(imageUrl: Publish.InPickerImageFiles) => {
-          const filePath = imageUrl.url
-          const qiniuUrl = await this.uploadQiniu(filePath, qiniuToken)
+    return imagesUrls.map((imageUrl: Publish.InPickerImageFiles) => {
+      return new Promise(async(resolve, reject) => {
+        try {
+          const qiniuUrl = await uploadQiniu(imageUrl.url, qiniuToken)
           imageUrl.qiniuUrl = qiniuUrl
-          newImageUrls.push(imageUrl)
-          if(newImageUrls.length === urlCount ){
-            resolve(newImageUrls)
-          }
-        })
-      } catch (err) {
-        reject('error')
-      }
-    })
-    return newImg
-  }
-
-  uploadQiniu = async(filePath: string, qiniuToken: string) => {
-    const qiniuUrl = await new Promise((resolve, reject)=>{
-      upload({
-        filePath: filePath,
-        options: {
-          region: 'ECN',
-          domain: 'q67pnvkzx.bkt.clouddn.com',
-          uptoken: qiniuToken,
-          shouldUseQiniuFileName: true,
-        },
-        before: () => {
-        },
-        success: (res) => {
-          const qiniuUrl = res.domainUrl
-          return resolve(qiniuUrl)
-        },
-        fail: () => {
-          return reject('')
-        },
-        progress: () => {
-        },
-        complete: () => {
-        },
+          // console.log(imageUrl)
+          resolve(imageUrl)
+        } catch (e) {
+          reject(e)
+        }
       })
     })
-    return qiniuUrl
   }
 
-  validRequired = (val) => {
-    if(!val.length){
-      return false
-    }
-    return true
+  uploadImages = async(): Promise<Array<Publish.InPickerImageFiles>> => {
+    const qiniuToken = await getToken()
+
+    return Promise.all(this.getUploadPromises(qiniuToken)).then((res: Array<Publish.InPickerImageFiles>) => {
+      return Promise.resolve(res)
+    }, () => Promise.reject('upload error'))
   }
 
-  showErrorMessage = (name) => {
-    const text = errorMessage[name]
+  showErrorMessage = (name: string) => {
+    const text = ERROR_MESSAGES[name]
     this.setState({
       showToast: true,
       toastText: text,
@@ -162,65 +135,49 @@ class Publish extends Component {
     })
   }
 
-  vaildInput = (isShowErrorMessage = false) => {
-    const { title, price, detail, selectedCategory, selectedContacts, imagesUrls } = this.state
-    if(!this.validRequired(title)){
-      isShowErrorMessage && this.showErrorMessage('title')
-      return false
+  validRequired = (val: string | Array<any>): boolean => !!val.length
+
+  vaildInputValues = (isShowErrorMessage = false): boolean => {
+    const attrKeys: Array<string> = [
+      'title',
+      'price',
+      'detail',
+      'selectedCategory',
+      'selectedContacts',
+      'imagesUrls',
+    ]
+
+    for(const key of attrKeys) {
+      if(!this.validRequired(this.state[key])){
+        isShowErrorMessage && this.showErrorMessage(key)
+        return false
+      }
     }
-    if(!this.validRequired(price)){
-      isShowErrorMessage && this.showErrorMessage('price')
-      return false
-    }
-    if(!this.validRequired(detail)){
-      isShowErrorMessage && this.showErrorMessage('detail')
-      return false
-    }
-    if(!this.validRequired(imagesUrls)){
-      isShowErrorMessage && this.showErrorMessage('imagesUrls')
-      return false
-    }
-    if(!this.validRequired(selectedCategory)){
-      isShowErrorMessage && this.showErrorMessage('selectedCategory')
-      return false
-    }
-    if(!this.validRequired(selectedContacts)){
-      isShowErrorMessage && this.showErrorMessage('selectedContacts')
-      return false
-    }
+
     return true
   }
 
-  validImage = async() => {
-    const qiniuImages = await this.uploadPic()
-    if(typeof qiniuImages === 'string'){
-      this.showErrorMessage('uploadError')
-      return false
-    }
-    const qiniuUrls = []
-    qiniuImages.map(item=>{
-      qiniuUrls.push(item.qiniuUrl)
-    })
-    this.setState({
-      imagesUrls: qiniuImages,
-    })
-    return qiniuUrls
-  }
-
-  setLoading = (val) => {
+  setLoading = (val: boolean): void => {
     this.setState({
       isPublishing: val,
     })
   }
 
-  handleSubmit = async() => {
-    if(!this.vaildInput(true)) return
+  handleSubmit = async(): Promise<void> => {
+    if(!this.vaildInputValues(true)) return
+
     this.setLoading(true)
-    const toUploadUrls = await this.validImage()
-    if(!toUploadUrls){
+
+    let uploadedImages: Array<Publish.InPickerImageFiles> = []
+    // upload images
+    try {
+      uploadedImages = await this.uploadImages()
+    } catch (e) {
+      this.showErrorMessage('uploadError')
       this.setLoading(false)
       return
     }
+
     // transform contact type to id
     const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
       const matchedContact: Contact.InContact | undefined = this.props.userInfo.contacts.find(contact => contact.type === item)
@@ -233,16 +190,14 @@ class Publish extends Component {
       price: Number(this.state.price),
       description: this.state.detail,
       category: this.state.selectedCategory,
-      coverUrl: toUploadUrls[0],
-      pictures: toUploadUrls,
+      coverUrl: uploadedImages[0].qiniuUrl,
+      pictures: uploadedImages.map(item => item.qiniuUrl),
       contacts: contactIds,
     }
+    // console.log('publishInput:', publishInput)
 
     try {
       const { data } = await client.mutate({ mutation: publishMutation, variables: { publishInput }})
-      Taro.removeStorage({
-        key: 'qiniuToken',
-      })
       Taro.redirectTo({
         url: '/pages/detail/index?id=' + data.publish,
       })
@@ -259,46 +214,42 @@ class Publish extends Component {
     }
   }
 
-  handleClose = () => {
+  handleCloseToast = (): void => {
     this.setState({
       showToast: false,
       toastText: '',
     })
   }
 
-  setVal = (key, value) => {
+  setStateValue = (key, value): void => {
     this.setState({
       [key]: value,
     })
   }
 
-  config: Config = {
-    navigationBarTitleText: '',
-  }
-
   render() {
     return (
       <View className="publish">
-        <PublishInfo onSetVal={this.setVal} />
-        <PublishImages  onSetVal={this.setVal} showErrorMessage={this.showErrorMessage} />
+        <PublishInfo onSetVal={this.setStateValue} />
+        <PublishImages onSetVal={this.setStateValue} showErrorMessage={this.showErrorMessage} />
         <Category
-          onSetVal={this.setVal}
+          onSetVal={this.setStateValue}
           selectedCategory={this.state.selectedCategory}
         />
         <Contact
           contacts={this.props.userInfo.contacts}
           selectedContacts={this.state.selectedContacts}
-          onSetVal={this.setVal}
+          onSetVal={this.setStateValue}
         />
         <View className="form_btn">
           <AtButton
             type="primary"
             onClick={this.handleSubmit}
-            disabled={!this.vaildInput() || this.state.isPublishing}
+            disabled={!this.vaildInputValues() || this.state.isPublishing}
             loading={this.state.isPublishing}
           >发布</AtButton>
         </View>
-        <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleClose} hasMask status={this.state.toastStatus}></AtToast>
+        <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleCloseToast} hasMask status={this.state.toastStatus}></AtToast>
         <TabBar  current={1} />
       </View>
     )

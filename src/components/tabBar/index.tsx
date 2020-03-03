@@ -25,7 +25,9 @@ function TabBar(props: InProps) {
 
   const handleClick = (value) => {
     if(value === 1){
-      authLogin({ callback: () => setPublishLayoutOpen(true) })
+      authLogin({ callback: () => {
+        setPublishLayoutOpen(true)
+      } })
     }
 
     // 主页或者个人中心不重复渲染

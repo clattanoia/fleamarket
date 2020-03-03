@@ -82,7 +82,7 @@ class Contact extends Component {
     return <Text className='value'>{contactText}</Text>
   }
 
-  render () {
+  render() {
     return (
       <View className='contact'>
         <FormLine title="联系方式">

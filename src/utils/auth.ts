@@ -11,7 +11,7 @@ interface Inprops {
 }
 
 const taroEnv = {
-  'WEAPP':'WECHAT',
+  'WEAPP': 'WECHAT',
 }
 
 
@@ -28,7 +28,7 @@ export async function isAuthUserInfo() {
 export async function authLogin(props: Inprops) {
   try {
     const token = Taro.getStorageSync('token')
-    if (token){
+    if(token){
       props.callback && props.callback()
       return
     }
@@ -48,9 +48,9 @@ export async function authLogin(props: Inprops) {
     GlobalData.authInfo = { code, userData, platform }
     const loginInput = GlobalData.authInfo
 
-    const { data } = await client.mutate({ mutation:loginQuery, variables: { loginInput }})
+    const { data } = await client.mutate({ mutation: loginQuery, variables: { loginInput }})
     Taro.setStorage({
-      key:'token',
+      key: 'token',
       data: data.login.token,
     })
     // tslint:disable-next-line

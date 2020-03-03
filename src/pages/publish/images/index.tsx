@@ -44,7 +44,7 @@ function PublishImages(props: InProps) {
     props.onSetVal('imagesUrls', currentFiles)
   }
   const onFail = (mes) => {
-    throw(mes)
+    throw (mes)
   }
 
   return (

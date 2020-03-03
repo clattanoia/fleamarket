@@ -63,22 +63,22 @@ function uploadURLFromRegionCode(code: RegionCode): string | null {
   return uploadURL
 }
 function updateConfigWithOptions(options: QiniuOptions) {
-  if (options.region) {
+  if(options.region) {
     config.qiniuRegion = options.region
   } else {
     // console.error('qiniu uploader need your bucket region');
   }
-  if (options.uptoken) {
+  if(options.uptoken) {
     config.qiniuUploadToken = options.uptoken
-  } else if (options.uptokenURL) {
+  } else if(options.uptokenURL) {
     config.qiniuUploadTokenURL = options.uptokenURL
-  } else if (options.uptokenFunc) {
+  } else if(options.uptokenFunc) {
     config.qiniuUploadTokenFunction = options.uptokenFunc
   }
-  if (options.domain) {
+  if(options.domain) {
     config.qiniuImageURLPrefix = options.domain
   }
-  if (options.shouldUseQiniuFileName) {
+  if(options.shouldUseQiniuFileName) {
     config.qiniuShouldUseQiniuFileName = options.shouldUseQiniuFileName
   }
 }
@@ -99,7 +99,7 @@ function doUpload({
   before,
   complete,
 }: QiniuUploadOptions) {
-  if (!config.qiniuUploadToken) {
+  if(!config.qiniuUploadToken) {
     // console.error(
     //   'qiniu UploadToken is null, please check the init config or networking'
     // );
@@ -107,13 +107,13 @@ function doUpload({
   }
   const url = uploadURLFromRegionCode(config.qiniuRegion || 'ECN')
   let fileName = filePath.split('//')[1]
-  if (options && options.key) {
+  if(options && options.key) {
     fileName = options.key
   }
   const formData: { token: string; key?: string } = {
     token: config.qiniuUploadToken,
   }
-  if (!config.qiniuShouldUseQiniuFileName) {
+  if(!config.qiniuShouldUseQiniuFileName) {
     formData['key'] = fileName
   }
   before && before()
@@ -164,7 +164,7 @@ function getQiniuToken(callback: () => void) {
     url: config.qiniuUploadTokenURL || '',
     success: function(res: any) {
       const token = res.data.uptoken
-      if (token && token.length > 0) {
+      if(token && token.length > 0) {
         config.qiniuUploadToken = token
         callback && callback()
       } else {
@@ -185,22 +185,22 @@ function getQiniuToken(callback: () => void) {
 
 export function upload(args: QiniuUploadOptions) {
   const { filePath, options } = args
-  if (!filePath) {
+  if(!filePath) {
     // console.error('qiniu uploader need filePath to upload');
     return
   }
-  if (options) {
+  if(options) {
     updateConfigWithOptions(options)
   }
-  if (config.qiniuUploadToken) {
+  if(config.qiniuUploadToken) {
     doUpload(args)
-  } else if (config.qiniuUploadTokenURL) {
+  } else if(config.qiniuUploadTokenURL) {
     getQiniuToken(function() {
       doUpload(args)
     })
-  } else if (config.qiniuUploadTokenFunction) {
+  } else if(config.qiniuUploadTokenFunction) {
     config.qiniuUploadToken = config.qiniuUploadTokenFunction()
-    if (!config.qiniuUploadToken) {
+    if(!config.qiniuUploadToken) {
       console.error(
         'qiniu UploadTokenFunction result is null, please check the return value'
       )

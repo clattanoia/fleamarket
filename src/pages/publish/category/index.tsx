@@ -47,7 +47,7 @@ class Category extends Component {
     selectedCategoryName: '',
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setState({
       selector: this.props.category.categories.map(item => Object.assign({}, {
         label: item.name,
@@ -82,7 +82,7 @@ class Category extends Component {
     this.props.onSetVal('selectedCategory', this.state.selected)
   }
 
-  render () {
+  render() {
     return (
       <View className='category'>
         <FormLine title="分类">

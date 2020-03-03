@@ -11,7 +11,7 @@ export const fetch = (data) => {
 }
 
 export function fetchUserInfo() {
-  return async (dispatch: Dispatch) => {
+  return async(dispatch: Dispatch) => {
     const query = userInfoQuery
 
     try {

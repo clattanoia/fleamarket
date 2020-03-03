@@ -62,7 +62,7 @@ interface Index {
 
 @connect(() => ({
 }), (dispatch) => ({
-  fetchUserInfo () {
+  fetchUserInfo() {
     dispatch(fetchUserInfo())
   },
   fetchCategories() {
@@ -89,12 +89,12 @@ class Index extends Component {
   componentDidMount() {
     this.props.fetchCategories()
 
-    if (Taro.getStorageSync('token')) {
+    if(Taro.getStorageSync('token')) {
       this.props.fetchUserInfo()
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetchRecommendList()
   }
 
@@ -112,7 +112,7 @@ class Index extends Component {
     })
   }
 
-  render () {
+  render() {
     return (
       <View className='index'>
         <View className="fixedTop">

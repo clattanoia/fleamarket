@@ -2,7 +2,7 @@ import { FETCH_USERINFO } from '../constants'
 
 const INITIAL_STATE = {}
 
-export default function category (state = INITIAL_STATE, action) {
+export default function category(state = INITIAL_STATE, action) {
   switch (action.type) {
     case FETCH_USERINFO:
       console.log('--->', action.data)

@@ -21,15 +21,15 @@ function AuthInfoLayout(props: InProps) {
 
 
   const handleClose = () => {
-    dispatch({ type:SET_AUTH_INFO, payload:false })
+    dispatch({ type: SET_AUTH_INFO, payload: false })
   }
 
   const clickAuthBtn = (res) => {
-    dispatch({ type:SET_AUTH_INFO, payload:false })
+    dispatch({ type: SET_AUTH_INFO, payload: false })
     const { detail } = res
     const { errMsg } = detail
     if(errMsg.indexOf(':ok') > -1){
-      authLogin({ callback:props.authCallback })
+      authLogin({ callback: props.authCallback })
     }
   }
 

@@ -54,7 +54,7 @@ class GoodsDetail extends Component<{}, PageState> {
   }
 
   showContact = async(): Promise<void> => {
-    if (Taro.getStorageSync('token')) {
+    if(Taro.getStorageSync('token')) {
       const detail = this.state.detail
       const contacts = await this.getContacts(detail.owner.id, detail.contacts)
       this.setState({
@@ -72,8 +72,8 @@ class GoodsDetail extends Component<{}, PageState> {
     })
   }
 
-  getContacts = async (userId, ids): Promise<Contact.InContact[]> => {
-    if (!ids || !ids.length) return []
+  getContacts = async(userId, ids): Promise<Contact.InContact[]> => {
+    if(!ids || !ids.length) return []
     try {
       const { data: { contacts }} = await client.query({ query: contactsQuery, variables: { userId, ids }})
       return contacts

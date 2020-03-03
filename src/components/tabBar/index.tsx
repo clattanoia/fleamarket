@@ -67,9 +67,9 @@ function TabBar(props: InProps) {
         selectedColor='#fe5155'
         iconSize={28}
         tabList={[
-          { title: '首页', iconPrefixClass:'iconfont', iconType: 'iconsidebar-home' },
-          { title: '发布', iconPrefixClass:'iconfont', iconType: 'iconfabu_selected-copy' },
-          { title: '我的', iconPrefixClass:'iconfont', iconType: 'iconsidebar-account-copy' },
+          { title: '首页', iconPrefixClass: 'iconfont', iconType: 'iconsidebar-home' },
+          { title: '发布', iconPrefixClass: 'iconfont', iconType: 'iconfabu_selected-copy' },
+          { title: '我的', iconPrefixClass: 'iconfont', iconType: 'iconsidebar-account-copy' },
         ]}
         onClick={handleClick}
         current={props.current}

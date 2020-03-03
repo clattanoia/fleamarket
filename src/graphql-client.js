@@ -4,7 +4,7 @@ import { authLogin } from './utils/auth'
 
 const client = new ApolloClient({
   uri: 'https://miniprogram.yacnlee.top/graphql',
-  fetch: async (url, options) => {
+  fetch: async(url, options) => {
     const { headers } = options || {
       headers: {},
     }
@@ -18,10 +18,10 @@ const client = new ApolloClient({
       })
       const { errors } = data
       const clientStasusCode = errors ? errors[0].message.statusCode : statusCode
-      if ( clientStasusCode === 401){
+      if( clientStasusCode === 401){
         Taro.removeStorage({
           key: 'token',
-          success: function () {
+          success: function() {
             authLogin({})
           },
         })

@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   isOpenedAuthInfo: false,
 }
 
-export default function global (state = INITIAL_STATE, action) {
+export default function global(state = INITIAL_STATE, action) {
   switch (action.type) {
     case SET_AUTH_INFO:
       return {

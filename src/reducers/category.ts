@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   categories: [],
 }
 
-export default function category (state = INITIAL_STATE, action) {
+export default function category(state = INITIAL_STATE, action) {
   switch (action.type) {
     case FETCH_CATEGORIES:
       return {

@@ -9,7 +9,7 @@ export default class Search extends Component {
     // navigationStyle: 'custom',
   }
 
-  render () {
+  render() {
     return (
       <View>
         <SeachSection />

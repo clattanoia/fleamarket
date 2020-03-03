@@ -26,12 +26,12 @@ class ExtendedContainer extends Component<InProps, {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const query = Taro.createSelectorQuery().in(this.$scope)
     query.select('#switch').boundingClientRect()
     query.select('#content').boundingClientRect().exec(res => {
       const [ switchDom, contentDom ] = res
-      if ((contentDom.height / switchDom.height) < this.props.maxLine) {
+      if((contentDom.height / switchDom.height) < this.props.maxLine) {
         this.setState({ needSwitch: false })
       }
     })
@@ -40,7 +40,7 @@ class ExtendedContainer extends Component<InProps, {
   genStyle = () => {
     const { maxLine, style } = this.props
     const { extend } = this.state
-    if (maxLine && !extend) return {
+    if(maxLine && !extend) return {
       '-webkit-box-orient': 'vertical',
       '-webkit-line-clamp': maxLine,
       ...style,
@@ -53,7 +53,7 @@ class ExtendedContainer extends Component<InProps, {
     this.setState({ extend: !extend })
   }
 
-  render () {
+  render() {
     const style = this.genStyle()
     const { content } = this.props
     const { extend, needSwitch } = this.state

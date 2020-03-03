@@ -47,7 +47,7 @@ class Profile extends Component {
     navigationBarTitleText: '个人中心',
   }
 
-  render () {
+  render() {
     return (
       <View className='profile'>
         <View className='profile-header'>

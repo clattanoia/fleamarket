@@ -9,6 +9,7 @@ import { fetchCategories } from '../../actions/category'
 import TabBar from '../../components/tabBar'
 import client from '../../graphql-client'
 import { recommendListQuery } from '../../query/recommend'
+import SeachSection from './search'
 
 import './index.scss'
 
@@ -120,6 +121,7 @@ class Index extends Component {
   render () {
     return (
       <View className='index'>
+        <SeachSection />
         <Text className='category'>看推荐</Text>
         {this.state.goods.length === 0 ?
           <View className='no-goods'><Text>暂无信息</Text></View> :

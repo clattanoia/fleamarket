@@ -5,14 +5,16 @@ page {
 
 .index {
   flex-direction: column;
-  width: calc(100% - 40px);
-  margin: 0 20px;
   height: calc(100% - 85px);
+  width:100%;
 
   .category {
     color: #020202;
     font-size: 32px;
     font-weight: bold;
+    width:100%;
+    padding:0 20px;
+    box-sizing: border-box;
 
     &:after {
       display: block;
@@ -41,6 +43,8 @@ page {
     width: 100%;
     max-height: calc(100% - 100px);
     overflow: scroll;
+    padding:0 20px;
+    box-sizing: border-box;
 
     .list-item {
       margin-top: 10px;

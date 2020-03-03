@@ -13,3 +13,10 @@ $color-brand: $baseColor;
 
 
 
+
+.at-search-bar{
+  background-color: transparent;
+  &:after{
+    border:0;
+  }
+}

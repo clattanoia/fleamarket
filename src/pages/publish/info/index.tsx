@@ -56,7 +56,7 @@ function PublishInfo(props: InProps) {
     props.onSetVal('detail', value)
   }
 
-  const showEdit = (val) => ()=> {
+  const showEdit = (val) => () => {
     setShowTextarea(val)
   }
 

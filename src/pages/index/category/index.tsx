@@ -8,13 +8,13 @@ import styles from './index.module.scss'
 const colors = ['#10CA2E', '#646DE9', '#FFD252', '#FF842F', '#278EE4', '#07D6AA', '#FCA84F', '#0CC429', '#7E5AD6', '#FB5D5E']
 
 function CategorySection() {
-  const categories = useSelector((state: any)=> {
+  const categories = useSelector((state: any) => {
     return state.category.categories
   })
   const [width, setWidth]=useState(0)
   console.log(categories)
 
-  useEffect(()=>{
+  useEffect(() => {
     Taro.getSystemInfo({
       success: res => {
         setWidth(res.screenWidth / 5)
@@ -51,7 +51,7 @@ function CategorySection() {
         <SwiperItem>
           <View className={styles.categoryContent}>
             {
-              firstPage.map((category, index)=>
+              firstPage.map((category, index) =>
                 <View className={styles.categoryItem} key={category.id} onClick={gotoList(category.id)}>
                   <CategoryItem category={category} color={colors[index]} width={width} />
                 </View>
@@ -62,7 +62,7 @@ function CategorySection() {
         <SwiperItem>
           <View className='categoryContent'>
             {
-              firstPage.map((category)=>
+              firstPage.map((category) =>
                 <CategoryItem key={category.id} category={category} color="green" width={width} />
               )
             }

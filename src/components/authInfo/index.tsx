@@ -15,7 +15,7 @@ interface InProps {
 function AuthInfoLayout(props: InProps) {
 
   const dispatch = useDispatch()
-  const isOpenedAuthInfo = useSelector((state: any)=> {
+  const isOpenedAuthInfo = useSelector((state: any) => {
     return state.global.isOpenedAuthInfo
   })
 

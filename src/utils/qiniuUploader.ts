@@ -224,7 +224,7 @@ export const getToken = async() => {
 }
 
 export const uploadQiniu = async(filePath: string, qiniuToken: string): Promise<string> => {
-  const qiniuUrl: string = await new Promise((resolve, reject)=>{
+  const qiniuUrl: string = await new Promise((resolve, reject) => {
     upload({
       filePath: filePath,
       options: {

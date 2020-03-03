@@ -47,8 +47,6 @@ class Category extends Component {
     selectedCategoryName: '',
   }
 
-  componentWillMount () {}
-
   componentDidMount () {
     this.setState({
       selector: this.props.category.categories.map(item => Object.assign({}, {

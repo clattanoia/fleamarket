@@ -85,8 +85,6 @@ class Index extends Component {
     goods: [],
   }
 
-  componentWillReceiveProps () {}
-
   componentDidMount() {
     this.props.fetchCategories()
 
@@ -95,13 +93,9 @@ class Index extends Component {
     }
   }
 
-  componentWillUnmount () { }
-
   componentDidShow () {
     this.fetchRecommendList()
   }
-
-  componentDidHide () { }
 
   async fetchRecommendList() {
     const query = recommendListQuery

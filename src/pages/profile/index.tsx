@@ -36,16 +36,6 @@ interface Profile {
 
 class Profile extends Component {
 
-  componentWillMount () {}
-
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
   /**
    * 指定config的类型声明为: Taro.Config
    *

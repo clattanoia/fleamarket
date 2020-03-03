@@ -4,16 +4,6 @@ import SeachSection from '../../components/search'
 
 export default class Search extends Component {
 
-  componentWillMount () {}
-
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
   config: Config = {
     navigationBarTitleText: 'search',
     // navigationStyle: 'custom',

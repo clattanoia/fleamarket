@@ -1,0 +1,33 @@
+@import "../../styles/theme.scss";
+
+.operation-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 136px;
+
+  .left-container {
+    display: flex;
+    align-items: center;
+
+    .title {
+      color: #101010;
+      font-size: 30px;
+    }
+  }
+
+  .right-container {
+    display: flex;
+    align-items: center;
+
+    .count {
+      color: $fontGray;
+      font-size: 28px;
+    }
+
+    .at_icon {
+      width: 48px;
+      height: 48px;
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
 
 import TabBar from '../../components/tabBar'
+import OperationItem from '../../components/operationItem'
 import './index.scss'
 
 type UserInfo = {
@@ -65,6 +66,10 @@ class Profile extends Component {
             <Text className='name'>{this.props.userInfo.nickname}</Text>
             <Text className='description'>{this.props.userInfo.brief || '这个人很懒，什么也没有留下~'}</Text>
           </View>
+        </View>
+        <View className='operation-list'>
+          <OperationItem title='我的出售' count={5} icon='iconright'></OperationItem>
+          <OperationItem title='我的求购' count={5} icon='iconright'></OperationItem>
         </View>
         <TabBar  current={2} />
       </View>

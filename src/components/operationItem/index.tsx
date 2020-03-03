@@ -7,18 +7,23 @@ import './index.scss'
 interface InProps {
   icon: string,
   title: string,
-  count: number,
+  count?: number,
+  hasDivision?: boolean
+  iconColor: string,
 }
 
 function OperationItem(props: InProps) {
   return (
-    <View className='operation-item'>
+    <View className='operation-item' style={props.hasDivision ? {
+      borderBottom: '1px solid #c8c8c8',
+    } : ''}
+    >
       <View className='left-container'>
-        <AtIcon prefixClass='iconfont' value={props.icon} size="22" color='#999898'></AtIcon>
+        <AtIcon prefixClass='iconfont' value={props.icon} size="22" color={props.iconColor}></AtIcon>
         <Text className='title'>{props.title}</Text>
       </View>
       <View className='right-container'>
-        <Text className='count'>{props.count}</Text>
+        {props.count && <Text className='count'>{props.count}</Text>}
         <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
       </View>
     </View>

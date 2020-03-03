@@ -1,7 +1,12 @@
 @import "../../styles/theme.scss";
+page {
+  height: 100%;
+}
 
 .profile {
   width: 100%;
+  height: calc(100% - 100px);
+  overflow: scroll;
   background-color: $greyBg;
 
   .profile-header {
@@ -36,6 +41,12 @@
   .operation-list {
     background-color: #ffffff;
     margin: 40px 20px 0;
+    border-radius: 20px;
+  }
+
+  .contract {
+    background-color: #ffffff;
+    margin: 30px 20px 0;
     border-radius: 20px;
   }
 }

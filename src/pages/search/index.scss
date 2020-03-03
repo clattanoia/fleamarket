@@ -1,0 +1,20 @@
+@import "../../styles/theme.scss";
+
+.search{
+  width:100%;
+  background-color: $baseColor;
+  padding:6px 20px 20px;
+  box-sizing: border-box;
+  display:flex;
+  justify-content: space-between;
+  height: 84px;
+  align-items: center;
+  color: white;
+  .searchLeft{
+    flex:1;
+  }
+  .searchBtn{
+    font-size: 28px;
+  }
+
+}

@@ -6,6 +6,7 @@ import './index.scss'
 
 
 function SeachSection() {
+  const placeholderText = '请输入您想要寻找的"二货"'
 
   const goToSearch = () => {
     Taro.redirectTo({
@@ -20,7 +21,7 @@ function SeachSection() {
         <AtSearchBar
           disabled
           value=""
-          placeholder='请输入您想要寻找的"二货"'
+          placeholder={placeholderText}
           onChange={onChange}
         />
       </View>

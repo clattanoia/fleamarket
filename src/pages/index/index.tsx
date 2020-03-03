@@ -10,6 +10,7 @@ import TabBar from '../../components/tabBar'
 import client from '../../graphql-client'
 import { recommendListQuery } from '../../query/recommend'
 import SeachSection from './search'
+import CategorySection from './category'
 
 import './index.scss'
 
@@ -114,29 +115,34 @@ class Index extends Component {
   render () {
     return (
       <View className='index'>
-        <SeachSection />
-        <Text className='category'>看推荐</Text>
-        {this.state.goods.length === 0 ?
-          <View className='no-goods'><Text>暂无信息</Text></View> :
-          <View className='wrapper-list'>
-            {this.state.goods.map(item =>
-              <View className='list-item' key={item.id}>
-                <View className='goods-image'>
-                  <Image className='goods-img' mode="widthFix" src={item.coverUrl} onClick={() => { this.onClickEvent(item.id) }} />
+        <View className="fixedTop">
+          <SeachSection />
+        </View>
+        <View className="scrollSection">
+          <CategorySection />
+          <Text className='category'>看推荐</Text>
+          {this.state.goods.length === 0 ?
+            <View className='no-goods'><Text>暂无信息</Text></View> :
+            <View className='wrapper-list'>
+              {this.state.goods.map(item =>
+                <View className='list-item' key={item.id}>
+                  <View className='goods-image'>
+                    <Image className='goods-img' mode="widthFix" src={item.coverUrl} onClick={() => { this.onClickEvent(item.id) }} />
+                  </View>
+                  <Text className='goods-name' onClick={() => { this.onClickEvent(item.id) }}>{item.title}</Text>
+                  <View className='detail'>
+                    <Text className='goods-price'><Text className='unit'>￥</Text>{item.price}</Text>
+                    <Text className='goods-tag'>{item.categoryName}</Text>
+                  </View>
+                  <View className='user-info'>
+                    <AtAvatar circle size="small" image={item.owner.avatarUrl}></AtAvatar>
+                    <Text className='name'>{item.owner.nickname}</Text>
+                  </View>
                 </View>
-                <Text className='goods-name' onClick={() => { this.onClickEvent(item.id) }}>{item.title}</Text>
-                <View className='detail'>
-                  <Text className='goods-price'><Text className='unit'>￥</Text>{item.price}</Text>
-                  <Text className='goods-tag'>{item.categoryName}</Text>
-                </View>
-                <View className='user-info'>
-                  <AtAvatar circle size="small" image={item.owner.avatarUrl}></AtAvatar>
-                  <Text className='name'>{item.owner.nickname}</Text>
-                </View>
-              </View>
-            )}
-          </View>
-        }
+              )}
+            </View>
+          }
+        </View>
         <TabBar current={0} />
       </View>
     )

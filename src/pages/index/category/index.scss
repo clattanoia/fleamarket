@@ -1,0 +1,14 @@
+@import "../../../styles/theme.scss";
+
+.category{
+  width:100%;
+  padding:6px 20px 20px;
+  box-sizing: border-box;
+  .searchLeft{
+    flex:1;
+  }
+  .searchBtn{
+    font-size: 28px;
+  }
+
+}

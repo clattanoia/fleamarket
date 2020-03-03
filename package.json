@@ -32,7 +32,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "yarn lint && yarn test",
+      "pre-push": "npm run test",
       "pre-commit": "lint-staged"
     }
   },
@@ -117,7 +117,7 @@
     "typescript": "^3.0.1"
   },
   "lint-staged": {
-    "*.{ts,tsx,js}": "eslint --fix",
+    "*.{ts,tsx,js}": "npm run lint:fix",
     "*.scss": "stylelint --fix"
   }
 }

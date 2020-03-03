@@ -7,6 +7,14 @@
   ],
   "parser": "@typescript-eslint/parser",
   "rules": {
+    "eqeqeq": "error",
+    "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
+    "space-before-function-paren": ["error", "never"],
+    "keyword-spacing": ["error", { "overrides": {
+      "if": { "before": true, "after": false },
+      "for": { "after": false },
+      "while": { "after": false }
+    } }],
     "object-curly-spacing": ["error", "always", { "objectsInObjects": false, "arraysInObjects": false }],
     "comma-dangle": ["error", "always-multiline"],
     "comma-style": ["error", "last"],

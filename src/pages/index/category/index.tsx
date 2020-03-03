@@ -22,7 +22,7 @@ function CategorySection() {
     })
   }, [])
 
-  if (categories.length === 0){
+  if(categories.length === 0){
     return null
   }
 
@@ -34,10 +34,9 @@ function CategorySection() {
   // }
 
   const gotoList = (id) => () => {
-    // Taro.redirectTo({
-    //   url: id
-    // })
-    console.log(id)
+    Taro.redirectTo({
+      url: `/pages/searchList/index?categoryId=${id}`,
+    })
   }
 
   return (

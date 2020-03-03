@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
 
@@ -10,6 +10,7 @@ import ExtendedContainer from '../../components/extendedContainer'
 import DetailPreload from './components/detailPreload'
 import AuthInfoLayout from '../../components/authInfo'
 import Contact from './components/contact'
+import Manage from './components/manage'
 
 import { GoodDetail } from '../../constants/types'
 import { detailQuery, contactsQuery } from '../../query/detail'
@@ -87,7 +88,7 @@ class GoodsDetail extends Component {
     }
   }
 
-  showManage = () => {
+  showManage = (): void => {
     this.setState({
       isOpened: true,
     })
@@ -96,6 +97,12 @@ class GoodsDetail extends Component {
   closeContact = (): void => {
     this.setState({
       isOpen: false,
+    })
+  }
+
+  closeManage = (): void => {
+    this.setState({
+      isOpened: false,
     })
   }
 
@@ -112,10 +119,6 @@ class GoodsDetail extends Component {
   gotoPage = () => {
     this.showContact()
   }
-
-  soldout = () => {}
-
-  activate = () => {}
 
   render() {
     const { detail } = this.state
@@ -162,15 +165,8 @@ class GoodsDetail extends Component {
           }
         </View>
         <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
+        <Manage goodsId={(detail as any).id} isOpened={this.state.isOpened} onClose={this.closeManage} />
         <AuthInfoLayout authCallback={this.gotoPage} />
-        <AtActionSheet isOpened={this.state.isOpened} cancelText='取消' title='编辑'>
-          <AtActionSheetItem onClick={this.activate}>
-            激活
-          </AtActionSheetItem>
-          <AtActionSheetItem onClick={this.soldout}>
-            下架
-          </AtActionSheetItem>
-        </AtActionSheet>
       </View>
     ) : <DetailPreload />
   }

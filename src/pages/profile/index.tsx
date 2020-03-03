@@ -56,7 +56,7 @@ class Profile extends Component {
 
   async componentDidMount() {
     const { data: { profileInfo }} = await client.query({
-      query:profileInfoQuery,
+      query: profileInfoQuery,
       variables: { userId: this.props.userInfo.id },
       fetchPolicy: 'no-cache',
     })

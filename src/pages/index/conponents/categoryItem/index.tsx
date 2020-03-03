@@ -15,8 +15,8 @@ function CategoryItem(props: InProps) {
   const { category, color, width } = props
 
   return (
-    <View className={styles.categoryContent} style={{ width:`${width}px` }}>
-      <View className={styles.categoryIcon} style={{ backgroundColor:color }}>
+    <View className={styles.categoryContent} style={{ width: `${width}px` }}>
+      <View className={styles.categoryIcon} style={{ backgroundColor: color }}>
         <AtIcon prefixClass='iconfont' value="iconjianshen"></AtIcon>
       </View>
       <Text>{category.name}</Text>

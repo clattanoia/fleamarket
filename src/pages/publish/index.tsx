@@ -87,6 +87,8 @@ class Publish extends Component {
   uploadPic = async() => {
     const { imagesUrls, qiniuToken } = this.state
     const urlCount = imagesUrls.length
+    console.log('-----------uploadPic-------------imagesUrls----------------')
+    console.log(imagesUrls)
     const newImg = await new Promise((resolve, reject)=>{
       try {
         const newImageUrls: Publish.InPickerImageFiles[] = []
@@ -95,7 +97,11 @@ class Publish extends Component {
           const qiniuUrl = await this.uploadQiniu(filePath, qiniuToken)
           imageUrl.qiniuUrl = qiniuUrl
           newImageUrls.push(imageUrl)
+          console.log('-----------uploadPic-------------new Promise--------index--------')
+          console.log(index)
           if(index === (urlCount - 1)){
+            console.log('-----------uploadPic-------------end----------------',)
+            console.log(index,urlCount - 1)
             resolve(newImageUrls)
           }
         })
@@ -103,6 +109,8 @@ class Publish extends Component {
         reject('error')
       }
     })
+    console.log('-----------uploadPic-------------newImg----------------')
+    console.log(newImg)
     return newImg
   }
 
@@ -119,6 +127,8 @@ class Publish extends Component {
         before: () => {
         },
         success: (res) => {
+          console.log('-----------uploadQiniu-----------------------------')
+          console.log(res)
           const qiniuUrl = `http://${res.imageURL}`
           return resolve(qiniuUrl)
         },
@@ -181,12 +191,14 @@ class Publish extends Component {
 
   validImage = async() => {
     const qiniuImages = await this.uploadPic()
+    console.log('-----------validImage--------------qiniuImages---------------')
+    console.log(qiniuImages)
     if(typeof qiniuImages === 'string'){
       this.showErrorMessage('uploadError')
       return false
     }
-    const urls = new Promise((resolve)=>{
-      const qiniuUrls = []
+    const qiniuUrls = []
+    await new Promise((resolve)=>{
       this.setState({
         imagesUrls:qiniuImages,
       }, ()=>{
@@ -196,7 +208,9 @@ class Publish extends Component {
         resolve(qiniuUrls)
       })
     })
-    return urls
+    console.log('-----------validImage--------------urls---------------')
+    console.log(qiniuUrls)
+    return qiniuUrls
   }
 
   setLoading = (val) => {

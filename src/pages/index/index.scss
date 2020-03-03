@@ -30,7 +30,7 @@ page {
   }
 
   .no-goods {
-    height: calc(100% - 100px);
+    height: calc(100% - 230px);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -41,7 +41,7 @@ page {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    max-height: calc(100% - 100px);
+    max-height: calc(100% - 230px);
     overflow: scroll;
     padding:0 20px;
     box-sizing: border-box;

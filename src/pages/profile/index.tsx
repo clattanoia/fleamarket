@@ -6,8 +6,8 @@ import { connect } from '@tarojs/redux'
 import TabBar from '../../components/tabBar'
 import OperationItem from '../../components/operationItem'
 import './index.scss'
-// import client from '../../graphql-client'
-// import { profileInfoQuery } from '../../query/profile'
+import client from '../../graphql-client'
+import { profileInfoQuery } from '../../query/profile'
 
 type UserInfo = {
   avatarUrl: string,
@@ -55,11 +55,15 @@ class Profile extends Component {
   }
 
   async componentDidMount() {
-    // const { data } = await client.query({ query:profileInfoQuery, variables: { userId: this.props.userInfo.id }})
-    // this.setState({
-    //   salesCount: data.salesCount,
-    //   purchaseCount: data.purchaseCount,
-    // })
+    const { data: { profileInfo }} = await client.query({
+      query:profileInfoQuery,
+      variables: { userId: this.props.userInfo.id },
+      fetchPolicy: 'no-cache',
+    })
+    this.setState({
+      salesCount: profileInfo.salesCount,
+      purchaseCount: profileInfo.purchaseCount,
+    })
   }
 
   render() {

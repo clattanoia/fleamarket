@@ -1,10 +1,10 @@
 import { gql } from 'apollo-boost'
 
 export const profileInfoQuery = gql`
-{
-  profileInfo {
-    salesCount
-    purchaseCount
+  query($userId: String!) {
+    profileInfo(userId: $userId) {
+      salesCount
+      purchaseCount
+    }
   }
-}
 `

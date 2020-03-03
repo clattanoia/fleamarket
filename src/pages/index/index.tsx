@@ -9,7 +9,7 @@ import { fetchCategories } from '../../actions/category'
 import TabBar from '../../components/tabBar'
 import client from '../../graphql-client'
 import { recommendListQuery } from '../../query/recommend'
-import SeachSection from '../../components/search'
+import SeachSection from './search'
 
 import './index.scss'
 

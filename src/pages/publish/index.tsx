@@ -30,6 +30,11 @@ const errorMessage = {
   uploadError: '图片上传失败',
 }
 
+const TITLE_TEXT = {
+  purchase: '发布求购',
+  goods: '发布出售',
+}
+
 
 
 type UserInfo = {
@@ -71,6 +76,13 @@ class Publish extends Component {
     imagesUrls: [],
     // qiniuUrls: [],
     isPublishing: false,
+  }
+
+  componentWillMount(): void {
+    Taro.setNavigationBarTitle({
+      title: TITLE_TEXT[this.$router.params.type] || '发布',
+    })
+    console.log(this.$router.params)
   }
 
   componentDidMount(){
@@ -261,7 +273,7 @@ class Publish extends Component {
   }
 
   config: Config = {
-    navigationBarTitleText: '出售',
+    navigationBarTitleText: '',
   }
 
   render () {

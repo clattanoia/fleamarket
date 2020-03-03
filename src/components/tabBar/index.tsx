@@ -1,6 +1,6 @@
 import Taro, { memo, useState } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { AtTabBar, AtFloatLayout } from 'taro-ui'
+import { AtTabBar, AtFloatLayout, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import AuthInfoLayout from '../authInfo'
 import { authLogin } from '../../utils/auth'
 import './index.scss'
@@ -9,35 +9,38 @@ interface InProps {
   current: number
 }
 
-
 function TabBar(props: InProps) {
 
   const pageUrl = ['/pages/index/index', '/pages/publish/index', '/pages/profile/index']
 
+  const [isPublishLayoutOpen, setPublishLayoutOpen] = useState(false)
   const [isOpenedTel, setIsOpenedTel] = useState(false)
-  const [toUrl, setToUrl] = useState('')
-  let currentUrl = ''
+  let toUrl = ''
 
   const gotoPage = () => {
     Taro.redirectTo({
-      url: currentUrl || toUrl,
+      url: toUrl,
     })
   }
 
   const handleClick = (value) => {
-    currentUrl = pageUrl[value]
-    setToUrl(currentUrl)
-    if(value===0 && props.current!==0){
+    if(value === 1){
+      authLogin({ callback: () => setPublishLayoutOpen(true) })
+    }
+
+    // 主页或者个人中心不重复渲染
+    if(value === props.current) {
+      return
+    }
+
+    if(value === 0){
+      toUrl = pageUrl[value]
       gotoPage()
-      return
     }
-    if(value===1 && props.current!==1){
-      authLogin({ callback:gotoPage })
-      return
-    }
-    if(value===2 && props.current!==2){
-      authLogin({ callback:gotoPage })
-      return
+
+    if(value === 2){
+      toUrl = pageUrl[value]
+      authLogin({ callback: gotoPage })
     }
   }
 
@@ -47,6 +50,13 @@ function TabBar(props: InProps) {
 
   const clickAuthTelBtn = () => {
     setIsOpenedTel(false)
+  }
+
+  const handlePublishItemClick = (type) => {
+    setPublishLayoutOpen(false)
+    toUrl = `${pageUrl[1]}?type=${type}`
+    console.log(toUrl)
+    gotoPage()
   }
 
   return (
@@ -66,6 +76,21 @@ function TabBar(props: InProps) {
       />
 
       <AuthInfoLayout authCallback={gotoPage} />
+
+      <AtActionSheet
+        isOpened={isPublishLayoutOpen}
+        cancelText='取消'
+        title='选择你要发布的类型'
+        onCancel={() => setPublishLayoutOpen(false)}
+        onClose={() => setPublishLayoutOpen(false)}
+      >
+        <AtActionSheetItem onClick={() => handlePublishItemClick('goods')}>
+          发布出售
+        </AtActionSheetItem>
+        <AtActionSheetItem onClick={() => handlePublishItemClick('purchase')}>
+          发布求购
+        </AtActionSheetItem>
+      </AtActionSheet>
 
       <AtFloatLayout isOpened={isOpenedTel} title="获取授权" onClose={handleClose}>
         <View className='get-auth'>

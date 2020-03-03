@@ -6,7 +6,7 @@ import { userInfoQuery } from '../query/userInfo'
 export const fetch = (data) => {
   return {
     type: FETCH_USERINFO,
-    data
+    data,
   }
 }
 
@@ -15,7 +15,7 @@ export function fetchUserInfo() {
     const query = userInfoQuery
 
     try {
-      const { data } = await client.query({query, variables: {}})
+      const { data } = await client.query({ query, variables: {}})
       dispatch(fetch(data))
     } catch (error) {
       // console.log('error-->', error)

@@ -1,4 +1,4 @@
-import {Platform, Status} from './enums'
+import { Platform, Status } from './enums'
 
 export type User = {
   id: string;

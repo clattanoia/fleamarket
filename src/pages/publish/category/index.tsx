@@ -23,7 +23,7 @@ type PageDispatchProps = {
 }
 
 type PageOwnProps = {
-  onSetVal: (key,value) => void,
+  onSetVal: (key, value) => void,
   selectedCategory: string
 }
 
@@ -36,7 +36,7 @@ interface Category {
 }
 
 @connect(({ category }) => ({
-  category
+  category,
 }))
 class Category extends Component {
 
@@ -53,8 +53,8 @@ class Category extends Component {
     this.setState({
       selector: this.props.category.categories.map(item => Object.assign({}, {
         label: item.name,
-        value: item.id
-      }))
+        value: item.id,
+      })),
     })
   }
 
@@ -71,7 +71,7 @@ class Category extends Component {
   onClose = (): void => {
     this.setState({
       isOpen: false,
-      selected: this.props.selectedCategory
+      selected: this.props.selectedCategory,
     })
   }
 
@@ -79,7 +79,7 @@ class Category extends Component {
     const item = this.props.category.categories.find(item => item.id === this.state.selected)
     this.setState({
       isOpen: false,
-      selectedCategoryName: item && item.name
+      selectedCategoryName: item && item.name,
     })
     this.props.onSetVal('selectedCategory', this.state.selected)
   }

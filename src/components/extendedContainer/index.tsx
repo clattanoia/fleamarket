@@ -22,7 +22,7 @@ class ExtendedContainer extends Component<InProps, {
     super(props)
     this.state = {
       extend: false,
-      needSwitch: true
+      needSwitch: true,
     }
   }
 
@@ -43,7 +43,7 @@ class ExtendedContainer extends Component<InProps, {
     if (maxLine && !extend) return {
       '-webkit-box-orient': 'vertical',
       '-webkit-line-clamp': maxLine,
-      ...style
+      ...style,
     }
     return style
   }

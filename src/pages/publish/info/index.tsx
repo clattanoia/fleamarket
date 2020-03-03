@@ -1,59 +1,59 @@
 import Taro, { memo, useState } from '@tarojs/taro'
-import { View ,Text} from '@tarojs/components'
-import { AtInput,AtTextarea }  from 'taro-ui'
+import { View, Text } from '@tarojs/components'
+import { AtInput, AtTextarea }  from 'taro-ui'
 
 import './index.scss'
 
 const phoneInfo = Taro.getSystemInfoSync()
 
 interface InProps {
-  onSetVal: (key,value) => void
+  onSetVal: (key, value) => void
 }
 
 function PublishInfo(props: InProps) {
   const [iosTextarea] = useState(phoneInfo.platform === 'ios')
-  const [title,setTitle] = useState('')
-  const [price,setPrice] = useState('')
-  const [detail,setDetail] = useState('')
-  const [showTextarea,setShowTextarea] = useState(false)
+  const [title, setTitle] = useState('')
+  const [price, setPrice] = useState('')
+  const [detail, setDetail] = useState('')
+  const [showTextarea, setShowTextarea] = useState(false)
 
 
   const handleChangeTitle = (value) => {
     setTitle(value)
-    props.onSetVal('title',value)
+    props.onSetVal('title', value)
     return value
   }
 
   const validPrice = (val) => {
     const reg = /[^\d.]/g
-    const numVal = val.replace(reg,'')
+    const numVal = val.replace(reg, '')
     const numValArr = numVal.split('.')
     const isFloat = numValArr.length > 1
     const intergeNum = numValArr[0]
     let intergeStr = ''
-    if(intergeNum.substr(0,1) === '0' && intergeNum.length > 1 ){
-      intergeStr = intergeNum.substr(1,10)
+    if(intergeNum.substr(0, 1) === '0' && intergeNum.length > 1 ){
+      intergeStr = intergeNum.substr(1, 10)
     } else {
-      intergeStr = intergeNum.toString().substr(0,9)
+      intergeStr = intergeNum.toString().substr(0, 9)
     }
     if(!isFloat){
       return intergeStr
     }
-    const floatNum = numValArr[1].substr(0,2)
+    const floatNum = numValArr[1].substr(0, 2)
     return `${intergeStr}.${floatNum}`
   }
 
   const handleChangePrice = (value) => {
     const realVal = validPrice(value)
     setPrice(realVal)
-    props.onSetVal('price',realVal)
+    props.onSetVal('price', realVal)
     return realVal
   }
 
   const handleChangeDetail = (event) => {
     const value = event.target.value
     setDetail(value)
-    props.onSetVal('detail',value)
+    props.onSetVal('detail', value)
   }
 
   const showEdit = (val) => ()=> {

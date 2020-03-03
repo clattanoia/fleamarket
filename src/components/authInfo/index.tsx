@@ -1,10 +1,10 @@
-import Taro, {memo} from '@tarojs/taro'
-import {View,Text,Button} from '@tarojs/components'
+import Taro, { memo } from '@tarojs/taro'
+import { View, Text, Button } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
-import { useSelector,useDispatch } from '@tarojs/redux'
+import { useSelector, useDispatch } from '@tarojs/redux'
 
-import {authLogin} from '../../utils/auth'
-import {SET_AUTH_INFO} from '../../constants'
+import { authLogin } from '../../utils/auth'
+import { SET_AUTH_INFO } from '../../constants'
 import './index.scss'
 
 interface InProps {
@@ -21,15 +21,15 @@ function AuthInfoLayout(props: InProps) {
 
 
   const handleClose = () => {
-    dispatch({type:SET_AUTH_INFO,payload:false})
+    dispatch({ type:SET_AUTH_INFO, payload:false })
   }
 
   const clickAuthBtn = (res) => {
-    dispatch({type:SET_AUTH_INFO,payload:false})
-    const {detail} = res
-    const {errMsg} = detail
+    dispatch({ type:SET_AUTH_INFO, payload:false })
+    const { detail } = res
+    const { errMsg } = detail
     if(errMsg.indexOf(':ok') > -1){
-      authLogin({callback:props.authCallback})
+      authLogin({ callback:props.authCallback })
     }
   }
 

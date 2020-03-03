@@ -3,16 +3,16 @@ import { View } from '@tarojs/components'
 import { AtImagePicker }  from 'taro-ui'
 
 import './index.scss'
-import { MaxImageCount,MaxImageSize,ImageSuffix } from '../../../constants/publish'
+import { MaxImageCount, MaxImageSize, ImageSuffix } from '../../../constants/publish'
 
 interface InProps {
-  onSetVal: (key,value) => void
+  onSetVal: (key, value) => void
   showErrorMessage: (name) => void
 }
 
 function PublishImages(props: InProps) {
 
-  const [files,setFiles] = useState([])
+  const [files, setFiles] = useState([])
 
   const showImgError = () => {
     props.showErrorMessage('images')
@@ -20,8 +20,8 @@ function PublishImages(props: InProps) {
 
   const validImage = (files) => {
     const validFiles = files.filter((item)=>{
-      const {file,url} = item
-      const {size} = file
+      const { file, url } = item
+      const { size } = file
       const isOversize = size > MaxImageSize
       const urlArr = url.split('.')
       const suffix = urlArr[urlArr.length-1].toLowerCase()
@@ -34,14 +34,14 @@ function PublishImages(props: InProps) {
     return validFiles
   }
 
-  const onChange = (files,operationType) => {
+  const onChange = (files, operationType) => {
     let currentFiles = operationType === 'add' ? validImage(files) : files
     if(currentFiles.length > MaxImageCount){
       showImgError()
-      currentFiles = files.slice(0,10)
+      currentFiles = files.slice(0, 10)
     }
     setFiles(currentFiles)
-    props.onSetVal('imagesUrls',currentFiles)
+    props.onSetVal('imagesUrls', currentFiles)
   }
   const onFail = (mes) => {
     throw(mes)

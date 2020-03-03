@@ -1,8 +1,8 @@
 import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
-import {AtFloatLayout, AtIcon, AtCheckbox, AtButton} from 'taro-ui'
-import {Text, View} from '@tarojs/components'
-import {ReactNodeLike} from 'prop-types'
+import { AtFloatLayout, AtIcon, AtCheckbox, AtButton } from 'taro-ui'
+import { Text, View } from '@tarojs/components'
+import { ReactNodeLike } from 'prop-types'
 
 
 import { CONTACT_MAPPING } from '../../../constants/contact'
@@ -17,7 +17,7 @@ type PageDispatchProps = {}
 type PageOwnProps = {
   selectedContacts: string[],
   contacts: Array<Contact.InContact>,
-  onSetVal: (key,value) => void,
+  onSetVal: (key, value) => void,
 }
 
 type PageState = {

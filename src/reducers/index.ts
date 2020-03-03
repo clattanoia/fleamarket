@@ -6,5 +6,5 @@ import global from './global'
 export default combineReducers({
   category,
   userInfo,
-  global
+  global,
 })

@@ -9,7 +9,7 @@ export default function category (state = INITIAL_STATE, action) {
     case FETCH_CATEGORIES:
       return {
         ...state,
-        categories: action.data.categories
+        categories: action.data.categories,
       }
     default:
       return state

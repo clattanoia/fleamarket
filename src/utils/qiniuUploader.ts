@@ -97,7 +97,7 @@ function doUpload({
   progress,
   cancelTask,
   before,
-  complete
+  complete,
 }: QiniuUploadOptions) {
   if (!config.qiniuUploadToken) {
     // console.error(
@@ -111,7 +111,7 @@ function doUpload({
     fileName = options.key
   }
   const formData: { token: string; key?: string } = {
-    token: config.qiniuUploadToken
+    token: config.qiniuUploadToken,
   }
   if (!config.qiniuShouldUseQiniuFileName) {
     formData['key'] = fileName
@@ -147,7 +147,7 @@ function doUpload({
     },
     complete: function(err) {
       complete && complete(err)
-    }
+    },
   })
 
   uploadTask.onProgressUpdate(res => {
@@ -178,7 +178,7 @@ function getQiniuToken(callback: () => void) {
         'qiniu UploadToken is null, please check the init config or networking: ' +
           error
       )
-    }
+    },
   })
 }
 

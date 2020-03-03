@@ -1,17 +1,17 @@
 import Taro from '@tarojs/taro'
 import client from '../graphql-client'
-import {loginQuery} from '../query/login'
-import {GlobalData} from './globalData'
+import { loginQuery } from '../query/login'
+import { GlobalData } from './globalData'
 import { fetchUserInfo } from '../actions/userInfo'
 import { setAuthInfo } from '../actions/global'
-import {store} from '../store/store'
+import { store } from '../store/store'
 
 interface Inprops {
   callback?: () => void
 }
 
 const taroEnv = {
-  'WEAPP':'WECHAT'
+  'WEAPP':'WECHAT',
 }
 
 
@@ -20,7 +20,7 @@ export async function isAuthUserInfo() {
   await Taro.getSetting({
     success(res) {
       isAuthUserInfo = !!res.authSetting['scope.userInfo']
-    }
+    },
   })
   return isAuthUserInfo
 }
@@ -45,13 +45,13 @@ export async function authLogin(props: Inprops) {
     delete userData['errMsg']
     delete userData['userInfo']
     const platform = taroEnv[Taro.getEnv()] || 'WECHAT'
-    GlobalData.authInfo = {code,userData,platform}
+    GlobalData.authInfo = { code, userData, platform }
     const loginInput = GlobalData.authInfo
 
-    const { data } = await client.mutate({mutation:loginQuery, variables: {loginInput}})
+    const { data } = await client.mutate({ mutation:loginQuery, variables: { loginInput }})
     Taro.setStorage({
       key:'token',
-      data: data.login.token
+      data: data.login.token,
     })
     // tslint:disable-next-line
     store.dispatch(fetchUserInfo())

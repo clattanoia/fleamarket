@@ -1,6 +1,6 @@
 import { ReactNodeLike } from 'prop-types'
 import Taro, { memo } from '@tarojs/taro'
-import { View,Text } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 
 import './index.scss'
 

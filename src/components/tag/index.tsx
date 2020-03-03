@@ -22,7 +22,7 @@ function Tag(props: InProps) {
     color: props.color || defaultColor,
     backgroundColor: props.backgroundColor || defaultBgColor,
     fontSize: `${props.size || defaultSize}rpx`,
-    ...props.style
+    ...props.style,
   }
   // TODO: classnames
   return (

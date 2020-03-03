@@ -5,7 +5,7 @@ import { categoryQuery } from '../query/category'
 export const fetch = (data) => {
   return {
     type: FETCH_CATEGORIES,
-    data
+    data,
   }
 }
 
@@ -14,7 +14,7 @@ export function fetchCategories() {
     const query = categoryQuery
 
     try {
-      const { data } = await client.query({query, variables: {}})
+      const { data } = await client.query({ query, variables: {}})
       dispatch(fetch(data))
     } catch (error) {
       throw error

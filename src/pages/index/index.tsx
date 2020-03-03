@@ -66,7 +66,7 @@ interface Index {
   },
   fetchCategories() {
     dispatch(fetchCategories())
-  }
+  },
 }))
 class Index extends Component {
 
@@ -78,11 +78,11 @@ class Index extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '骚窝跳蚤平台'
+    navigationBarTitleText: '骚窝跳蚤平台',
   }
 
   state: State = {
-    goods: []
+    goods: [],
   }
 
   componentWillReceiveProps () {}
@@ -105,15 +105,15 @@ class Index extends Component {
 
   async fetchRecommendList() {
     const query = recommendListQuery
-    const { data } = await client.query({query, variables: {}, fetchPolicy: 'no-cache'})
+    const { data } = await client.query({ query, variables: {}, fetchPolicy: 'no-cache' })
     this.setState({
-      goods: data.goods
+      goods: data.goods,
     })
   }
 
   onClickEvent(id: string) {
     Taro.navigateTo({
-      url: '/pages/detail/index?id='+id
+      url: '/pages/detail/index?id='+id,
     })
   }
 
@@ -128,9 +128,9 @@ class Index extends Component {
             {this.state.goods.map(item =>
               <View className='list-item' key={item.id}>
                 <View className='goods-image'>
-                  <Image className='goods-img' mode="widthFix" src={item.coverUrl} onClick={() => {this.onClickEvent(item.id)}} />
+                  <Image className='goods-img' mode="widthFix" src={item.coverUrl} onClick={() => { this.onClickEvent(item.id) }} />
                 </View>
-                <Text className='goods-name' onClick={() => {this.onClickEvent(item.id)}}>{item.title}</Text>
+                <Text className='goods-name' onClick={() => { this.onClickEvent(item.id) }}>{item.title}</Text>
                 <View className='detail'>
                   <Text className='goods-price'><Text className='unit'>￥</Text>{item.price}</Text>
                   <Text className='goods-tag'>{item.categoryName}</Text>

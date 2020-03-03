@@ -1,7 +1,7 @@
 import { SET_AUTH_INFO } from '../constants'
 
 const INITIAL_STATE = {
-  isOpenedAuthInfo: false
+  isOpenedAuthInfo: false,
 }
 
 export default function global (state = INITIAL_STATE, action) {
@@ -9,7 +9,7 @@ export default function global (state = INITIAL_STATE, action) {
     case SET_AUTH_INFO:
       return {
         ...state,
-        isOpenedAuthInfo: action.payload
+        isOpenedAuthInfo: action.payload,
       }
     default:
       return state

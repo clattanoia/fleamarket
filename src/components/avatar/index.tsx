@@ -24,14 +24,14 @@ function Avatar(props: InProps) {
       <Image
         style={{
           width: `${props.avatarSize || defaultSize}rpx`,
-          height: `${props.avatarSize || defaultSize}rpx`
+          height: `${props.avatarSize || defaultSize}rpx`,
         }}
         className="image" src={props.avatarUrl}
       />
       <Text
         className="nickname"
         style={{
-          fontSize: `${props.nameSize || defaultNameSize}rpx`
+          fontSize: `${props.nameSize || defaultNameSize}rpx`,
         }}
       >{props.nickname}</Text>
     </View>

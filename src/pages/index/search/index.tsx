@@ -1,5 +1,5 @@
 import Taro, { memo } from '@tarojs/taro'
-import { View ,Text} from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { AtSearchBar }  from 'taro-ui'
 
 import './index.scss'
@@ -10,7 +10,7 @@ function SeachSection() {
 
   const goToSearch = () => {
     Taro.redirectTo({
-      url: '/pages/search/index'
+      url: '/pages/search/index',
     })
   }
   const onChange = () => {}

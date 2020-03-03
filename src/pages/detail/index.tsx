@@ -13,7 +13,7 @@ import { GoodDetail } from '../../constants/types'
 import { detailQuery, contactsQuery } from '../../query/detail'
 import client from '../../graphql-client'
 import { Status } from '../../constants/enums'
-import {authLogin} from '../../utils/auth'
+import { authLogin } from '../../utils/auth'
 
 import './index.scss'
 
@@ -36,9 +36,9 @@ class GoodsDetail extends Component<{}, PageState> {
 
   async componentDidMount() {
     const { id } = this.$router.params
-    const { data: { goods } } = await client.query({ query: detailQuery, variables: { id } })
+    const { data: { goods }} = await client.query({ query: detailQuery, variables: { id }})
     this.setState({
-      detail: goods
+      detail: goods,
     })
   }
 
@@ -59,23 +59,23 @@ class GoodsDetail extends Component<{}, PageState> {
       const contacts = await this.getContacts(detail.owner.id, detail.contacts)
       this.setState({
         contacts,
-        isOpen: true
+        isOpen: true,
       })
     } else {
-      authLogin({callback: this.showContact})
+      authLogin({ callback: this.showContact })
     }
   }
 
   closeContact = (): void => {
     this.setState({
-      isOpen: false
+      isOpen: false,
     })
   }
 
   getContacts = async (userId, ids): Promise<Contact.InContact[]> => {
     if (!ids || !ids.length) return []
     try {
-      const { data: { contacts } } = await client.query({ query: contactsQuery, variables: { userId, ids } })
+      const { data: { contacts }} = await client.query({ query: contactsQuery, variables: { userId, ids }})
       return contacts
     } catch (error) {
       throw error

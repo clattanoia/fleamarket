@@ -1,8 +1,8 @@
-import Taro, { memo,useState} from '@tarojs/taro'
-import {View,Text,Button} from '@tarojs/components'
-import { AtTabBar,AtFloatLayout } from 'taro-ui'
+import Taro, { memo, useState } from '@tarojs/taro'
+import { View, Text, Button } from '@tarojs/components'
+import { AtTabBar, AtFloatLayout } from 'taro-ui'
 import AuthInfoLayout from '../authInfo'
-import {authLogin} from '../../utils/auth'
+import { authLogin } from '../../utils/auth'
 import './index.scss'
 
 interface InProps {
@@ -12,15 +12,15 @@ interface InProps {
 
 function TabBar(props: InProps) {
 
-  const pageUrl = ['/pages/index/index','/pages/publish/index','/pages/profile/index']
+  const pageUrl = ['/pages/index/index', '/pages/publish/index', '/pages/profile/index']
 
-  const [isOpenedTel,setIsOpenedTel] = useState(false)
-  const [toUrl,setToUrl] = useState('')
+  const [isOpenedTel, setIsOpenedTel] = useState(false)
+  const [toUrl, setToUrl] = useState('')
   let currentUrl = ''
 
   const gotoPage = () => {
     Taro.redirectTo({
-      url: currentUrl || toUrl
+      url: currentUrl || toUrl,
     })
   }
 
@@ -32,11 +32,11 @@ function TabBar(props: InProps) {
       return
     }
     if(value===1 && props.current!==1){
-      authLogin({callback:gotoPage})
+      authLogin({ callback:gotoPage })
       return
     }
     if(value===2 && props.current!==2){
-      authLogin({callback:gotoPage})
+      authLogin({ callback:gotoPage })
       return
     }
   }
@@ -57,9 +57,9 @@ function TabBar(props: InProps) {
         selectedColor='#fe5155'
         iconSize={28}
         tabList={[
-          { title: '首页', iconPrefixClass:'iconfont', iconType: 'iconsidebar-home'},
-          { title: '发布', iconPrefixClass:'iconfont', iconType: 'iconfabu_selected-copy'},
-          { title: '我的', iconPrefixClass:'iconfont', iconType: 'iconsidebar-account-copy'}
+          { title: '首页', iconPrefixClass:'iconfont', iconType: 'iconsidebar-home' },
+          { title: '发布', iconPrefixClass:'iconfont', iconType: 'iconfabu_selected-copy' },
+          { title: '我的', iconPrefixClass:'iconfont', iconType: 'iconsidebar-account-copy' },
         ]}
         onClick={handleClick}
         current={props.current}

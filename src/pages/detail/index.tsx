@@ -1,13 +1,15 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
+import { ComponentClass } from 'react'
+import { connect } from '@tarojs/redux'
 
 import Avatar from '../../components/avatar'
 import Tag from '../../components/tag'
 import ExtendedContainer from '../../components/extendedContainer'
 import DetailPreload from './components/detailPreload'
 import AuthInfoLayout from '../../components/authInfo'
-import Contact from './contact'
+import Contact from './components/contact'
 
 import { GoodDetail } from '../../constants/types'
 import { detailQuery, contactsQuery } from '../../query/detail'
@@ -17,13 +19,31 @@ import { authLogin } from '../../utils/auth'
 
 import './index.scss'
 
+type PageStateProps = {
+  id: string
+}
+
+type PageDispatchProps = {}
+
+type PageOwnProps = {}
+
 type PageState = {
   detail: GoodDetail | null
   isOpen: boolean
+  isOpened: boolean
   contacts: Contact.InContact[]
 }
 
-class GoodsDetail extends Component<{}, PageState> {
+type IProps = PageStateProps & PageDispatchProps & PageOwnProps
+
+interface GoodsDetail {
+  props: IProps;
+}
+
+@connect(({ userInfo }) => ({
+  id: userInfo.id,
+}))
+class GoodsDetail extends Component {
   config: Config = {
     navigationBarTitleText: '二货详情',
   }
@@ -31,6 +51,7 @@ class GoodsDetail extends Component<{}, PageState> {
   state = {
     detail: null,
     isOpen: false,
+    isOpened: false,
     contacts: [],
   }
 
@@ -66,6 +87,12 @@ class GoodsDetail extends Component<{}, PageState> {
     }
   }
 
+  showManage = () => {
+    this.setState({
+      isOpened: true,
+    })
+  }
+
   closeContact = (): void => {
     this.setState({
       isOpen: false,
@@ -86,8 +113,13 @@ class GoodsDetail extends Component<{}, PageState> {
     this.showContact()
   }
 
+  soldout = () => {}
+
+  activate = () => {}
+
   render() {
     const { detail } = this.state
+    const isOwnGoods = detail && this.props.id === (detail as any).owner.id
     return detail !== null ? (
       <View className="detail">
         <Avatar
@@ -123,13 +155,25 @@ class GoodsDetail extends Component<{}, PageState> {
           </View>
         </View>
         <View className="footer">
-          <AtButton type='primary' className="contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
+          {
+            isOwnGoods ?
+              <AtButton type='primary' className="btn manage-btn" onClick={this.showManage}>管理</AtButton> :
+              <AtButton type='primary' className="btn contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
+          }
         </View>
         <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
         <AuthInfoLayout authCallback={this.gotoPage} />
+        <AtActionSheet isOpened={this.state.isOpened} cancelText='取消' title='编辑'>
+          <AtActionSheetItem onClick={this.activate}>
+            激活
+          </AtActionSheetItem>
+          <AtActionSheetItem onClick={this.soldout}>
+            下架
+          </AtActionSheetItem>
+        </AtActionSheet>
       </View>
     ) : <DetailPreload />
   }
 }
 
-export default GoodsDetail
+export default GoodsDetail as ComponentClass<PageOwnProps, PageState>

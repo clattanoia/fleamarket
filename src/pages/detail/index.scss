@@ -70,14 +70,19 @@ page {
       justify-content: flex-end;
       padding: 0 30px;
       
-      .contact-btn {
-        background: $baseColor;
+      .btn {
+        font-size: 28px;
         color: #fff;
-        width: 300rpx;
-        height: 80rpx;
+        width: 224px;
+        height: 72px;
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+
+      .manage-btn {
+        background: $operateBtn;
+        border: 1px solid $operateBtn;
       }
     }
   }

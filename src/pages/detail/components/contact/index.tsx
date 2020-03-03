@@ -5,7 +5,7 @@ import { AtButton, AtFloatLayout } from 'taro-ui'
 import { ReactNodeLike } from 'prop-types'
 import { BaseEventOrigFunction } from '@tarojs/components/types/common'
 
-import { CONTACT_MAPPING } from '../../../constants/contact'
+import { CONTACT_MAPPING } from '../../../../constants/contact'
 
 import './index.scss'
 

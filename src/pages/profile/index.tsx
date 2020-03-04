@@ -65,6 +65,12 @@ class Profile extends Component {
     })
   }
 
+  getContracts = () => {
+    Taro.redirectTo({
+      url: '/pages/profile/contact/index',
+    })
+  }
+
   render() {
     return (
       <View className='profile'>
@@ -77,11 +83,29 @@ class Profile extends Component {
         </View>
         <View className='scroll-section'>
           <View className='operation-list'>
-            <OperationItem title='我的出售' count={this.state.salesCount} icon='iconmaichu' hasDivision iconColor='#10ca2e'></OperationItem>
-            <OperationItem title='我的求购' count={this.state.purchaseCount} icon='iconmairu' iconColor='#646de9'></OperationItem>
+            <OperationItem
+              title='我的出售'
+              count={this.state.salesCount}
+              icon='iconmaichu'
+              hasDivision
+              iconColor='#10ca2e'
+              handleClick={this.getContracts}
+            ></OperationItem>
+            <OperationItem
+              title='我的求购'
+              count={this.state.purchaseCount}
+              icon='iconmairu'
+              iconColor='#646de9'
+              handleClick={this.getContracts}
+            ></OperationItem>
           </View>
           <View className='contract'>
-            <OperationItem title='联系方式' icon='icondianhua' iconColor='#fb5d5e'></OperationItem>
+            <OperationItem
+              title='联系方式'
+              icon='icondianhua'
+              iconColor='#fb5d5e'
+              handleClick={this.getContracts}
+            ></OperationItem>
           </View>
         </View>
         <TabBar  current={2} />

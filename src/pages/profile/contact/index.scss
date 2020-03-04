@@ -1,0 +1,22 @@
+.contact-list {
+  .contact-item {
+    height: 114px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #bbbbbb;
+    font-size: 28px;
+
+    .type {
+      margin-left: 20px;
+    }
+
+    .content {
+      margin-left: 10px;
+    }
+
+    .edit-btn {
+      margin-right: 20px;
+    }
+  }
+}

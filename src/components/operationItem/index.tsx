@@ -10,6 +10,7 @@ interface InProps {
   count?: number,
   hasDivision?: boolean
   iconColor: string,
+  handleClick: () => any,
 }
 
 function OperationItem(props: InProps) {
@@ -22,7 +23,7 @@ function OperationItem(props: InProps) {
         <AtIcon prefixClass='iconfont' value={props.icon} size="22" color={props.iconColor}></AtIcon>
         <Text className='title'>{props.title}</Text>
       </View>
-      <View className='right-container'>
+      <View className='right-container' onClick={props.handleClick}>
         {props.count !== null && <Text className='count'>{props.count}</Text>}
         <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
       </View>

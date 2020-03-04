@@ -15,7 +15,8 @@
           "decrement",
           "increment",
           "vertical",
-          "horizontal"
+          "horizontal",
+          "global"
         ]
       }
     ],

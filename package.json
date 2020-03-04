@@ -56,6 +56,7 @@
     "apollo-boost": "^0.4.7",
     "babel-jest": "^23.6.0",
     "babel-runtime": "^6.26.0",
+    "classnames": "^2.2.6",
     "graphql": "^14.6.0",
     "nerv-devtools": "^1.5.5",
     "qiniu-js": "^2.5.5",

@@ -2,19 +2,38 @@
 
 .search{
   width:100%;
-  background-color: $baseColor;
-  padding:6px 20px 20px;
+  padding:12px 20px 20px;
   box-sizing: border-box;
   display:flex;
   justify-content: space-between;
   height: 84px;
   align-items: center;
-  color: white;
   .searchLeft{
-    flex:1;
+    width:620px;
+    height: 60px;
+    background-color: #EFF2F7;
+    padding:0 20px;
+    box-sizing: border-box;
+    border-radius: 15PX;
+    display: flex;
+    line-height: 60px;
+    font-size: 14PX;
+    .searchType{
+      width:120px;
+    }
+    .searchText{
+      flex: 1;
+      .searchInput{
+        padding:0;
+        margin: 0;
+        height: 100%;
+      }
+    }
   }
   .searchBtn{
+    flex:1;
     font-size: 28px;
+    text-align: right;
   }
-
 }
+

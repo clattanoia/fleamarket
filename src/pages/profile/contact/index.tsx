@@ -25,12 +25,6 @@ interface Profile {
   props: IProps;
 }
 
-const CONTACT_TYPE = {
-  WECHAT: '微信',
-  PHONE: '电话',
-  EMAIL: '邮箱',
-}
-
 @connect(({ userInfo }) => ({
   userInfo: userInfo,
 }))
@@ -46,16 +40,23 @@ class Profile extends Component {
 
   render() {
     return (
-      <View className='contact-list'>
-        {this.props.userInfo.contacts.map(item =>
-          <View key={item.id} className='contact-item'>
-            <View>
-              <Text className='type'>{CONTACT_TYPE[item.type]}</Text>
-              <Text className='content'>{item.content}</Text>
-            </View>
-            <Text className='edit-btn'>编辑</Text>
-          </View>
-        )}
+      <View className='contact'>
+        <View className='fix-top-container'>
+          <Text className="add-btn">新增</Text>
+        </View>
+        <View className='contact-list'>
+          { this.props.userInfo.contacts.length === 0 ?
+            <View className='no-contacts'><Text>暂无联系方式，请先新增联系方式吧~</Text></View>
+            : this.props.userInfo.contacts.map(item =>
+              <View key={item.id} className='contact-item'>
+                <View>
+                  <Text className='label'>{item.label || '电话'}</Text>
+                  <Text className='content'>{item.content}</Text>
+                </View>
+                <Text className='delete-btn'>删除</Text>
+              </View>
+            )}
+        </View>
       </View>
     )
   }

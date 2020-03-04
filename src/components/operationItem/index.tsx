@@ -15,7 +15,7 @@ interface InProps {
 
 function OperationItem(props: InProps) {
   return (
-    <View className='operation-item' style={props.hasDivision ? {
+    <View className='operation-item' onClick={props.handleClick} style={props.hasDivision ? {
       borderBottom: '1px solid #c8c8c8',
     } : ''}
     >
@@ -23,7 +23,7 @@ function OperationItem(props: InProps) {
         <AtIcon prefixClass='iconfont' value={props.icon} size="22" color={props.iconColor}></AtIcon>
         <Text className='title'>{props.title}</Text>
       </View>
-      <View className='right-container' onClick={props.handleClick}>
+      <View className='right-container'>
         {props.count !== null && <Text className='count'>{props.count}</Text>}
         <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#999898'></AtIcon>
       </View>

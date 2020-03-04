@@ -17,6 +17,7 @@ export const userInfoQuery = gql`
         id
         type
         content
+        label
       }
     }
   }

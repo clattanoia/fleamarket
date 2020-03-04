@@ -1,17 +1,53 @@
+@import "../../../styles/theme.scss";
+
+page {
+  height: 100%;
+}
+
+.contact {
+  height: 100%;
+  overflow: hidden;
+}
+
+.fix-top-container {
+  width: 100%;
+  background-color: $baseColor;
+  height: 60px;
+  display: flex;
+  justify-content: flex-end;
+
+  .add-btn {
+    color: #fff;
+    margin-right: 20px;
+    font-size: 32px;
+  }
+}
+
 .contact-list {
+  height: calc(100% - 100px);
+  overflow-y: auto;
+
+  .no-contacts {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .contact-item {
     height: 114px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border: 1px solid #bbbbbb;
-    font-size: 28px;
+    font-size: 32px;
 
     &:not(:last-of-type) {
       border-bottom: none;
     }
 
-    .type {
+    .label {
       margin-left: 20px;
     }
 
@@ -19,7 +55,7 @@
       margin-left: 10px;
     }
 
-    .edit-btn {
+    .delete-btn {
       margin-right: 20px;
     }
   }

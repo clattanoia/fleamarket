@@ -4,6 +4,7 @@ declare namespace Contact {
     id: string,
     type: string,
     content: string,
+    label: string,
   }
 
 }

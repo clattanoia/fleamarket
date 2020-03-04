@@ -71,6 +71,14 @@ class Profile extends Component {
     })
   }
 
+  toMySalesList = () => {
+    console.log('sales list')
+  }
+
+  toMyPurchaseList = () => {
+    console.log('purchase list')
+  }
+
   render() {
     return (
       <View className='profile'>
@@ -89,14 +97,14 @@ class Profile extends Component {
               icon='iconmaichu'
               hasDivision
               iconColor='#10ca2e'
-              handleClick={this.getContracts}
+              handleClick={this.toMySalesList}
             ></OperationItem>
             <OperationItem
               title='我的求购'
               count={this.state.purchaseCount}
               icon='iconmairu'
               iconColor='#646de9'
-              handleClick={this.getContracts}
+              handleClick={this.toMyPurchaseList}
             ></OperationItem>
           </View>
           <View className='contract'>

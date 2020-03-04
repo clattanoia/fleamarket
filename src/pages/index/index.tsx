@@ -11,6 +11,7 @@ import client from '../../graphql-client'
 import { recommendListQuery } from '../../query/recommend'
 import SeachSection from './search'
 import CategorySection from './category'
+import { ProductType } from '../../constants/enums'
 
 import './index.scss'
 
@@ -108,7 +109,7 @@ class Index extends Component {
 
   onClickEvent(id: string) {
     Taro.navigateTo({
-      url: '/pages/detail/index?id='+id,
+      url: `/pages/detail/index?id=${id}&type=${ProductType.GOODS}`,
     })
   }
 

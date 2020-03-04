@@ -8,7 +8,7 @@ export enum Platform {
   WECHAT
 }
 
-export enum ProductPublishType {
+export enum ProductType {
   GOODS = 'GOODS',
   PURCHASE = 'PURCHASE',
 }

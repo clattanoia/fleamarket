@@ -14,7 +14,7 @@ import { cleanArrayEmpty } from '../../utils/helper'
 import { getToken, uploadQiniu } from '../../utils/qiniuUploader'
 import client from '../../graphql-client'
 import { publishGoodsMutation, publishPurchaseMutation } from '../../query/publish'
-import { ProductPublishType } from '../../constants/enums'
+import { ProductType } from '../../constants/enums'
 
 import './index.scss'
 
@@ -33,8 +33,8 @@ const ERROR_MESSAGES = {
 }
 
 const TITLE_TEXT = {
-  [ProductPublishType.PURCHASE]: '发布求购',
-  [ProductPublishType.GOODS]: '发布出售',
+  [ProductType.PURCHASE]: '发布求购',
+  [ProductType.GOODS]: '发布出售',
 }
 
 type UserInfo = {
@@ -77,7 +77,7 @@ interface Publish {
 class Publish extends Component {
 
   state = {
-    type: ProductPublishType.GOODS,
+    type: ProductType.GOODS,
     toastText: '',
     showToast: false,
     toastStatus: 'error',
@@ -150,7 +150,7 @@ class Publish extends Component {
     ]
 
     // 求购信息校验图片
-    if(this.state.type === ProductPublishType.GOODS) {
+    if(this.state.type === ProductType.GOODS) {
       attrKeys.push('imagesUrls')
     }
 
@@ -209,7 +209,7 @@ class Publish extends Component {
 
     try {
       const { data } = await client.mutate({
-        mutation: type === ProductPublishType.GOODS ? publishGoodsMutation : publishPurchaseMutation,
+        mutation: type === ProductType.GOODS ? publishGoodsMutation : publishPurchaseMutation,
         variables: { publishInput },
       })
       Taro.redirectTo({

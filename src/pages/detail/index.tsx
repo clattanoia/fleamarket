@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import { Image, Text, View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
@@ -13,15 +13,15 @@ import Contact from './components/contact'
 import Manage from './components/manage'
 
 import { GoodDetail } from '../../constants/types'
-import { detailQuery, contactsQuery } from '../../query/detail'
+import { contactsQuery, goodsDetailQuery, purchaseDetailQuery } from '../../query/detail'
 import client from '../../graphql-client'
-import { Status } from '../../constants/enums'
+import { ProductType, Status } from '../../constants/enums'
 import { authLogin } from '../../utils/auth'
 
 import './index.scss'
 
 type PageStateProps = {
-  id: string
+  userId: string
 }
 
 type PageDispatchProps = {}
@@ -42,7 +42,7 @@ interface GoodsDetail {
 }
 
 @connect(({ userInfo }) => ({
-  id: userInfo.id,
+  userId: userInfo.id,
 }))
 class GoodsDetail extends Component {
   config: Config = {
@@ -50,17 +50,28 @@ class GoodsDetail extends Component {
   }
 
   state = {
+    id: null,
+    type: ProductType.GOODS,
     detail: null,
+    contacts: [],
+
     isOpen: false,
     isOpened: false,
-    contacts: [],
+  }
+
+  componentWillMount(): void {
+    const { type, id } = this.$router.params
+    this.setState({ type, id })
   }
 
   async componentDidMount() {
-    const { id } = this.$router.params
-    const { data: { goods }} = await client.query({ query: detailQuery, variables: { id }})
+    const { id, type } = this.state
+    const { data: { detailInfo }} = await client.query({
+      query: type === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
+      variables: { id },
+    })
     this.setState({
-      detail: goods,
+      detail: detailInfo,
     })
   }
 
@@ -122,7 +133,7 @@ class GoodsDetail extends Component {
 
   render() {
     const { detail } = this.state
-    const isOwnGoods = detail && this.props.id === (detail as any).owner.id
+    const isOwnGoods = detail && this.props.userId === (detail as any).owner.id
     return detail !== null ? (
       <View className="detail">
         <Avatar

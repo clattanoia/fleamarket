@@ -4,7 +4,7 @@ import { AtTabBar, AtFloatLayout, AtActionSheet, AtActionSheetItem } from 'taro-
 
 import AuthInfoLayout from '../authInfo'
 import { authLogin } from '../../utils/auth'
-import { ProductPublishType } from '../../constants/enums'
+import { ProductType } from '../../constants/enums'
 
 import './index.scss'
 
@@ -67,7 +67,11 @@ function TabBar(props: InProps) {
     setIsOpenedTel(false)
   }
 
-  const handlePublishItemClick = (type) => {
+  const handlePublishItemClick = (key) => {
+    const type = {
+      goods: ProductType.GOODS,
+      purchase: ProductType.PURCHASE,
+    }[key]
     setPublishLayoutOpen(false)
     const currentPage = Taro.getCurrentPages()[0]
     // pages/publish/index /pages/publish/index
@@ -103,10 +107,10 @@ function TabBar(props: InProps) {
         onCancel={() => setPublishLayoutOpen(false)}
         onClose={() => setPublishLayoutOpen(false)}
       >
-        <AtActionSheetItem onClick={() => handlePublishItemClick(ProductPublishType.GOODS)}>
+        <AtActionSheetItem onClick={() => handlePublishItemClick('goods')}>
           发布出售
         </AtActionSheetItem>
-        <AtActionSheetItem onClick={() => handlePublishItemClick(ProductPublishType.PURCHASE)}>
+        <AtActionSheetItem onClick={() => handlePublishItemClick('purchase')}>
           发布求购
         </AtActionSheetItem>
       </AtActionSheet>

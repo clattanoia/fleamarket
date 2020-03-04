@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtButton, AtToast }  from 'taro-ui'
+import { AtButton, AtToast } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { ComponentClass } from 'react'
 
@@ -13,10 +13,10 @@ import PublishImages from './images'
 import { cleanArrayEmpty } from '../../utils/helper'
 import { getToken, uploadQiniu } from '../../utils/qiniuUploader'
 import client from '../../graphql-client'
-import { publishMutation } from '../../../.temp/query/publish'
+import { publishGoodsMutation, publishPurchaseMutation } from '../../query/publish'
+import { ProductPublishType } from '../../constants/enums'
 
 import './index.scss'
-
 
 const ERROR_MESSAGES = {
   title: '标题不能为空',
@@ -33,8 +33,8 @@ const ERROR_MESSAGES = {
 }
 
 const TITLE_TEXT = {
-  purchase: '发布求购',
-  goods: '发布出售',
+  [ProductPublishType.PURCHASE]: '发布求购',
+  [ProductPublishType.GOODS]: '发布出售',
 }
 
 type UserInfo = {
@@ -51,7 +51,7 @@ type PageDispatchProps = {}
 type PageOwnProps = {}
 
 type PageState = {
-
+  type: string,
   toastText: string,
   showToast: false,
   toastStatus: string,
@@ -77,6 +77,7 @@ interface Publish {
 class Publish extends Component {
 
   state = {
+    type: ProductPublishType.GOODS,
     toastText: '',
     showToast: false,
     toastStatus: 'error',
@@ -95,9 +96,11 @@ class Publish extends Component {
   }
 
   componentWillMount(): void {
+    const { type } = this.$router.params
     Taro.setNavigationBarTitle({
-      title: TITLE_TEXT[this.$router.params.type] || '发布',
+      title: TITLE_TEXT[type] || '发布',
     })
+    type && this.setState({ type })
     // console.log(this.$router.params)
   }
 
@@ -144,8 +147,12 @@ class Publish extends Component {
       'detail',
       'selectedCategory',
       'selectedContacts',
-      'imagesUrls',
     ]
+
+    // 求购信息校验图片
+    if(this.state.type === ProductPublishType.GOODS) {
+      attrKeys.push('imagesUrls')
+    }
 
     for(const key of attrKeys) {
       if(!this.validRequired(this.state[key])){
@@ -171,7 +178,9 @@ class Publish extends Component {
     let uploadedImages: Array<Publish.InPickerImageFiles> = []
     // upload images
     try {
-      uploadedImages = await this.uploadImages()
+      if(this.state.imagesUrls.length) {
+        uploadedImages = await this.uploadImages()
+      }
     } catch (e) {
       this.showErrorMessage('uploadError')
       this.setLoading(false)
@@ -190,16 +199,21 @@ class Publish extends Component {
       price: Number(this.state.price),
       description: this.state.detail,
       category: this.state.selectedCategory,
-      coverUrl: uploadedImages[0].qiniuUrl,
+      coverUrl: uploadedImages.length ? uploadedImages[0].qiniuUrl : null,
       pictures: uploadedImages.map(item => item.qiniuUrl),
       contacts: contactIds,
     }
     // console.log('publishInput:', publishInput)
 
+    const { type } = this.state
+
     try {
-      const { data } = await client.mutate({ mutation: publishMutation, variables: { publishInput }})
+      const { data } = await client.mutate({
+        mutation: type === ProductPublishType.GOODS ? publishGoodsMutation : publishPurchaseMutation,
+        variables: { publishInput },
+      })
       Taro.redirectTo({
-        url: '/pages/detail/index?id=' + data.publish,
+        url: `/pages/detail/index?id=${data.publishGoods || data.publishPurchase}&type=${type}`,
       })
     } catch (e) {
       let error = 'systemError'

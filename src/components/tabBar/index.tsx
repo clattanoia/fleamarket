@@ -1,8 +1,11 @@
 import Taro, { memo, useState } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { AtTabBar, AtFloatLayout, AtActionSheet, AtActionSheetItem } from 'taro-ui'
+
 import AuthInfoLayout from '../authInfo'
 import { authLogin } from '../../utils/auth'
+import { ProductPublishType } from '../../constants/enums'
+
 import './index.scss'
 
 interface InProps {
@@ -90,10 +93,10 @@ function TabBar(props: InProps) {
         onCancel={() => setPublishLayoutOpen(false)}
         onClose={() => setPublishLayoutOpen(false)}
       >
-        <AtActionSheetItem onClick={() => handlePublishItemClick('goods')}>
+        <AtActionSheetItem onClick={() => handlePublishItemClick(ProductPublishType.GOODS)}>
           发布出售
         </AtActionSheetItem>
-        <AtActionSheetItem onClick={() => handlePublishItemClick('purchase')}>
+        <AtActionSheetItem onClick={() => handlePublishItemClick(ProductPublishType.PURCHASE)}>
           发布求购
         </AtActionSheetItem>
       </AtActionSheet>

@@ -1,9 +1,15 @@
 import { gql } from 'apollo-boost'
 
-export const publishMutation = gql`
+export const publishGoodsMutation = gql`
 mutation ($publishInput: PublishInput!){
-  publish(publishInput: $publishInput)
+  publishGoods(publishInput: $publishInput)
 }
+`
+
+export const publishPurchaseMutation = gql`
+  mutation ($publishInput: PublishInput!){
+    publishPurchase(publishInput: $publishInput)
+  }
 `
 
 export const getQiniuTokenQuery = gql`

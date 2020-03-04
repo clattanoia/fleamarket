@@ -7,3 +7,8 @@ export enum Status {
 export enum Platform {
   WECHAT
 }
+
+export enum ProductPublishType {
+  GOODS = 'GOODS',
+  PURCHASE = 'PURCHASE',
+}

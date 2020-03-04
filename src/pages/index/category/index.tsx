@@ -1,7 +1,7 @@
 import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import { View, Swiper, SwiperItem } from '@tarojs/components'
 import { useSelector } from '@tarojs/redux'
-import CategoryItem from '../conponents/categoryItem'
+import CategoryItem from '../components/categoryItem'
 
 import styles from './index.module.scss'
 

@@ -1,0 +1,46 @@
+@import "../../styles/theme.scss";
+
+.selectLayout{
+  width:100%;
+  height: 60px;
+  padding-right: 20px;
+  box-sizing: border-box;
+  position: relative;
+  .selectLayoutShow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color:#808080;
+    flex-direction: row;
+    .selectTitle{
+      font-size: 14PX;
+    }
+    .selectIcon{
+      font-size: 14px;
+      height: 60px;
+      overflow: hidden;
+    }
+  }
+  .selectLayoutList{
+    position: absolute;
+    width:100%;
+    line-height: 30PX;
+    font-size: 14PX;
+    padding:10px 0 0;
+    top: 66px;
+    background-color: white;
+    border:1PX solid $borderColor;
+    border-radius:0 0 10px 10px;
+    .list{
+      border-bottom: 1PX solid $borderColor;
+      padding:0 12px;
+      box-sizing: border-box;
+    }
+  }
+}
+
+:global {
+  .selectActive{
+    color: $baseColor;
+  }
+}

@@ -19,6 +19,7 @@ function TabBar(props: InProps) {
   const [isPublishLayoutOpen, setPublishLayoutOpen] = useState(false)
   const [isOpenedTel, setIsOpenedTel] = useState(false)
   let toUrl = ''
+  let openPublishLayout = false  // 登录回调判断是跳转页面还是打开弹窗
 
   const gotoPage = () => {
     Taro.redirectTo({
@@ -26,12 +27,21 @@ function TabBar(props: InProps) {
     })
   }
 
+  const authCallback = () => {
+    if(openPublishLayout) {
+      setPublishLayoutOpen(true)
+    } else {
+      gotoPage()
+    }
+  }
+
   const handleClick = (value) => {
     if(value === 1){
-      authLogin({ callback: () => {
-        setPublishLayoutOpen(true)
-      } })
+      openPublishLayout = true
+      return authLogin({ callback: () => { setPublishLayoutOpen(true) } })
     }
+
+    openPublishLayout = false
 
     // 主页或者个人中心不重复渲染
     if(value === props.current) {
@@ -84,7 +94,7 @@ function TabBar(props: InProps) {
         current={props.current}
       />
 
-      <AuthInfoLayout authCallback={gotoPage} />
+      <AuthInfoLayout authCallback={authCallback} />
 
       <AtActionSheet
         isOpened={isPublishLayoutOpen}

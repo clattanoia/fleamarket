@@ -6,7 +6,6 @@ import CategoryItem from '../conponents/categoryItem'
 import styles from './index.module.scss'
 
 const colors = ['#10CA2E', '#646DE9', '#FFD252', '#FF842F', '#278EE4', '#07D6AA', '#FCA84F', '#0CC429', '#7E5AD6', '#FB5D5E']
-const perPage = 10
 
 function CategorySection() {
   const categories = useSelector((state: any) => {
@@ -24,7 +23,7 @@ function CategorySection() {
   }, [])
 
   useEffect(() => {
-    const pagesNum = Math.ceil(categories.length / perPage)
+    const pagesNum = Math.ceil(categories.length / colors.length)
     setPages(pagesNum)
   }, [categories])
 

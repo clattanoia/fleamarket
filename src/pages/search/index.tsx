@@ -5,8 +5,7 @@ import SeachSection from '../../components/search'
 export default class Search extends Component {
 
   config: Config = {
-    navigationBarTitleText: 'search',
-    // navigationStyle: 'custom',
+    navigationBarTitleText: '搜索',
   }
 
   render() {

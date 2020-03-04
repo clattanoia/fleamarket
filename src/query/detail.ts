@@ -59,3 +59,13 @@ export const contactsQuery = gql`
     }
   }
 `
+export const pullOffShelvesGoodsMutation = gql`
+  mutation($id: String!) {
+    pullOffShelvesGoods(id: $id)
+  }
+`
+export const putOnShelvesGoodsMutation = gql`
+  mutation($id: String!) {
+    putOnShelvesGoods(id: $id)
+  }
+`

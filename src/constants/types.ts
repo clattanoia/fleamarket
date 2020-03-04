@@ -11,7 +11,7 @@ export type User = {
   gender: number;
   lastVisitTime: Date;
   platform: Platform
-  contacts: [Contact]
+  contacts: Contact[]
 }
 
 export type Contact = {
@@ -32,6 +32,6 @@ export interface GoodDetail {
   status?: Status;
   createTime?: Date;
   updateTime?: Date;
-  pictures?: [string];
-  contacts?: [string];
+  pictures?: string[];
+  contacts?: string[];
 }

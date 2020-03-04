@@ -12,8 +12,9 @@ import AuthInfoLayout from '../../components/authInfo'
 import Contact from './components/contact'
 import Manage from './components/manage'
 
-import { GoodDetail } from '../../constants/types'
+import { GoodDetail, User } from '../../constants/types'
 import { contactsQuery, goodsDetailQuery, purchaseDetailQuery } from '../../query/detail'
+
 import client from '../../graphql-client'
 import { ProductType, Status } from '../../constants/enums'
 import { authLogin } from '../../utils/auth'
@@ -29,7 +30,9 @@ type PageDispatchProps = {}
 type PageOwnProps = {}
 
 type PageState = {
-  detail: GoodDetail | null
+  id: string | null
+  type: ProductType
+  detail: GoodDetail
   isOpen: boolean
   isOpened: boolean
   contacts: Contact.InContact[]
@@ -44,27 +47,33 @@ interface GoodsDetail {
 @connect(({ userInfo }) => ({
   userId: userInfo.id,
 }))
-class GoodsDetail extends Component {
+class GoodsDetail extends Component<PageOwnProps, PageState> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      id: null,
+      type: ProductType.GOODS,
+      detail: { id: '' },
+      isOpen: false,
+      isOpened: false,
+      contacts: [],
+    }
+  }
+  
+  componentWillMount(): void {
+    const { type, id } = this.$router.params
+    this.setState({ type: type as ProductType, id })
+  }
+
+  componentDidMount(): void {
+    this.fetchGoodsDetail()
+  }
+
   config: Config = {
     navigationBarTitleText: '二货详情',
   }
 
-  state = {
-    id: null,
-    type: ProductType.GOODS,
-    detail: null,
-    contacts: [],
-
-    isOpen: false,
-    isOpened: false,
-  }
-
-  componentWillMount(): void {
-    const { type, id } = this.$router.params
-    this.setState({ type, id })
-  }
-
-  async componentDidMount() {
+  fetchGoodsDetail = async() => {
     const { id, type } = this.state
     const { data: { detailInfo }} = await client.query({
       query: type === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
@@ -88,8 +97,7 @@ class GoodsDetail extends Component {
 
   showContact = async(): Promise<void> => {
     if(Taro.getStorageSync('token')) {
-      const detail = this.state.detail
-      const contacts = await this.getContacts(detail.owner.id, detail.contacts)
+      const contacts = await this.getContacts()
       this.setState({
         contacts,
         isOpen: true,
@@ -117,11 +125,12 @@ class GoodsDetail extends Component {
     })
   }
 
-  getContacts = async(userId, ids): Promise<Contact.InContact[]> => {
-    if(!ids || !ids.length) return []
+  getContacts = async(): Promise<Contact.InContact[]> => {
+    const { owner, contacts } = this.state.detail
+    if(!contacts || !contacts.length) return []
     try {
-      const { data: { contacts }} = await client.query({ query: contactsQuery, variables: { userId, ids }})
-      return contacts
+      const { data } = await client.query({ query: contactsQuery, variables: { userId: (owner as User).id, ids: contacts }})
+      return data.contacts
     } catch (error) {
       throw error
     }
@@ -133,20 +142,20 @@ class GoodsDetail extends Component {
 
   render() {
     const { detail } = this.state
-    const isOwnGoods = detail && this.props.userId === (detail as any).owner.id
-    return detail !== null ? (
+    const { userId } = this.props
+    return detail && detail.owner ? (
       <View className="detail">
         <Avatar
-          userId={(detail as any).owner.id}
-          avatarUrl={(detail as any).owner.avatarUrl}
-          nickname={(detail as any).owner.nickname}
+          userId={detail.owner.id}
+          avatarUrl={detail.owner.avatarUrl}
+          nickname={detail.owner.nickname}
           avatarSize={80}
           nameSize={36}
         />
         <View className="price-container">
           <Text className="unit">￥</Text>
           <Text className="price">
-            {(detail as any).price}
+            {(detail.price as number)}
           </Text>
         </View>
         <View className="detial-container">
@@ -154,29 +163,29 @@ class GoodsDetail extends Component {
             <Text>商品详情</Text>
           </View>
           <View className="status-tags">
-            <Tag tagName={this.genSaleStatus((detail as any).status)} />
+            <Tag tagName={this.genSaleStatus((detail.status as Status))} />
           </View>
-          <View className="title">{(detail as any).title}</View>
+          <View className="title">{(detail.title as string)}</View>
           <View className="description">
-            <ExtendedContainer maxLine={5} content={(detail as any).description} />
+            <ExtendedContainer maxLine={5} content={(detail.description as string)} />
           </View>
           <View className="pictures">
             {
-              (detail as any).pictures.length > 0
-                ? (detail as any).pictures.map(pic => (<Image key={pic} className="picture" mode="widthFix" src={pic} />))
+              (detail.pictures as string[]).length > 0
+                ? (detail.pictures as string[]).map(pic => (<Image key={pic} className="picture" mode="widthFix" src={pic} />))
                 : null
             }
           </View>
         </View>
         <View className="footer">
           {
-            isOwnGoods ?
+            userId === detail.owner.id ?
               <AtButton type='primary' className="btn manage-btn" onClick={this.showManage}>管理</AtButton> :
               <AtButton type='primary' className="btn contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
           }
         </View>
         <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
-        <Manage goodsId={(detail as any).id} isOpened={this.state.isOpened} onClose={this.closeManage} />
+        <Manage goodsId={detail.id} isOpened={this.state.isOpened} onClose={this.closeManage} onRefresh={this.fetchGoodsDetail} />
         <AuthInfoLayout authCallback={this.gotoPage} />
       </View>
     ) : <DetailPreload />

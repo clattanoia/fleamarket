@@ -6,6 +6,7 @@ page {
 
 .contact {
   height: 100%;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -25,6 +26,7 @@ page {
 
 .contact-list {
   height: calc(100% - 100px);
+  width: 100%;
   overflow-y: auto;
 
   .no-contacts {
@@ -36,7 +38,7 @@ page {
   }
 
   .contact-item {
-    height: 114px;
+    min-height: 114px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -47,12 +49,24 @@ page {
       border-bottom: none;
     }
 
-    .label {
-      margin-left: 20px;
-    }
+    .left-container {
+      display: flex;
+      align-items: center;
 
-    .content {
-      margin-left: 10px;
+      width: calc(100% - 80px);
+      .label {
+        margin-left: 20px;
+        width: 100px;
+        word-wrap: break-word;
+        display: inline-block;
+      }
+
+      .content {
+        margin-left: 10px;
+        display: inline-block;
+        width: 450px;
+        word-wrap: break-word;
+      }
     }
 
     .delete-btn {

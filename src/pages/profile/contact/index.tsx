@@ -49,7 +49,7 @@ class Profile extends Component {
             <View className='no-contacts'><Text>暂无联系方式，请先新增联系方式吧~</Text></View>
             : this.props.userInfo.contacts.map(item =>
               <View key={item.id} className='contact-item'>
-                <View>
+                <View className='left-container'>
                   <Text className='label'>{item.label || '电话'}</Text>
                   <Text className='content'>{item.content}</Text>
                 </View>

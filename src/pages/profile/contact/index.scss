@@ -7,6 +7,10 @@
     border: 1px solid #bbbbbb;
     font-size: 28px;
 
+    &:not(:last-of-type) {
+      border-bottom: none;
+    }
+
     .type {
       margin-left: 20px;
     }

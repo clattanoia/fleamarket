@@ -66,7 +66,7 @@ class Profile extends Component {
   }
 
   getContracts = () => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/profile/contact/index',
     })
   }

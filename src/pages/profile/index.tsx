@@ -58,7 +58,6 @@ class Profile extends Component {
     const { data: { profileInfo }} = await client.query({
       query: profileInfoQuery,
       variables: { userId: this.props.userInfo.id },
-      fetchPolicy: 'no-cache',
     })
     this.setState({
       salesCount: profileInfo.salesCount,

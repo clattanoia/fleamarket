@@ -100,7 +100,7 @@ class Index extends Component {
 
   async fetchRecommendList() {
     const query = recommendListQuery
-    const { data } = await client.query({ query, variables: {}, fetchPolicy: 'no-cache' })
+    const { data } = await client.query({ query, variables: {}})
     this.setState({
       goods: data.goods,
     })

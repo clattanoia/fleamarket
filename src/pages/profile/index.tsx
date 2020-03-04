@@ -76,12 +76,14 @@ class Profile extends Component {
             <Text className='description'>{this.props.userInfo.brief || '这个人很懒，什么也没有留下~'}</Text>
           </View>
         </View>
-        <View className='operation-list'>
-          <OperationItem title='我的出售' count={this.state.salesCount} icon='iconmaichu' hasDivision iconColor='#10ca2e'></OperationItem>
-          <OperationItem title='我的求购' count={this.state.purchaseCount} icon='iconmairu' iconColor='#646de9'></OperationItem>
-        </View>
-        <View className='contract'>
-          <OperationItem title='联系方式' icon='icondianhua' iconColor='#fb5d5e'></OperationItem>
+        <View className='scroll-section'>
+          <View className='operation-list'>
+            <OperationItem title='我的出售' count={this.state.salesCount} icon='iconmaichu' hasDivision iconColor='#10ca2e'></OperationItem>
+            <OperationItem title='我的求购' count={this.state.purchaseCount} icon='iconmairu' iconColor='#646de9'></OperationItem>
+          </View>
+          <View className='contract'>
+            <OperationItem title='联系方式' icon='icondianhua' iconColor='#fb5d5e'></OperationItem>
+          </View>
         </View>
         <TabBar  current={2} />
       </View>

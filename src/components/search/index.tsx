@@ -2,11 +2,12 @@ import Taro, { memo } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtSearchBar }  from 'taro-ui'
 
-import './index.scss'
+import styles from './index.module.scss'
+
+import { placeholderText } from '../../constants/search'
 
 
 function SeachSection() {
-  const placeholderText = '请输入您想要寻找的"二货"'
 
   const goToSearch = () => {
     Taro.redirectTo({
@@ -16,8 +17,8 @@ function SeachSection() {
   const onChange = () => {}
 
   return (
-    <View className="search" onClick={goToSearch}>
-      <View className="searchLeft">
+    <View className={styles.search} onClick={goToSearch}>
+      <View className={styles.searchLeft}>
         <AtSearchBar
           disabled
           value=""
@@ -25,7 +26,7 @@ function SeachSection() {
           onChange={onChange}
         />
       </View>
-      <Text className="searchBtn">搜索</Text>
+      <Text className={styles.searchBtn}>取消</Text>
     </View>
   )
 

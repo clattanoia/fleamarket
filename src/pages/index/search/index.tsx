@@ -3,10 +3,10 @@ import { View, Text } from '@tarojs/components'
 import { AtSearchBar }  from 'taro-ui'
 
 import './index.scss'
+import { placeholderText } from '../../../constants/search'
 
 
 function SeachSection() {
-  const placeholderText = '请输入您想要寻找的"二货"'
 
   const goToSearch = () => {
     Taro.redirectTo({

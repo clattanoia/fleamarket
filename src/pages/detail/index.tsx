@@ -12,7 +12,7 @@ import AuthInfoLayout from '../../components/authInfo'
 import Contact from './components/contact'
 import Manage from './components/manage'
 
-import { GoodDetail, User } from '../../constants/types'
+import { ProductInfoDetail, User } from '../../interfaces/types'
 import { contactsQuery, goodsDetailQuery, purchaseDetailQuery } from '../../query/detail'
 
 import client from '../../graphql-client'
@@ -32,7 +32,7 @@ type PageOwnProps = {}
 type PageState = {
   id: string | null
   type: ProductType
-  detail: GoodDetail
+  detail: ProductInfoDetail
   isOpen: boolean
   isOpened: boolean
   contacts: Contact.InContact[]
@@ -40,14 +40,14 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface GoodsDetail {
+interface ProductDetail {
   props: IProps;
 }
 
 @connect(({ userInfo }) => ({
   userId: userInfo.id,
 }))
-class GoodsDetail extends Component<PageOwnProps, PageState> {
+class ProductDetail extends Component<PageOwnProps, PageState> {
   constructor(props) {
     super(props)
     this.state = {
@@ -59,7 +59,7 @@ class GoodsDetail extends Component<PageOwnProps, PageState> {
       contacts: [],
     }
   }
-  
+
   componentWillMount(): void {
     const { type, id } = this.$router.params
     this.setState({ type: type as ProductType, id })
@@ -192,4 +192,4 @@ class GoodsDetail extends Component<PageOwnProps, PageState> {
   }
 }
 
-export default GoodsDetail as ComponentClass<PageOwnProps, PageState>
+export default ProductDetail as ComponentClass<PageOwnProps, PageState>

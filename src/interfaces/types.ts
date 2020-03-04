@@ -1,4 +1,4 @@
-import { Platform, Status } from './enums'
+import { Platform, Status } from '../constants/enums'
 
 export type User = {
   id: string;
@@ -20,7 +20,7 @@ export type Contact = {
   type: string;
 }
 
-export interface GoodDetail {
+export interface ProductInfoDetail {
   id: string;
   owner?: User
   title?: string;

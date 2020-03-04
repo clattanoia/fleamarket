@@ -6,13 +6,14 @@ import CategoryItem from '../conponents/categoryItem'
 import styles from './index.module.scss'
 
 const colors = ['#10CA2E', '#646DE9', '#FFD252', '#FF842F', '#278EE4', '#07D6AA', '#FCA84F', '#0CC429', '#7E5AD6', '#FB5D5E']
+const perPage = 10
 
 function CategorySection() {
   const categories = useSelector((state: any) => {
     return state.category.categories
   })
   const [width, setWidth]=useState(0)
-  console.log(categories)
+  const [pages, setPages]=useState(0)
 
   useEffect(() => {
     Taro.getSystemInfo({
@@ -22,16 +23,14 @@ function CategorySection() {
     })
   }, [])
 
+  useEffect(() => {
+    const pagesNum = Math.ceil(categories.length / perPage)
+    setPages(pagesNum)
+  }, [categories])
+
   if(categories.length === 0){
     return null
   }
-
-  const firstPage = categories.slice(0, 10)
-  console.log(firstPage)
-
-  // if (firstPage.length === 0){
-  //   return null
-  // }
 
   const gotoList = (id) => () => {
     Taro.redirectTo({
@@ -44,30 +43,30 @@ function CategorySection() {
       <Swiper
         className={styles.categoryBody}
         indicatorDots
-        indicatorColor='#ffffff'
+        indicatorColor='#cccccc'
         indicatorActiveColor='#FE5155'
         circular
       >
-        <SwiperItem>
-          <View className={styles.categoryContent}>
-            {
-              firstPage.map((category, index) =>
-                <View className={styles.categoryItem} key={category.id} onClick={gotoList(category.id)}>
-                  <CategoryItem category={category} color={colors[index]} width={width} />
+        {
+          [...new Array(pages).keys()].map((item) => {
+            const currentCategories = categories.slice(item*10, item*10+10)
+            return (
+              <SwiperItem>
+                <View className={styles.categoryContent} key={item}>
+                  {
+                    currentCategories.map((category, index) =>
+                      <View className={styles.categoryItem} key={category.id} onClick={gotoList(category.id)}>
+                        <CategoryItem category={category} color={colors[index]} width={width} />
+                      </View>
+                    )
+                  }
                 </View>
-              )
-            }
-          </View>
-        </SwiperItem>
-        <SwiperItem>
-          <View className='categoryContent'>
-            {
-              firstPage.map((category) =>
-                <CategoryItem key={category.id} category={category} color="green" width={width} />
-              )
-            }
-          </View>
-        </SwiperItem>
+              </SwiperItem>
+            )
+          }
+
+          )
+        }
       </Swiper>
     </View>
   )

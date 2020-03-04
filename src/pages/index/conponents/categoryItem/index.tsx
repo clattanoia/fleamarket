@@ -14,10 +14,14 @@ function CategoryItem(props: InProps) {
 
   const { category, color, width } = props
 
+  if(!category){
+    return null
+  }
+
   return (
     <View className={styles.categoryContent} style={{ width: `${width}px` }}>
       <View className={styles.categoryIcon} style={{ backgroundColor: color }}>
-        <AtIcon prefixClass='iconfont' value="iconjianshen"></AtIcon>
+        <AtIcon prefixClass='iconfont' value={category.icon}></AtIcon>
       </View>
       <Text>{category.name}</Text>
     </View>

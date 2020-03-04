@@ -50,8 +50,8 @@ function CategorySection() {
           [...new Array(pages).keys()].map((item) => {
             const currentCategories = categories.slice(item*10, item*10+10)
             return (
-              <SwiperItem>
-                <View className={styles.categoryContent} key={item}>
+              <SwiperItem key={item}>
+                <View className={styles.categoryContent}>
                   {
                     currentCategories.map((category, index) =>
                       <View className={styles.categoryItem} key={category.id} onClick={gotoList(category.id)}>

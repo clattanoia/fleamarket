@@ -5,6 +5,4 @@ declare namespace Global {
     name: string,
     icon: string
   }
-
-  type ToastStatus = 'error' | 'loading' | 'success'
 }

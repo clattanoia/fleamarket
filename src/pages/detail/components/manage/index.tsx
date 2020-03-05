@@ -5,7 +5,7 @@ import { AtActionSheet, AtActionSheetItem, AtModal, AtModalContent, AtModalActio
 import { BaseEventOrigFunction } from '@tarojs/components/types/common'
 
 import client from '../../../../graphql-client'
-import { Status, ProductType } from '../../../../constants/enums'
+import { Status, ProductType, ProductHandleType, ToastStatus } from '../../../../constants/enums'
 import {
   pullOffShelvesGoodsMutation,
   putOnShelvesGoodsMutation,
@@ -33,9 +33,9 @@ type PageState = {
   isModalOpened: boolean
   isToastOpened: boolean
   text: string
-  status: Global.ToastStatus
+  status: ToastStatus
   isForSale: boolean
-  type: '下架' | '激活'
+  type: ProductHandleType
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -51,16 +51,17 @@ class Manage extends Component<PageOwnProps, PageState> {
       isModalOpened: false,
       isToastOpened: false,
       text: '',
-      status: 'success',
+      status: ToastStatus.SUCCESS,
       isForSale: true,
-      type: '下架',
+      type: ProductHandleType.SOLDOUT,
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    const isForSale = nextProps.productStatus === Status.FOR_SALE
     this.setState({
-      isForSale: nextProps.productStatus === Status.FOR_SALE,
-      type: nextProps.productStatus === Status.FOR_SALE ? '下架' : '激活',
+      isForSale,
+      type: isForSale ? ProductHandleType.SOLDOUT : ProductHandleType.ACTIVATE,
     })
   }
 
@@ -101,14 +102,14 @@ class Manage extends Component<PageOwnProps, PageState> {
       this.setState({
         isToastOpened: true,
         text: `${type}成功`,
-        status: 'success',
+        status: ToastStatus.SUCCESS,
       })
       this.props.onRefresh(event)
     } catch (error) {
       this.setState({
         isToastOpened: true,
         text: `${type}失败`,
-        status: 'error',
+        status: ToastStatus.ERROR,
       })
     } finally {
       this.closeModal()

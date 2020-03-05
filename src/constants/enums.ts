@@ -12,3 +12,14 @@ export enum ProductType {
   GOODS = 'GOODS',
   PURCHASE = 'PURCHASE',
 }
+
+export enum ProductHandleType {
+  SOLDOUT = '下架',
+  ACTIVATE = '激活',
+}
+
+export enum ToastStatus {
+  ERROR = 'error',
+  LOADING = 'loading',
+  SUCCESS = 'success',
+}

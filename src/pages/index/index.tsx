@@ -113,6 +113,12 @@ class Index extends Component {
     })
   }
 
+  handleGotoPurchase(id): void {
+    Taro.navigateTo({
+      url: `/pages/detail/index?id=${id}&productType=${ProductType.PURCHASE}`,
+    })
+  }
+
   render() {
     return (
       <View className='index'>
@@ -121,6 +127,8 @@ class Index extends Component {
         </View>
         <View className="scrollSection">
           <CategorySection />
+          <View onClick={() => this.handleGotoPurchase('4c1a663d-0249-47c9-86ee-54e144120ddb')}>查看浩瀚求购</View>
+          <View onClick={() => this.handleGotoPurchase('7bc8317c-74f4-4239-a958-56b19e3696fe')}>查看林松求购</View>
           <Text className='category'>看推荐</Text>
           {this.state.goods.length === 0 ?
             <View className='no-goods'><Text>暂无信息</Text></View> :

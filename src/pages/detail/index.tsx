@@ -84,10 +84,17 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     })
   }
 
+  genProductType = (type: ProductType) => {
+    return {
+      [ProductType.PURCHASE]: '求购',
+      [ProductType.GOODS]: '出售',
+    }[type]
+  }
+
   genSaleStatus = (status: Status) => {
     switch (status) {
       case Status.FOR_SALE:
-        return '出售'
+        return '在售'
       case Status.SALE_OUT:
         return '已下架'
       case Status.FREEZE:
@@ -141,7 +148,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   render() {
-    const { detail } = this.state
+    const { detail, productType } = this.state
     const { userId } = this.props
     return detail && detail.owner ? (
       <View className="detail">
@@ -163,6 +170,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
             <Text>商品详情</Text>
           </View>
           <View className="status-tags">
+            <Tag tagName={this.genProductType((productType as ProductType))} />
             <Tag tagName={this.genSaleStatus((detail.status as Status))} />
           </View>
           <View className="title">{(detail.title as string)}</View>
@@ -185,7 +193,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           }
         </View>
         <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
-        <Manage productId={detail.id} userId={detail.owner.id} productStatus={(detail.status as Status)} isOpened={this.state.isOpened} onClose={this.closeManage} onRefresh={this.fetchGoodsDetail} />
+        <Manage productId={detail.id} userId={detail.owner.id} productStatus={(detail.status as Status)} productType={this.state.productType} isOpened={this.state.isOpened} onClose={this.closeManage} onRefresh={this.fetchGoodsDetail} />
         <AuthInfoLayout authCallback={this.gotoPage} />
       </View>
     ) : <DetailPreload />

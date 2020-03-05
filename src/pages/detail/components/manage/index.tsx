@@ -5,10 +5,15 @@ import { AtActionSheet, AtActionSheetItem, AtModal, AtModalContent, AtModalActio
 import { BaseEventOrigFunction } from '@tarojs/components/types/common'
 
 import client from '../../../../graphql-client'
-import { pullOffShelvesGoodsMutation, putOnShelvesGoodsMutation } from '../../../../query/detail'
+import { Status, ProductType } from '../../../../constants/enums'
+import {
+  pullOffShelvesGoodsMutation,
+  putOnShelvesGoodsMutation,
+  putOnShelvesPurchaseMutation,
+  pullOffShelvesPurchaseMutation,
+} from '../../../../query/detail'
 
 import styles from './index.module.scss'
-import { Status } from '../../../../constants/enums'
 
 type PageStateProps = {}
 
@@ -19,6 +24,7 @@ type PageOwnProps = {
   productStatus: Status
   userId: string
   isOpened: boolean
+  productType: ProductType
   onRefresh: BaseEventOrigFunction<void>
   onClose: BaseEventOrigFunction<void>
 }
@@ -62,16 +68,34 @@ class Manage extends Component<PageOwnProps, PageState> {
     this.setState({ isModalOpened: true })
     this.props.onClose(event)
   }
-  
+
   activate = (event) => {
     this.setState({ isModalOpened: true })
     this.props.onClose(event)
   }
 
+  getShelvesMutation() {
+    const { isForSale } = this.state
+    const { productType } = this.props
+    if(productType === ProductType.GOODS) {
+      if(isForSale) {
+        return pullOffShelvesGoodsMutation
+      }
+      return putOnShelvesGoodsMutation
+    }
+
+    if(productType === ProductType.PURCHASE) {
+      if(isForSale) {
+        return pullOffShelvesPurchaseMutation
+      }
+      return putOnShelvesPurchaseMutation
+    }
+  }
+
   handleShelves = async(event) => {
     const { productId, userId } = this.props
-    const { isForSale, type } = this.state
-    const mutation = isForSale ? pullOffShelvesGoodsMutation : putOnShelvesGoodsMutation
+    const { type } = this.state
+    const mutation = this.getShelvesMutation()
     try {
       await client.mutate({ mutation, variables: { id: productId, userId }})
       this.setState({
@@ -90,7 +114,7 @@ class Manage extends Component<PageOwnProps, PageState> {
       this.closeModal()
     }
   }
-  
+
   closeModal = () => {
     this.setState({
       isModalOpened: false,

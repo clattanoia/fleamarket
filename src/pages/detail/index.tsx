@@ -163,9 +163,9 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   renderReadCount() {
-    const { readCount } = this.state.detail
-    if(readCount) {
-      return <Text className="read-count">{readCount}次浏览</Text>
+    const { detail } = this.state
+    if(detail.readCount) {
+      return <Text className="read-count">{detail.readCount}次浏览</Text>
     }
   }
 

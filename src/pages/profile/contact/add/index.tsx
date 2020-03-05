@@ -8,7 +8,6 @@ import './index.scss'
 import { addContact } from '../../../../actions/userInfo'
 
 type UserInfo = {
-  contacts: Contact.InContact[],
   id: string,
 }
 
@@ -44,7 +43,7 @@ const regexs = {
 }
 
 const ERROR_MESSAGE = {
-  REQUIRED: '请先选择类型',
+  REQUIRED: '请先输入类型，名称和内容',
   PHONE: '请输入正确的电话号码',
   WECHAT: '请输入正确的微信号',
   EMAIL: '请输入正确的邮箱地址',
@@ -96,7 +95,7 @@ class AddContact extends Component {
   }
 
   isValidInput = (): boolean => {
-    if(!this.state.type) {
+    if(!this.state.label || !this.state.type || !this.state.content) {
       this.setStateValue('toastText', ERROR_MESSAGE.REQUIRED)
       return false
     }

@@ -43,9 +43,9 @@ export function addContact(addContactInput, userId) {
 
       // const data = { addContact: '123124534' }
 
-      const newContactList = { ...addContactInput, id: data.addContact }
+      const newContact = { ...addContactInput, id: data.addContact }
 
-      dispatch(updateContact(newContactList))
+      dispatch(updateContact(newContact))
     } catch (error) {
       throw error
     }

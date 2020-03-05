@@ -16,6 +16,7 @@ query($id: String!) {
     updateTime
     pictures
     contacts
+    readCount
     owner {
       id
       nickname
@@ -41,6 +42,7 @@ export const purchaseDetailQuery = gql`
       updateTime
       pictures
       contacts
+      readCount
       owner {
         id
         nickname

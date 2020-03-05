@@ -27,11 +27,19 @@ page {
       padding-bottom: 120px;
 
       .label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         border-left: solid 10rpx $baseColor;
         padding-left: 20rpx;
         margin-bottom: 20rpx;
         font-size: 36rpx;
         font-weight: bold;
+        .read-count {
+          color: $grey;
+          font-size: 26px;
+          font-weight: normal;
+        }
       }
 
       .title {
@@ -69,7 +77,7 @@ page {
       align-items: center;
       justify-content: flex-end;
       padding: 0 30px;
-      
+
       .btn {
         font-size: 28px;
         color: #fff;

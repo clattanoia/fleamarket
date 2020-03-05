@@ -34,4 +34,5 @@ export interface ProductInfoDetail {
   updateTime?: Date;
   pictures?: string[];
   contacts?: string[];
+  readCount?: number;
 }

@@ -71,8 +71,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     this.setState({ productType: productType as ProductType, id })
   }
 
-  componentDidMount(): void {
-    this.fetchGoodsDetail()
+  async componentDidMount(): Promise<void> {
+    await this.fetchGoodsDetail()
     this.increaseReadCount()
   }
 
@@ -162,6 +162,13 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     this.showContact()
   }
 
+  renderReadCount() {
+    const { readCount } = this.state.detail
+    if(readCount) {
+      return <Text className="read-count">{readCount}次浏览</Text>
+    }
+  }
+
   render() {
     const { detail, productType } = this.state
     const { userId } = this.props
@@ -183,6 +190,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         <View className="detial-container">
           <View className="label">
             <Text>商品详情</Text>
+            { this.renderReadCount() }
           </View>
           <View className="status-tags">
             <Tag tagName={this.genProductType((productType as ProductType))} />

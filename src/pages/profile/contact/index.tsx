@@ -54,7 +54,7 @@ class Profile extends Component {
             : this.props.userInfo.contacts.map(item =>
               <View key={item.id} className='contact-item'>
                 <View className='left-container'>
-                  <Text className='label'>{item.label || '电话'}</Text>
+                  <Text className='label'>{item.label}</Text>
                   <Text className='content'>{item.content}</Text>
                 </View>
                 <Text className='delete-btn'>删除</Text>

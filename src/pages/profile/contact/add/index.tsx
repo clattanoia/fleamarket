@@ -5,16 +5,26 @@ import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
 
 import './index.scss'
+import { addContact } from '../../../../actions/userInfo'
 
 type UserInfo = {
+  contacts: Contact.InContact[],
   id: string,
+}
+
+interface AddContactInput {
+  label: string,
+  content: string,
+  type: string
 }
 
 type PageStateProps = {
   userInfo: UserInfo
 }
 
-type PageDispatchProps = {}
+type PageDispatchProps = {
+  addContact: (addContact: AddContactInput, userId: string) => Function,
+}
 
 type PageOwnProps = {}
 
@@ -38,10 +48,15 @@ const ERROR_MESSAGE = {
   PHONE: '请输入正确的电话号码',
   WECHAT: '请输入正确的微信号',
   EMAIL: '请输入正确的邮箱地址',
+  SYSTEM_ERROR: '服务异常，请稍后再试',
 }
 
 @connect(({ userInfo }) => ({
   userInfo: userInfo,
+}), (dispatch) => ({
+  addContact(data, userId) {
+    dispatch(addContact(data, userId))
+  },
 }))
 class AddContact extends Component {
 
@@ -50,7 +65,7 @@ class AddContact extends Component {
   }
 
   state = {
-    name: '',
+    label: '',
     content: '',
     type: '',
 
@@ -60,37 +75,33 @@ class AddContact extends Component {
     isSaving: false,
   }
 
-  handleNameChange = (value) => {
+  setStateValue = (key, value): void => {
     this.setState({
-      name: value,
+      [key]: value,
     })
+  }
+
+  handleNameChange = (value) => {
+    this.setStateValue('label', value)
     return value
   }
 
   handleContentChange = (value) => {
-    this.setState({
-      content: value,
-    })
+    this.setStateValue('content', value)
     return value
   }
 
   handleTypeChange = (value) => {
-    this.setState({
-      type: value,
-    })
+    this.setStateValue('type', value)
   }
 
   isValidInput = (): boolean => {
     if(!this.state.type) {
-      this.setState({
-        toastText: ERROR_MESSAGE.REQUIRED,
-      })
+      this.setStateValue('toastText', ERROR_MESSAGE.REQUIRED)
       return false
     }
     if(!regexs[this.state.type].test(this.state.content)) {
-      this.setState({
-        toastText: ERROR_MESSAGE[this.state.type],
-      })
+      this.setStateValue('toastText', ERROR_MESSAGE[this.state.type])
       return false
     }
     return true
@@ -98,9 +109,25 @@ class AddContact extends Component {
 
   addContact = async(): Promise<void> => {
     if(!this.isValidInput()) {
+      this.setStateValue('showToast', true)
+      return
+    }
+    this.setStateValue('isSaving', true)
+    try {
+      const addContactInput: AddContactInput = {
+        content: this.state.content,
+        label: this.state.label,
+        type: this.state.type,
+      }
+      await this.props.addContact(addContactInput, this.props.userInfo.id)
+      Taro.navigateBack()
+    } catch (e) {
       this.setState({
         showToast: true,
+        toastText: ERROR_MESSAGE.SYSTEM_ERROR,
       })
+    } finally {
+      this.setStateValue('isSaving', false)
     }
   }
 
@@ -115,7 +142,7 @@ class AddContact extends Component {
     return (
       <View className='add-contact'>
         <View className='type'>
-          <Text className='label'>类型</Text>
+          <Text className='type-label'>类型</Text>
           <View className='type-radio'>
             <AtRadio
               options={[
@@ -128,14 +155,14 @@ class AddContact extends Component {
             />
           </View>
         </View>
-        <View className='name'>
+        <View className='label'>
           <AtInput
-            name='name'
+            name='label'
             title='名称'
             type='text'
             maxLength={5}
             placeholder='请输入名称'
-            value={this.state.name}
+            value={this.state.label}
             onChange={this.handleNameChange}
           />
         </View>

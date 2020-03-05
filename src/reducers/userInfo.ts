@@ -1,4 +1,4 @@
-import { FETCH_USERINFO } from '../constants'
+import { FETCH_USERINFO, ADD_CONTACT } from '../constants'
 
 const INITIAL_STATE = {}
 
@@ -38,6 +38,12 @@ export default function category(state = INITIAL_STATE, action) {
         // 'province': 'string',
         // 'unionId': 'string'
       }
+    case ADD_CONTACT: {
+      return {
+        ...state,
+        contacts: [action.data, ...state.contacts],
+      }
+    }
     default:
       return state
   }

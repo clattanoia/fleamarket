@@ -109,7 +109,7 @@ class Index extends Component {
 
   onClickEvent(id: string) {
     Taro.navigateTo({
-      url: `/pages/detail/index?id=${id}&type=${ProductType.GOODS}`,
+      url: `/pages/detail/index?id=${id}&productType=${ProductType.GOODS}`,
     })
   }
 

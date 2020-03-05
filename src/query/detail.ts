@@ -69,3 +69,14 @@ export const putOnShelvesGoodsMutation = gql`
     putOnShelvesGoods(id: $id, userId: $userId)
   }
 `
+
+export const pullOffShelvesPurchaseMutation = gql`
+  mutation($id: String!, $userId: String!) {
+    pullOffShelvesPurchase(id: $id, userId: $userId)
+  }
+`
+export const putOnShelvesPurchaseMutation = gql`
+  mutation($id: String!, $userId: String!) {
+    putOnShelvesPurchase(id: $id, userId: $userId)
+  }
+`

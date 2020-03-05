@@ -31,7 +31,7 @@ type PageOwnProps = {}
 
 type PageState = {
   id: string | null
-  type: ProductType
+  productType: ProductType
   detail: ProductInfoDetail
   isOpen: boolean
   isOpened: boolean
@@ -52,7 +52,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     super(props)
     this.state = {
       id: null,
-      type: ProductType.GOODS,
+      productType: ProductType.GOODS,
       detail: { id: '' },
       isOpen: false,
       isOpened: false,
@@ -61,8 +61,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   componentWillMount(): void {
-    const { type, id } = this.$router.params
-    this.setState({ type: type as ProductType, id })
+    const { productType, id } = this.$router.params
+    this.setState({ productType: productType as ProductType, id })
   }
 
   componentDidMount(): void {
@@ -74,9 +74,9 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   fetchGoodsDetail = async() => {
-    const { id, type } = this.state
+    const { id, productType } = this.state
     const { data: { detailInfo }} = await client.query({
-      query: type === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
+      query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
       variables: { id },
     })
     this.setState({

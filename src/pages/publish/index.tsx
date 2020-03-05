@@ -51,7 +51,7 @@ type PageDispatchProps = {}
 type PageOwnProps = {}
 
 type PageState = {
-  type: string,
+  productType: string,
   toastText: string,
   showToast: false,
   toastStatus: string,
@@ -77,7 +77,7 @@ interface Publish {
 class Publish extends Component {
 
   state = {
-    type: ProductType.GOODS,
+    productType: ProductType.GOODS,
     toastText: '',
     showToast: false,
     toastStatus: 'error',
@@ -96,11 +96,11 @@ class Publish extends Component {
   }
 
   componentWillMount(): void {
-    const { type } = this.$router.params
+    const { productType } = this.$router.params
     Taro.setNavigationBarTitle({
-      title: TITLE_TEXT[type] || '发布',
+      title: TITLE_TEXT[productType] || '发布',
     })
-    type && this.setState({ type })
+    productType && this.setState({ productType })
     // console.log(this.$router.params)
   }
 
@@ -150,7 +150,7 @@ class Publish extends Component {
     ]
 
     // 求购信息校验图片
-    if(this.state.type === ProductType.GOODS) {
+    if(this.state.productType === ProductType.GOODS) {
       attrKeys.push('imagesUrls')
     }
 
@@ -205,15 +205,15 @@ class Publish extends Component {
     }
     // console.log('publishInput:', publishInput)
 
-    const { type } = this.state
+    const { productType } = this.state
 
     try {
       const { data } = await client.mutate({
-        mutation: type === ProductType.GOODS ? publishGoodsMutation : publishPurchaseMutation,
+        mutation: productType === ProductType.GOODS ? publishGoodsMutation : publishPurchaseMutation,
         variables: { publishInput },
       })
       Taro.redirectTo({
-        url: `/pages/detail/index?id=${data.publishGoods || data.publishPurchase}&type=${type}`,
+        url: `/pages/detail/index?id=${data.publishGoods || data.publishPurchase}&productType=${productType}`,
       })
     } catch (e) {
       let error = 'systemError'

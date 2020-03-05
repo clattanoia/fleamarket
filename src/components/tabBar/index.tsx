@@ -78,7 +78,7 @@ function TabBar(props: InProps) {
     if( pageUrl[1].indexOf(currentPage.route) > -1 && currentPage.options.type === type) {
       return
     }
-    toUrl = `${pageUrl[1]}?type=${type}`
+    toUrl = `${pageUrl[1]}?productType=${type}`
     gotoPage()
   }
 

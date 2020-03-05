@@ -2,6 +2,7 @@ import Taro, { memo, useState } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtIcon }  from 'taro-ui'
 import classNames from 'classnames'
+// import FloatList from '../FloatList'
 
 import styles from './index.module.scss'
 
@@ -24,17 +25,23 @@ function SelectLayout(props: InProps) {
     setArrowB(!arrotB)
   }
 
+  // const closeFloat = () => {
+  //   setArrowB(true)
+  // }
+
   const listClick = (val) => () => {
     onChangeSelect(val)
     setArrowB(!false)
   }
 
   return (
-    <View className={styles.selectLayout}>
-      <View className={styles.selectLayoutShow} onClick={selectClick}>
-        <View className={styles.selectTitle}>{current.name}</View>
-        <View className={styles.selectIcon}>
-          <AtIcon prefixClass='iconfont' value={arrotB ? 'iconarrowbottom' : 'iconarrowtop'} size="16"></AtIcon>
+    <View>
+      <View className={styles.selectLayout}>
+        <View className={styles.selectLayoutShow} onClick={selectClick}>
+          <View className={styles.selectTitle}>{current.name}</View>
+          <View className={styles.selectIcon}>
+            <AtIcon prefixClass='iconfont' value={arrotB ? 'iconarrowbottom' : 'iconarrowtop'} size="16"></AtIcon>
+          </View>
         </View>
       </View>
       <View
@@ -52,6 +59,7 @@ function SelectLayout(props: InProps) {
           )
         }
       </View>
+      {/* <FloatList visible={!arrotB} closeFloat={closeFloat} listData={list} listClickFunc={listClick}/> */}
     </View>
   )
 

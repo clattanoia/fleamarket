@@ -1,12 +1,18 @@
 @import "../../styles/theme.scss";
 
+
+.searchBody{
+  width:100%;
+  position: relative;
+}
+
 .search{
   width:100%;
-  padding:30px 20px 20px;
+  padding:14px 20px 14px;
   box-sizing: border-box;
   display:flex;
   justify-content: space-between;
-  height: 84px;
+  height: 88px;
   align-items: center;
   .searchLeft{
     width:620px;

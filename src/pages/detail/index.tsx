@@ -185,7 +185,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           }
         </View>
         <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
-        <Manage goodsId={detail.id} isOpened={this.state.isOpened} onClose={this.closeManage} onRefresh={this.fetchGoodsDetail} />
+        <Manage goodsId={detail.id} userId={detail.owner.id} isOpened={this.state.isOpened} onClose={this.closeManage} onRefresh={this.fetchGoodsDetail} />
         <AuthInfoLayout authCallback={this.gotoPage} />
       </View>
     ) : <DetailPreload />

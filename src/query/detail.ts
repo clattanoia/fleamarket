@@ -60,12 +60,12 @@ export const contactsQuery = gql`
   }
 `
 export const pullOffShelvesGoodsMutation = gql`
-  mutation($id: String!) {
-    pullOffShelvesGoods(id: $id)
+  mutation($id: String!, $userId: String!) {
+    pullOffShelvesGoods(id: $id, userId: $userId)
   }
 `
 export const putOnShelvesGoodsMutation = gql`
-  mutation($id: String!) {
-    putOnShelvesGoods(id: $id)
+  mutation($id: String!, $userId: String!) {
+    putOnShelvesGoods(id: $id, userId: $userId)
   }
 `

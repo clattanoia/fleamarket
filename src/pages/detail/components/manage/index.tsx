@@ -15,6 +15,7 @@ type PageDispatchProps = {}
 
 type PageOwnProps = {
   goodsId: string
+  userId: string
   isOpened: boolean
   onRefresh: BaseEventOrigFunction<void>
   onClose: BaseEventOrigFunction<void>
@@ -68,9 +69,10 @@ class Manage extends Component<PageOwnProps, PageState> {
 
   handleShelves = async(event) => {
     const { isSoldout, type } = this.state
+    const { goodsId, userId } = this.props
     const mutation = isSoldout ? pullOffShelvesGoodsMutation : putOnShelvesGoodsMutation
     try {
-      await client.mutate({ mutation, variables: { id: this.props.goodsId }})
+      await client.mutate({ mutation, variables: { id: goodsId, userId }})
       this.setState({
         isToastOpened: true,
         text: `${type}成功`,

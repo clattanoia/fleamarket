@@ -13,7 +13,13 @@ import Contact from './components/contact'
 import Manage from './components/manage'
 
 import { ProductInfoDetail, User } from '../../interfaces/types'
-import { contactsQuery, goodsDetailQuery, purchaseDetailQuery } from '../../query/detail'
+import {
+  contactsQuery,
+  goodsDetailQuery,
+  purchaseDetailQuery,
+  increaseGoodsReadCount,
+  increasePurchaseReadCount,
+} from '../../query/detail'
 
 import client from '../../graphql-client'
 import { ProductType, Status } from '../../constants/enums'
@@ -67,6 +73,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
 
   componentDidMount(): void {
     this.fetchGoodsDetail()
+    this.increaseReadCount()
   }
 
   config: Config = {
@@ -81,6 +88,14 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     })
     this.setState({
       detail: detailInfo,
+    })
+  }
+
+  increaseReadCount = async() => {
+    const { id, productType } = this.state
+    await client.query({
+      query: productType === ProductType.GOODS ? increaseGoodsReadCount : increasePurchaseReadCount,
+      variables: { id },
     })
   }
 

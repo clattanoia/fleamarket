@@ -1,10 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
-import { AtButton, AtInput, AtToast } from 'taro-ui'
+import { AtButton, AtInput, AtToast, AtRadio } from 'taro-ui'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
 
-import SelectLayout from '../../../../components/selectLayout'
 import './index.scss'
 
 type UserInfo = {
@@ -27,16 +26,19 @@ interface AddContact {
   props: IProps;
 }
 
-const contactTypes = [{
-  name: '电话',
-  id: 'PHONE',
-}, {
-  name: '微信',
-  id: 'WECHAT',
-}, {
-  name: '邮件',
-  id: 'EMAIL',
-}]
+const regexs = {
+  PHONE: /^1\d{10}$/,
+  WECHAT: /^[a-zA-Z]{1}[a-zA-Z0-9_-]{5,19}$/,
+  // eslint-disable-next-line no-useless-escape
+  EMAIL: /^[a-zA-Z0-9_\.-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+}
+
+const ERROR_MESSAGE = {
+  REQUIRED: '请先选择类型',
+  PHONE: '请输入正确的电话号码',
+  WECHAT: '请输入正确的微信号',
+  EMAIL: '请输入正确的邮箱地址',
+}
 
 @connect(({ userInfo }) => ({
   userInfo: userInfo,
@@ -50,7 +52,7 @@ class AddContact extends Component {
   state = {
     name: '',
     content: '',
-    // type: '',
+    type: '',
 
     showToast: false,
     toastText: '',
@@ -58,26 +60,48 @@ class AddContact extends Component {
     isSaving: false,
   }
 
-  handleNameChange(value) {
+  handleNameChange = (value) => {
     this.setState({
       name: value,
     })
     return value
   }
 
-  handleContentChange(value) {
+  handleContentChange = (value) => {
     this.setState({
       content: value,
     })
     return value
   }
 
-  handleChange() {
-
+  handleTypeChange = (value) => {
+    this.setState({
+      type: value,
+    })
   }
 
-  addContact() {
+  isValidInput = (): boolean => {
+    if(!this.state.type) {
+      this.setState({
+        toastText: ERROR_MESSAGE.REQUIRED,
+      })
+      return false
+    }
+    if(!regexs[this.state.type].test(this.state.content)) {
+      this.setState({
+        toastText: ERROR_MESSAGE[this.state.type],
+      })
+      return false
+    }
+    return true
+  }
 
+  addContact = async(): Promise<void> => {
+    if(!this.isValidInput()) {
+      this.setState({
+        showToast: true,
+      })
+    }
   }
 
   handleCloseToast = (): void => {
@@ -92,8 +116,16 @@ class AddContact extends Component {
       <View className='add-contact'>
         <View className='type'>
           <Text className='label'>类型</Text>
-          <View className='search-layout'>
-            <SelectLayout list={contactTypes} current={contactTypes[0]} onChangeSelect={this.handleChange} />
+          <View className='type-radio'>
+            <AtRadio
+              options={[
+                { label: '电话', value: 'PHONE' },
+                { label: '微信', value: 'WECHAT' },
+                { label: '邮件', value: 'EMAIL' },
+              ]}
+              value={this.state.type}
+              onClick={this.handleTypeChange}
+            />
           </View>
         </View>
         <View className='name'>
@@ -104,7 +136,7 @@ class AddContact extends Component {
             maxLength={5}
             placeholder='请输入名称'
             value={this.state.name}
-            onChange={this.handleNameChange.bind(this)}
+            onChange={this.handleNameChange}
           />
         </View>
         <View className='content'>
@@ -114,7 +146,7 @@ class AddContact extends Component {
             type='text'
             placeholder='请输入内容'
             value={this.state.content}
-            onChange={this.handleContentChange.bind(this)}
+            onChange={this.handleContentChange}
           />
         </View>
         <View className="save_btn">

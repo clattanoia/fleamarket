@@ -70,8 +70,6 @@ class AddContact extends Component {
 
     showToast: false,
     toastText: '',
-
-    isSaving: false,
   }
 
   setStateValue = (key, value): void => {
@@ -111,7 +109,6 @@ class AddContact extends Component {
       this.setStateValue('showToast', true)
       return
     }
-    this.setStateValue('isSaving', true)
     try {
       const addContactInput: AddContactInput = {
         content: this.state.content,
@@ -125,8 +122,6 @@ class AddContact extends Component {
         showToast: true,
         toastText: ERROR_MESSAGE.SYSTEM_ERROR,
       })
-    } finally {
-      this.setStateValue('isSaving', false)
     }
   }
 
@@ -179,8 +174,6 @@ class AddContact extends Component {
           <AtButton
             type="primary"
             onClick={this.addContact}
-            loading={this.state.isSaving}
-            disabled={this.state.isSaving}
           >保存</AtButton>
         </View>
         <AtToast

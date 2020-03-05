@@ -54,9 +54,17 @@
     height: 80px;
     line-height: 80px;
     border-bottom: 1PX solid $borderColor;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     &:last-child{
       border:0;
     }
   }
 }
 
+:global{
+  .activeColor{
+    color: $baseColor;
+  }
+}

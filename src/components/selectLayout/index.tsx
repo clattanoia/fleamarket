@@ -52,7 +52,7 @@ function SelectLayout(props: InProps) {
           {
             list.map(item =>
               <View
-                className={classNames(styles.list, { 'selectActive': item.id === current.id  })}
+                className={classNames(styles.list, { 'activeColor': item.id === current.id  })}
                 onClick={listClick(item)}
               >
                 {item.name}

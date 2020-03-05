@@ -10,22 +10,8 @@ page {
   overflow: hidden;
 }
 
-.fix-top-container {
-  width: 100%;
-  background-color: $baseColor;
-  height: 60px;
-  display: flex;
-  justify-content: flex-end;
-
-  .add-btn {
-    color: #fff;
-    margin-right: 20px;
-    font-size: 32px;
-  }
-}
-
 .contact-list {
-  height: calc(100% - 100px);
+  height: calc(100% - 93px);
   width: 100%;
   overflow-y: auto;
 
@@ -72,5 +58,9 @@ page {
     .delete-btn {
       margin-right: 20px;
     }
+  }
+
+  .add_btn {
+    margin-top: 20px;
   }
 }

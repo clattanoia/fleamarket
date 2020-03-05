@@ -1,0 +1,36 @@
+@import "../../../../styles/theme.scss";
+
+.add-contact {
+  position: relative;
+
+  .type {
+    display: flex;
+    margin: 0 20px;
+
+    .label {
+      font-size: 32px;
+      color: #101010;
+    }
+
+    .search-layout {
+      margin-left: 20px;
+      width: 200px;
+    }
+  }
+
+  .name {
+    margin: 0 20px;
+  }
+
+  .content {
+    margin: 0 20px;
+  }
+
+  .save_btn {
+    margin-top: 20px;
+  }
+
+  .at-input__title {
+    width: 80px;
+  }
+}

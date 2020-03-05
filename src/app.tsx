@@ -32,6 +32,7 @@ class App extends Component {
       'pages/search/index',
       'pages/searchList/index',
       'pages/profile/contact/index',
+      'pages/profile/contact/add/index',
     ],
     window: {
       backgroundTextStyle: 'light',

@@ -8,13 +8,15 @@ import client from '../../../../graphql-client'
 import { pullOffShelvesGoodsMutation, putOnShelvesGoodsMutation } from '../../../../query/detail'
 
 import styles from './index.module.scss'
+import { Status } from '../../../../constants/enums'
 
 type PageStateProps = {}
 
 type PageDispatchProps = {}
 
 type PageOwnProps = {
-  goodsId: string
+  productId: string
+  productStatus: Status
   userId: string
   isOpened: boolean
   onRefresh: BaseEventOrigFunction<void>
@@ -22,12 +24,12 @@ type PageOwnProps = {
 }
 
 type PageState = {
-  isSoldout: boolean
-  type: '下架' | '激活'
   isModalOpened: boolean
   isToastOpened: boolean
   text: string
   status: Global.ToastStatus
+  isForSale: boolean
+  type: '下架' | '激活'
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -40,39 +42,38 @@ class Manage extends Component<PageOwnProps, PageState> {
   constructor(props) {
     super(props)
     this.state = {
-      isSoldout: true,
-      type: '下架',
       isModalOpened: false,
       isToastOpened: false,
       text: '',
       status: 'success',
+      isForSale: true,
+      type: '下架',
     }
   }
 
-  soldout = (event) => {
+  componentWillReceiveProps(nextProps) {
     this.setState({
-      isSoldout: true,
-      type: '下架',
-      isModalOpened: true,
+      isForSale: nextProps.productStatus === Status.FOR_SALE,
+      type: nextProps.productStatus === Status.FOR_SALE ? '下架' : '激活',
     })
+  }
+
+  soldout = (event) => {
+    this.setState({ isModalOpened: true })
     this.props.onClose(event)
   }
   
   activate = (event) => {
-    this.setState({
-      isSoldout: false,
-      type: '激活',
-      isModalOpened: true,
-    })
+    this.setState({ isModalOpened: true })
     this.props.onClose(event)
   }
 
   handleShelves = async(event) => {
-    const { isSoldout, type } = this.state
-    const { goodsId, userId } = this.props
-    const mutation = isSoldout ? pullOffShelvesGoodsMutation : putOnShelvesGoodsMutation
+    const { productId, userId } = this.props
+    const { isForSale, type } = this.state
+    const mutation = isForSale ? pullOffShelvesGoodsMutation : putOnShelvesGoodsMutation
     try {
-      await client.mutate({ mutation, variables: { id: goodsId, userId }})
+      await client.mutate({ mutation, variables: { id: productId, userId }})
       this.setState({
         isToastOpened: true,
         text: `${type}成功`,
@@ -104,16 +105,15 @@ class Manage extends Component<PageOwnProps, PageState> {
 
   render() {
     const { isOpened } = this.props
-    const { text, status, isToastOpened, type } = this.state
+    const { text, status, isToastOpened, isForSale, type } = this.state
     return (
       <View>
-        <AtActionSheet isOpened={isOpened} cancelText='取消' title='编辑'>
-          <AtActionSheetItem onClick={this.activate}>
-            激活
-          </AtActionSheetItem>
-          <AtActionSheetItem onClick={this.soldout}>
-            下架
-          </AtActionSheetItem>
+        <AtActionSheet isOpened={isOpened} cancelText='取消'>
+          {
+            isForSale ?
+              <AtActionSheetItem onClick={this.soldout}>下架</AtActionSheetItem> :
+              <AtActionSheetItem onClick={this.activate}>激活</AtActionSheetItem>
+          }
         </AtActionSheet>
 
         <AtModal isOpened={this.state.isModalOpened}>

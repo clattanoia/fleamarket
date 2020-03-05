@@ -2,7 +2,7 @@ import Taro, { memo, useState } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtIcon }  from 'taro-ui'
 import classNames from 'classnames'
-// import FloatList from '../FloatList'
+import FloatLayout from '../FloatLayout'
 
 import styles from './index.module.scss'
 
@@ -25,9 +25,9 @@ function SelectLayout(props: InProps) {
     setArrowB(!arrotB)
   }
 
-  // const closeFloat = () => {
-  //   setArrowB(true)
-  // }
+  const closeFloat = () => {
+    setArrowB(true)
+  }
 
   const listClick = (val) => () => {
     onChangeSelect(val)
@@ -44,22 +44,23 @@ function SelectLayout(props: InProps) {
           </View>
         </View>
       </View>
-      <View
-        className={classNames(styles.selectLayoutList)}
-        style={{ display: arrotB ? 'none' : 'block' }}
-      >
-        {
-          list.map(item =>
-            <View
-              className={classNames(styles.list, { 'selectActive': item.id === current.id  })}
-              onClick={listClick(item)}
-            >
-              {item.name}
-            </View>
-          )
-        }
-      </View>
-      {/* <FloatList visible={!arrotB} closeFloat={closeFloat} listData={list} listClickFunc={listClick}/> */}
+
+      <FloatLayout visible={!arrotB} closeFloat={closeFloat}>
+        <View
+          className={classNames(styles.selectLayoutList)}
+        >
+          {
+            list.map(item =>
+              <View
+                className={classNames(styles.list, { 'selectActive': item.id === current.id  })}
+                onClick={listClick(item)}
+              >
+                {item.name}
+              </View>
+            )
+          }
+        </View>
+      </FloatLayout>
     </View>
   )
 

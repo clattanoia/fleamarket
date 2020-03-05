@@ -21,20 +21,20 @@
       overflow: hidden;
     }
   }
-  .selectLayoutList{
-    position: absolute;
-    width:100%;
-    line-height: 30PX;
-    font-size: 14PX;
-    padding:10px 0 0;
-    top: 66px;
-    background-color: white;
-    border:1PX solid $borderColor;
-    border-radius:0 0 10px 10px;
-    .list{
-      border-bottom: 1PX solid $borderColor;
-      padding:0 12px;
-      box-sizing: border-box;
+}
+
+.selectLayoutList{
+  width:100%;
+  line-height: 30PX;
+  font-size: 14PX;
+  padding:10px 0 0;
+  top: 66px;
+  .list{
+    border-bottom: 1PX solid $borderColor;
+    padding:0 12px;
+    box-sizing: border-box;
+    &:last-child{
+      border:0;
     }
   }
 }

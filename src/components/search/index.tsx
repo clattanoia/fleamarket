@@ -6,7 +6,7 @@ import styles from './index.module.scss'
 
 import { placeholderText } from '../../constants/search'
 import SelectLayout from '../selectLayout'
-import FloatList from '../FloatList'
+import FloatLayout from '../FloatLayout'
 
 const goodsTypes = [{
   name: '求购',
@@ -45,11 +45,6 @@ function SeachSection() {
     })
   }
 
-  const handleChange = (e) => {
-    setKeyword(e.target.value)
-    setShowResut(true)
-  }
-
   const closeResultFloat = () => {
     setShowResut(false)
   }
@@ -64,12 +59,19 @@ function SeachSection() {
     clearKeyword()
   }
 
-  const onConfirm = () => {
-    console.log('-----------onConfirm-----------')
+  const handleChange = (e) => {
+    setKeyword(e.target.value)
+    setShowResut(true)
   }
 
-  const listClickFunc = (item) => () => {
+  const onConfirm = () => {
+    console.log('-----------onConfirm-------gotoList----')
+  }
+
+  const clickHandle = (item) => () => {
+    closeResultFloat()
     console.log(item)
+    console.log('------------goto---------detail-------------------')
   }
 
   return (
@@ -99,7 +101,17 @@ function SeachSection() {
         </View>
         <Text className={styles.searchBtn} onClick={goToHome}>取消</Text>
       </View>
-      <FloatList visible={showResut} closeFloat={closeResultFloat} listData={searchResults} listClickFunc={listClickFunc} />
+      <FloatLayout visible={showResut} closeFloat={closeResultFloat}>
+        <View className={styles.searchResult}>
+          {
+            searchResults.map(item =>
+              <View className={styles.searchResutList} onClick={clickHandle(item)}>
+                {item.name}
+              </View>
+            )
+          }
+        </View>
+      </FloatLayout>
     </View>
   )
 

@@ -127,9 +127,12 @@ class Index extends Component {
         </View>
         <View className="scrollSection">
           <CategorySection />
+          {/*
           <View onClick={() => this.handleGotoPurchase('4c1a663d-0249-47c9-86ee-54e144120ddb')}>浩瀚求购显卡</View>
           <View onClick={() => this.handleGotoPurchase('7bc8317c-74f4-4239-a958-56b19e3696fe')}>林松求购内存</View>
           <View onClick={() => this.handleGotoPurchase('e366c10a-63e5-4c4c-85b3-7045c0603c21')}>红霞求购CPU</View>
+          */}
+
           <Text className='category'>看推荐</Text>
           {this.state.goods.length === 0 ?
             <View className='no-goods'><Text>暂无信息</Text></View> :

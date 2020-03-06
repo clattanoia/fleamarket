@@ -15,9 +15,21 @@
     border-radius: 0 0 20px 30px;
     padding: 10px 20px;
     box-sizing: border-box;
+    .errorBody{
+      width: 100%;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
   .shadow {
     flex: 1;
+    height: 100%;
+  }
+}
+:global {
+  .fullScreen{
     height: 100%;
   }
 }

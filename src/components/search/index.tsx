@@ -1,6 +1,7 @@
 import Taro, { memo, useState } from '@tarojs/taro'
 import { View, Text, Input } from '@tarojs/components'
 import { AtIcon }  from 'taro-ui'
+import debounce from 'lodash/debounce'
 import client from '../../graphql-client'
 
 import styles from './index.module.scss'
@@ -19,25 +20,6 @@ const goodsTypes = [{
   id: ProductType.PURCHASE,
 }]
 
-// const searchResults = [{
-//   title: 'aa哈哈爱a国大纲aa阿哈哈哈哈爱国大纲阿哈哈尕电商广告尕电商广告',
-//   id: '11111',
-// }
-// , {
-//   title: '哈哈爱国大纲阿哈哈哈哈爱国大纲阿哈哈尕电商广告尕电商广告',
-//   id: '2222222',
-// }, {
-//   title: '哈哈爱国哈哈大纲',
-//   id: '3333333',
-// }, {
-//   title: '哈哈爱国大纲阿哈哈哈哈爱国大纲阿哈哈尕电商广告尕电商广告',
-//   id: '44444444',
-// }, {
-//   title: '哈哈爱国大哈哈纲',
-//   id: '55555555',
-// }
-// ]
-
 function SeachSection() {
 
   const [keyword, setKeyword] = useState('')
@@ -52,8 +34,13 @@ function SeachSection() {
     })
   }
 
+  const layoutHadle = (val) => () => {
+    setShowResut(val)
+  }
+
   const closeResultFloat = () => {
-    setShowResut(false)
+    layoutHadle(false)
+    setSearchResults([])
   }
 
   const clearKeyword = () => {
@@ -87,19 +74,26 @@ function SeachSection() {
     }
   }
 
-  const handleChange = (e) => {
+  const handleChange = debounce((e) => {
     const keywords = e.target.value
     setKeyword(keywords)
-    searchQuery(keywords)
-    setShowResut(true)
-  }
+    if(keywords){
+      searchQuery(keywords)
+    }
+  }, 500)
 
   const onConfirm = () => {
     console.log('-----------onConfirm-------gotoList----')
   }
 
+  const onFocus = () => {
+    if(keyword){
+      searchQuery(keyword)
+    }
+    layoutHadle(true)()
+  }
+
   const clickHandle = (item) => () => {
-    closeResultFloat()
     Taro.navigateTo({
       url: `/pages/detail/index?id=${item.id}&productType=${currentType}`,
     })
@@ -141,6 +135,8 @@ function SeachSection() {
               confirmType="search"
               focus
               onConfirm={onConfirm}
+              onFocus={onFocus}
+              onBlur={layoutHadle(false)}
             />
           </View>
           <View className={styles.searchTextClear} onClick={clearKeyword}>
@@ -149,7 +145,11 @@ function SeachSection() {
         </View>
         <Text className={styles.searchBtn} onClick={goToHome}>取消</Text>
       </View>
-      <FloatLayout visible={!!keyword.length && !!searchResults.length && showResut} closeFloat={closeResultFloat}>
+      <FloatLayout
+        visible={!!keyword.length && showResut}
+        closeFloat={closeResultFloat}
+        type="search"
+      >
         <View className={styles.searchResult}>
           {
             searchResults.map(item =>

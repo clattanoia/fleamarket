@@ -106,17 +106,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }[type]
   }
 
-  genSaleStatus = (status: Status) => {
-    switch (status) {
-      case Status.FOR_SALE:
-        return '在售'
-      case Status.SALE_OUT:
-        return '已下架'
-      case Status.FREEZE:
-        return '冻结'
-    }
-  }
-
   showContact = async(): Promise<void> => {
     if(Taro.getStorageSync('token')) {
       const contacts = await this.getContacts()
@@ -169,6 +158,16 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }
   }
 
+  renderSaleStatus = () => {
+    const { detail } = this.state
+    if(detail.status === Status.SALE_OUT) {
+      return <Tag tagName="已下架" />
+    }
+    if(detail.status === Status.FREEZE) {
+      return <Tag tagName="冻结" />
+    }
+  }
+
   render() {
     const { detail, productType } = this.state
     const { userId } = this.props
@@ -194,7 +193,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           </View>
           <View className="status-tags">
             <Tag tagName={this.genProductType((productType as ProductType))} />
-            <Tag tagName={this.genSaleStatus((detail.status as Status))} />
+            { this.renderSaleStatus() }
           </View>
           <View className="title">{(detail.title as string)}</View>
           <View className="description">

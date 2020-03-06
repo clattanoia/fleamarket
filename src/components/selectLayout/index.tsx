@@ -20,7 +20,6 @@ function SelectLayout(props: InProps) {
     return null
   }
 
-
   const selectClick = () => {
     setArrowB(!arrotB)
   }
@@ -34,8 +33,12 @@ function SelectLayout(props: InProps) {
     setArrowB(!false)
   }
 
+  const otherClickHandle = (e) => {
+    console.log(e)
+  }
+
   return (
-    <View>
+    <View onClick={otherClickHandle} id="selectLayout">
       <View className={styles.selectLayout}>
         <View className={styles.selectLayoutShow} onClick={selectClick}>
           <View className={styles.selectTitle}>{current.name}</View>

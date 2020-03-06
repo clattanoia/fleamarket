@@ -1,6 +1,8 @@
-import Taro, { memo, useState } from '@tarojs/taro'
+import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import { View, Text, Input } from '@tarojs/components'
 import { AtIcon }  from 'taro-ui'
+import { useSelector, useDispatch } from '@tarojs/redux'
+
 import debounce from 'lodash/debounce'
 import client from '../../graphql-client'
 
@@ -11,8 +13,9 @@ import SelectLayout from '../selectLayout'
 import FloatLayout from '../FloatLayout'
 import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
 import { ProductType } from '../../constants/enums'
+import { SET_PRODUCT_SEARCH } from '../../constants'
 
-const goodsTypes = [{
+const productTypes = [{
   name: '求购',
   id: ProductType.GOODS,
 }, {
@@ -21,12 +24,29 @@ const goodsTypes = [{
 }]
 
 function SeachSection() {
+  const productSearch = useSelector((state: any) => {
+    return state.global.productSearch
+  })
+  console.log(productSearch)
+  const dispatch = useDispatch()
+  const { currentProductType, title } = productSearch
 
-  const [keyword, setKeyword] = useState('')
   const [showResut, setShowResut] = useState(false)
-  const [currentSelectInfo, setCurrentSelectInfo] = useState(goodsTypes[0])
-  const [currentType, setCurrentType] = useState(goodsTypes[0].id)
+  const [currentSelectInfo, setCurrentSelectInfo] = useState(productTypes[0])
   const [searchResults, setSearchResults] = useState([])
+
+  const setSearch = (search) => {
+    dispatch({ type: SET_PRODUCT_SEARCH, payload: search })
+  }
+
+  const setCurrentSelectInfoHandle = (id) => {
+    const info = productTypes.find(item => item.id === id)
+    setCurrentSelectInfo(info)
+  }
+
+  useEffect(() => {
+    setCurrentSelectInfoHandle(currentProductType)
+  }, [currentProductType])
 
   const goToHome = () => {
     Taro.redirectTo({
@@ -44,13 +64,13 @@ function SeachSection() {
   }
 
   const clearKeyword = () => {
-    setKeyword('')
+    setSearch({ title: '' })
     closeResultFloat()
   }
 
   const changeType = (type) => {
     setCurrentSelectInfo(type)
-    setCurrentType(type.id)
+    setSearch({ currentProductType: type.id })
     clearKeyword()
   }
 
@@ -61,7 +81,7 @@ function SeachSection() {
       title: keywords,
     }
     let query = searchGoodsQuery, dataParam = 'searchGoods'
-    if(currentType === ProductType.PURCHASE) {
+    if(currentProductType === ProductType.PURCHASE) {
       query = searchPurchaseQuery
       dataParam = 'searchPurchase'
     }
@@ -76,7 +96,7 @@ function SeachSection() {
 
   const handleChange = debounce((e) => {
     const keywords = e.target.value
-    setKeyword(keywords)
+    setSearch({ title: keywords })
     if(keywords){
       searchQuery(keywords)
     }
@@ -87,15 +107,15 @@ function SeachSection() {
   }
 
   const onFocus = () => {
-    if(keyword){
-      searchQuery(keyword)
+    if(title){
+      searchQuery(title)
     }
     layoutHadle(true)()
   }
 
   const clickHandle = (item) => () => {
     Taro.navigateTo({
-      url: `/pages/detail/index?id=${item.id}&productType=${currentType}`,
+      url: `/pages/detail/index?id=${item.id}&productType=${currentProductType}`,
     })
   }
 
@@ -103,10 +123,10 @@ function SeachSection() {
   //   if(!title){
   //     return ''
   //   }
-  //   const reg = new RegExp(keyword,"g");
-  //   return title.replace(reg,`<Text className="activeColor">${keyword}</Text>`)
+  //   const reg = new RegExp(title,"g");
+  //   return title.replace(reg,`<Text className="activeColor">${title}</Text>`)
   //   // const renderDom = (
-  //   //   title.replace(reg,`<Text className="activeColor">${keyword}</Text>`)
+  //   //   title.replace(reg,`<Text className="activeColor">${title}</Text>`)
   //   // )
   //   // console.log(renderDom)
   //   // return renderDom
@@ -121,7 +141,7 @@ function SeachSection() {
       <View className={styles.search}>
         <View className={styles.searchLeft}>
           <View className={styles.searchType} onClick={closeResultFloat}>
-            <SelectLayout list={goodsTypes} current={currentSelectInfo} onChangeSelect={changeType} />
+            <SelectLayout list={productTypes} current={currentSelectInfo} onChangeSelect={changeType} />
           </View>
           <View className={styles.searchText}>
             <Input
@@ -130,7 +150,7 @@ function SeachSection() {
               type='text'
               maxLength={10}
               placeholder={placeholderText}
-              value={keyword}
+              value={title}
               onInput={handleChange}
               confirmType="search"
               focus
@@ -140,23 +160,23 @@ function SeachSection() {
             />
           </View>
           <View className={styles.searchTextClear} onClick={clearKeyword}>
-            <AtIcon prefixClass='at-icon' value="close-circle" size={keyword ? 16 : 0}></AtIcon>
+            <AtIcon prefixClass='at-icon' value="close-circle" size={title ? 16 : 0}></AtIcon>
           </View>
         </View>
         <Text className={styles.searchBtn} onClick={goToHome}>取消</Text>
       </View>
       <FloatLayout
-        visible={!!keyword.length && showResut}
+        visible={!!title.length && showResut}
         closeFloat={closeResultFloat}
         type="search"
       >
         <View className={styles.searchResult}>
           {
             searchResults.map(item =>
-              <View className={styles.searchResutList} onClick={clickHandle(item)} >
+              <View className={styles.searchResutList} onClick={clickHandle(item)} key={item.id}>
                 {item.title}
                 {/* <Text>{renderText(item.title)}</Text>
-                {<Text className="activeColor">{keyword}</Text>} */}
+                {<Text className="activeColor">{title}</Text>} */}
               </View>
             )
           }

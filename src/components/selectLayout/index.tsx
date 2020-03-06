@@ -57,6 +57,7 @@ function SelectLayout(props: InProps) {
               <View
                 className={classNames(styles.list, { 'activeColor': item.id === current.id  })}
                 onClick={listClick(item)}
+                key={item.id}
               >
                 {item.name}
               </View>

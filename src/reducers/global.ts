@@ -1,7 +1,13 @@
-import { SET_AUTH_INFO } from '../constants'
+import { SET_AUTH_INFO, SET_PRODUCT_SEARCH } from '../constants'
+import { ProductType } from '../constants/enums'
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   isOpenedAuthInfo: false,
+  productSearch: {
+    categoryId: '',
+    currentProductType: ProductType.GOODS,
+    title: '',
+  },
 }
 
 export default function global(state = INITIAL_STATE, action) {
@@ -11,6 +17,15 @@ export default function global(state = INITIAL_STATE, action) {
         ...state,
         isOpenedAuthInfo: action.payload,
       }
+    case SET_PRODUCT_SEARCH: {
+      const { productSearch } = state
+      return {
+        ...state,
+        productSearch: {
+          ...productSearch, ...action.payload,
+        },
+      }
+    }
     default:
       return state
   }

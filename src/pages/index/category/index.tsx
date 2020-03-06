@@ -1,7 +1,8 @@
 import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import { View, Swiper, SwiperItem } from '@tarojs/components'
-import { useSelector } from '@tarojs/redux'
+import { useSelector, useDispatch } from '@tarojs/redux'
 import CategoryItem from '../components/categoryItem'
+import { SET_PRODUCT_SEARCH } from '../../../constants'
 
 import styles from './index.module.scss'
 
@@ -13,6 +14,7 @@ function CategorySection() {
   })
   const [width, setWidth]=useState(0)
   const [pages, setPages]=useState(0)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     Taro.getSystemInfo({
@@ -32,6 +34,7 @@ function CategorySection() {
   }
 
   const gotoList = (id) => () => {
+    dispatch({ type: SET_PRODUCT_SEARCH, payload: { categoryId: id }})
     Taro.redirectTo({
       url: `/pages/searchList/index?categoryId=${id}`,
     })

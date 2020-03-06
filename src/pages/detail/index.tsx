@@ -148,7 +148,17 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   gotoPage = () => {
-    this.showContact()
+    // if(this.isOwnProduct()) {
+    //   this.showManage()
+    // } else {
+    //   this.showContact()
+    // }
+  }
+
+  isOwnProduct = (): boolean => {
+    const { detail } = this.state
+    const { userId } = this.props
+    return !!detail.owner && userId === detail.owner.id
   }
 
   renderReadCount() {
@@ -170,7 +180,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
 
   render() {
     const { detail, productType } = this.state
-    const { userId } = this.props
     return detail && detail.owner ? (
       <View className="detail">
         <Avatar
@@ -209,7 +218,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         </View>
         <View className="footer">
           {
-            userId === detail.owner.id ?
+            this.isOwnProduct() ?
               <AtButton type='primary' className="btn manage-btn" onClick={this.showManage}>管理</AtButton> :
               <AtButton type='primary' className="btn contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
           }

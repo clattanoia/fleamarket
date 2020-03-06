@@ -80,7 +80,7 @@ function SeachSection() {
     if(keywords){
       searchQuery(keywords)
     }
-  }, 500)
+  }, 300)
 
   const onConfirm = () => {
     console.log('-----------onConfirm-------gotoList----')

@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
-import { AtButton, AtInput, AtToast, AtRadio } from 'taro-ui'
+import { AtButton, AtInput, AtToast, AtCheckbox } from 'taro-ui'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
 
@@ -89,7 +89,7 @@ class AddContact extends Component {
   }
 
   handleTypeChange = (value) => {
-    this.setStateValue('type', value)
+    this.setStateValue('type', value.pop())
   }
 
   isValidInput = (): boolean => {
@@ -138,14 +138,14 @@ class AddContact extends Component {
         <View className='type'>
           <Text className='type-label'>类型</Text>
           <View className='type-radio'>
-            <AtRadio
+            <AtCheckbox
               options={[
                 { label: '电话', value: 'PHONE' },
                 { label: '微信', value: 'WECHAT' },
                 { label: '邮件', value: 'EMAIL' },
               ]}
-              value={this.state.type}
-              onClick={this.handleTypeChange}
+              selectedList={[this.state.type]}
+              onChange={this.handleTypeChange}
             />
           </View>
         </View>

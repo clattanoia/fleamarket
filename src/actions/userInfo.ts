@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux'
 import client from '../graphql-client'
-import { FETCH_USERINFO, ADD_CONTACT } from '../constants'
+import { FETCH_USERINFO, ADD_CONTACT, DELETE_CONTACT } from '../constants'
 import { userInfoQuery } from '../query/userInfo'
-import { addContactMutation } from '../query/contact'
+import { addContactMutation, deleteContactMutation } from '../query/contact'
 
 export const fetch = (data) => {
   return {
@@ -11,9 +11,16 @@ export const fetch = (data) => {
   }
 }
 
-export const updateContact = (data) => {
+export const addContacts = (data) => {
   return {
     type: ADD_CONTACT,
+    data,
+  }
+}
+
+export const deleteContacts = (data) => {
+  return {
+    type: DELETE_CONTACT,
     data,
   }
 }
@@ -41,11 +48,26 @@ export function addContact(addContactInput, userId) {
         variables: { userId, addContactInput },
       })
 
-      // const data = { addContact: '123124534' }
-
       const newContact = { ...addContactInput, id: data.addContact }
 
-      dispatch(updateContact(newContact))
+      dispatch(addContacts(newContact))
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
+export function deleteContact(contactId, userId) {
+  return async(dispatch: Dispatch) => {
+
+    try {
+      await client.mutate({
+        mutation: deleteContactMutation,
+        variables: { userId, contactId },
+      })
+
+      dispatch(deleteContacts(contactId))
+
     } catch (error) {
       throw error
     }

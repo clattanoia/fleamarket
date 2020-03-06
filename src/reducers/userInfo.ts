@@ -1,4 +1,4 @@
-import { FETCH_USERINFO, ADD_CONTACT } from '../constants'
+import { FETCH_USERINFO, ADD_CONTACT, DELETE_CONTACT } from '../constants'
 
 const INITIAL_STATE = {}
 
@@ -42,6 +42,15 @@ export default function category(state = INITIAL_STATE, action) {
       return {
         ...state,
         contacts: [action.data, ...state.contacts],
+      }
+    }
+    case DELETE_CONTACT: {
+      const newContactsList = state.contacts.filter(contact => {
+        return contact === action.data
+      })
+      return {
+        ...state,
+        contacts: newContactsList,
       }
     }
     default:

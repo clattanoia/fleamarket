@@ -1,20 +1,24 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { Text, View } from '@tarojs/components'
+import { Button, Text, View } from '@tarojs/components'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
-import { AtButton } from 'taro-ui'
+import { AtButton, AtModal, AtModalAction, AtModalContent, AtToast } from 'taro-ui'
 
 import './index.scss'
+import { deleteContact } from '../../../actions/userInfo'
 
 type UserInfo = {
   contacts: Contact.InContact[],
+  id: string,
 }
 
 type PageStateProps = {
   userInfo: UserInfo
 }
 
-type PageDispatchProps = {}
+type PageDispatchProps = {
+  deleteContact: (contactId: string, userId: string) => Function
+}
 
 type PageOwnProps = {}
 
@@ -28,11 +32,22 @@ interface Profile {
 
 @connect(({ userInfo }) => ({
   userInfo: userInfo,
+}), (dispatch) => ({
+  deleteContact(contactId, userId){
+    dispatch(deleteContact(contactId, userId))
+  },
 }))
 class Profile extends Component {
 
   config: Config = {
     navigationBarTitleText: '联系方式',
+  }
+
+  state = {
+    isModalOpened: false,
+    isToastOpened: false,
+    toastText: '',
+    contactId: '',
   }
 
   componentDidMount(): void {
@@ -43,6 +58,31 @@ class Profile extends Component {
     Taro.navigateTo({
       url: '/pages/profile/contact/add/index',
     })
+  }
+
+  deleteContact(contactId) {
+    return () => {
+      this.setState({
+        isModalOpened: true,
+        contactId,
+      })
+    }
+  }
+
+  closeModal = () => {
+    this.setState({
+      isModalOpened: false,
+    })
+  }
+
+  closeToast = () => {
+    this.setState({
+      isToastOpened: false,
+    })
+  }
+
+  handleConfirm = async() => {
+    await this.props.deleteContact(this.state.contactId, this.props.userInfo.id)
   }
 
   render() {
@@ -57,7 +97,7 @@ class Profile extends Component {
                   <Text className='label'>{item.label}</Text>
                   <Text className='content'>{item.content}</Text>
                 </View>
-                <Text className='delete-btn'>删除</Text>
+                <Text className='delete-btn' onClick={this.deleteContact(item.id)}>删除</Text>
               </View>
             )}
         </View>
@@ -67,6 +107,18 @@ class Profile extends Component {
             onClick={this.addContact}
           >新增</AtButton>
         </View>
+
+        <AtModal isOpened={this.state.isModalOpened}>
+          <AtModalContent>
+            <View className='model-content'><Text>联系方式可能与一些帖子相关联，删除之后帖子的联系方式消失，确定需要删除？</Text></View>
+          </AtModalContent>
+          <AtModalAction>
+            <Button onClick={this.closeModal}>取消</Button>
+            <Button onClick={this.handleConfirm}>确定</Button>
+          </AtModalAction>
+        </AtModal>
+
+        <AtToast isOpened={this.state.isToastOpened} hasMask status='error' text={this.state.toastText} onClose={this.closeToast}></AtToast>
       </View>
     )
   }

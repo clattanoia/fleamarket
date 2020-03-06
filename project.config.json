@@ -2,7 +2,7 @@
 	"miniprogramRoot": "dist/",
 	"projectname": "fleamarket",
 	"description": "a flea market app for thoughtworks",
-	"appid": "wx0b1db2af7b3d04bb",
+	"appid": "wxc87269e629737cbb",
 	"setting": {
 		"urlCheck": true,
 		"es6": false,

@@ -46,7 +46,7 @@ export default function category(state = INITIAL_STATE, action) {
     }
     case DELETE_CONTACT: {
       const newContactsList = state.contacts.filter(contact => {
-        return contact === action.data
+        return contact.id !== action.data
       })
       return {
         ...state,

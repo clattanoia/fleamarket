@@ -82,7 +82,15 @@ class Profile extends Component {
   }
 
   handleConfirm = async() => {
-    await this.props.deleteContact(this.state.contactId, this.props.userInfo.id)
+    try {
+      await this.props.deleteContact(this.state.contactId, this.props.userInfo.id)
+      this.closeModal()
+    } catch (e) {
+      this.setState({
+        toastText: '服务器异常，请稍后再试',
+        isToastOpened: true,
+      })
+    }
   }
 
   render() {
@@ -118,7 +126,12 @@ class Profile extends Component {
           </AtModalAction>
         </AtModal>
 
-        <AtToast isOpened={this.state.isToastOpened} hasMask status='error' text={this.state.toastText} onClose={this.closeToast}></AtToast>
+        <AtToast
+          isOpened={this.state.isToastOpened}
+          hasMask status='error'
+          text={this.state.toastText}
+          onClose={this.closeToast}
+        ></AtToast>
       </View>
     )
   }

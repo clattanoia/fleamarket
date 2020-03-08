@@ -10,11 +10,11 @@ import Category from './category'
 import Contact from './contact'
 import PublishImages from './images'
 
-import { cleanArrayEmpty } from '../../utils/helper'
 import { getToken, uploadQiniu } from '../../utils/qiniuUploader'
 import client from '../../graphql-client'
 import { publishGoodsMutation, publishPurchaseMutation } from '../../query/publish'
 import { ProductType } from '../../constants/enums'
+import { InContact } from '../../interfaces/contact'
 
 import './index.scss'
 
@@ -38,7 +38,7 @@ const TITLE_TEXT = {
 }
 
 type UserInfo = {
-  contacts: Contact.InContact[],
+  contacts: InContact[],
   id: string,
 }
 
@@ -187,12 +187,6 @@ class Publish extends Component {
       return
     }
 
-    // transform contact type to id
-    const contactIds = cleanArrayEmpty(this.state.selectedContacts.map(item => {
-      const matchedContact: Contact.InContact | undefined = this.props.userInfo.contacts.find(contact => contact.type === item)
-      return matchedContact ? matchedContact.id : undefined
-    }))
-
     const publishInput = {
       owner: this.props.userInfo.id,
       title: this.state.title,
@@ -201,9 +195,8 @@ class Publish extends Component {
       category: this.state.selectedCategory,
       coverUrl: uploadedImages.length ? uploadedImages[0].qiniuUrl : null,
       pictures: uploadedImages.map(item => item.qiniuUrl),
-      contacts: contactIds,
+      contacts: this.state.selectedContacts,
     }
-    // console.log('publishInput:', publishInput)
 
     const { productType } = this.state
 

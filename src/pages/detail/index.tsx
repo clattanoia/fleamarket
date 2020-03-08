@@ -23,6 +23,7 @@ import {
 
 import client from '../../graphql-client'
 import { ProductType, Status } from '../../constants/enums'
+import { InContact } from '../../interfaces/contact'
 import { authLogin } from '../../utils/auth'
 
 import './index.scss'
@@ -41,7 +42,7 @@ type PageState = {
   detail: ProductInfoDetail
   isOpen: boolean
   isOpened: boolean
-  contacts: Contact.InContact[]
+  contacts: InContact[]
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -136,7 +137,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     })
   }
 
-  getContacts = async(): Promise<Contact.InContact[]> => {
+  getContacts = async(): Promise<InContact[]> => {
     const { owner, contacts } = this.state.detail
     if(!contacts || !contacts.length) return []
     try {

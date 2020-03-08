@@ -4,11 +4,9 @@ import { AtFloatLayout, AtIcon, AtCheckbox, AtButton } from 'taro-ui'
 import { Text, View } from '@tarojs/components'
 import { ReactNodeLike } from 'prop-types'
 
-
-import { CONTACT_MAPPING } from '../../../constants/contact'
 import FormLine from '../../../components/formLine'
+import { InContact, InContactOptions } from '../../../interfaces/contact'
 import './index.scss'
-
 
 type PageStateProps = {}
 
@@ -16,13 +14,14 @@ type PageDispatchProps = {}
 
 type PageOwnProps = {
   selectedContacts: string[],
-  contacts: Array<Contact.InContact>,
+  contacts: InContact[],
   onSetVal: (key, value) => void,
 }
 
 type PageState = {
   isOpen: boolean,
-  contactOptions: [],
+  checkedOptions: string[],
+  contactOptions: InContactOptions[],
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -31,7 +30,7 @@ interface Contact {
   props: IProps;
 }
 
-class Contact extends Component {
+class Contact extends Component<PageOwnProps, PageState> {
 
   state = {
     isOpen: false,
@@ -43,8 +42,9 @@ class Contact extends Component {
     const contactOptions = this.props.contacts
       .filter(item => item.content)
       .map(item => ({
-        value: item.type,
-        label: `${CONTACT_MAPPING[item.type]}（${item.content}）`,
+        value: item.id,
+        labelName: item.label,
+        label: `${item.label}（${item.content}）`,
       }))
 
     this.setState({
@@ -77,7 +77,12 @@ class Contact extends Component {
 
   renderContactText(): ReactNodeLike {
     const { selectedContacts } = this.props
-    const contactText = selectedContacts && selectedContacts.length ? selectedContacts.map(item => CONTACT_MAPPING[item]).join('，') : '选择联系方式'
+    const { contactOptions } = this.state
+
+    const contactText: string = contactOptions
+      .filter((item: InContactOptions) => selectedContacts.indexOf(item.value) > -1)
+      .map((item: InContactOptions) => item.labelName)
+      .join('，') || '选择联系方式'
 
     return <Text className='value'>{contactText}</Text>
   }

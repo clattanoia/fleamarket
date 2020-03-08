@@ -5,7 +5,7 @@ import { AtButton, AtFloatLayout } from 'taro-ui'
 import { ReactNodeLike } from 'prop-types'
 import { BaseEventOrigFunction } from '@tarojs/components/types/common'
 
-import { CONTACT_MAPPING } from '../../../../constants/contact'
+import { InContact } from '../../../../interfaces/contact'
 
 import './index.scss'
 
@@ -15,7 +15,7 @@ type PageDispatchProps = {}
 
 type PageOwnProps = {
   isOpen: boolean
-  contacts: Contact.InContact[]
+  contacts: InContact[]
   onClose: BaseEventOrigFunction<void>
 }
 
@@ -31,7 +31,7 @@ class Contact extends Component {
   renderContactItem(contacts): ReactNodeLike {
     return <View>
       {contacts.map(contact => (<View key={contact} className='contact-item'>
-        <Text>{CONTACT_MAPPING[contact.type]}：</Text>
+        <Text>{contact.label}：</Text>
         <Text selectable>{contact.content}</Text>
       </View>))}
     </View>

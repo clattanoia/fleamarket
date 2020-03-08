@@ -58,6 +58,7 @@ export const contactsQuery = gql`
       id
       content
       type
+      label
     }
   }
 `

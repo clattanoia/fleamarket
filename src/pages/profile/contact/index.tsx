@@ -5,10 +5,11 @@ import { connect } from '@tarojs/redux'
 import { AtButton, AtModal, AtModalAction, AtModalContent, AtToast } from 'taro-ui'
 
 import './index.scss'
+import { InContact } from '../../../interfaces/contact'
 import { deleteContact } from '../../../actions/userInfo'
 
 type UserInfo = {
-  contacts: Contact.InContact[],
+  contacts: InContact[],
   id: string,
 }
 
@@ -50,9 +51,9 @@ class Profile extends Component {
     contactId: '',
   }
 
-  componentDidMount(): void {
-    console.log(this.props.userInfo.contacts)
-  }
+  // componentDidMount(): void {
+  //   console.log(this.props.userInfo.contacts)
+  // }
 
   addContact() {
     Taro.navigateTo({

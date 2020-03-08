@@ -1,4 +1,5 @@
 import { Platform, Status } from '../constants/enums'
+import { InContact } from './contact'
 
 export type User = {
   id: string;
@@ -11,13 +12,7 @@ export type User = {
   gender: number;
   lastVisitTime: Date;
   platform: Platform
-  contacts: Contact[]
-}
-
-export type Contact = {
-  id: string;
-  content: string;
-  type: string;
+  contacts: InContact[]
 }
 
 export interface ProductInfoDetail {

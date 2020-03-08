@@ -3,7 +3,7 @@ import { View, Text } from '@tarojs/components'
 import { AtSearchBar }  from 'taro-ui'
 import { useDispatch } from '@tarojs/redux'
 
-import { SET_PRODUCT_SEARCH } from '../../../constants'
+import { SET_PRODUCT_SEARCH } from '../../../constants/actionTypes'
 
 import './index.scss'
 import { placeholderText } from '../../../constants/search'

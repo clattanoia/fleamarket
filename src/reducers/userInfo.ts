@@ -1,4 +1,4 @@
-import { FETCH_USERINFO, ADD_CONTACT, DELETE_CONTACT } from '../constants'
+import { FETCH_USERINFO, ADD_CONTACT, DELETE_CONTACT } from '../constants/actionTypes'
 
 const INITIAL_STATE = {}
 

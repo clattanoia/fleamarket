@@ -1,4 +1,4 @@
-import { FETCH_CATEGORIES } from '../constants'
+import { FETCH_CATEGORIES } from '../constants/actionTypes'
 
 const INITIAL_STATE = {
   categories: [],

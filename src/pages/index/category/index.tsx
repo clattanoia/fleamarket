@@ -2,7 +2,7 @@ import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import { View, Swiper, SwiperItem } from '@tarojs/components'
 import { useSelector, useDispatch } from '@tarojs/redux'
 import CategoryItem from '../components/categoryItem'
-import { SET_PRODUCT_SEARCH } from '../../../constants'
+import { SET_PRODUCT_SEARCH } from '../../../constants/actionTypes'
 
 import styles from './index.module.scss'
 

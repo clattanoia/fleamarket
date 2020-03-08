@@ -1,4 +1,4 @@
-import { SET_AUTH_INFO, SET_PRODUCT_SEARCH } from '../constants'
+import { SET_AUTH_INFO, SET_PRODUCT_SEARCH } from '../constants/actionTypes'
 import { ProductType } from '../constants/enums'
 
 export const INITIAL_STATE = {

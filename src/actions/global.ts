@@ -1,4 +1,4 @@
-import { SET_AUTH_INFO, SET_PRODUCT_SEARCH } from '../constants'
+import { SET_AUTH_INFO, SET_PRODUCT_SEARCH } from '../constants/actionTypes'
 
 export const setAuthInfo = (payload) => {
   return {

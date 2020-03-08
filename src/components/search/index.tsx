@@ -13,7 +13,7 @@ import SelectLayout from '../selectLayout'
 import FloatLayout from '../FloatLayout'
 import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
 import { ProductType } from '../../constants/enums'
-import { SET_PRODUCT_SEARCH } from '../../constants'
+import { SET_PRODUCT_SEARCH } from '../../constants/actionTypes'
 
 const productTypes = [{
   name: '求购',

@@ -1,5 +1,5 @@
 import client from '../graphql-client'
-import { FETCH_CATEGORIES } from '../constants'
+import { FETCH_CATEGORIES } from '../constants/actionTypes'
 import { categoryQuery } from '../query/category'
 
 export const fetch = (data) => {

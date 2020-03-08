@@ -4,7 +4,7 @@ import { AtFloatLayout } from 'taro-ui'
 import { useSelector, useDispatch } from '@tarojs/redux'
 
 import { authLogin } from '../../utils/auth'
-import { SET_AUTH_INFO } from '../../constants'
+import { SET_AUTH_INFO } from '../../constants/actionTypes'
 import './index.scss'
 
 interface InProps {

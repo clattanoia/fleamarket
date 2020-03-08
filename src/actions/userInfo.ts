@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import client from '../graphql-client'
-import { FETCH_USERINFO, ADD_CONTACT, DELETE_CONTACT } from '../constants'
+import { FETCH_USERINFO, ADD_CONTACT, DELETE_CONTACT } from '../constants/actionTypes'
 import { userInfoQuery } from '../query/userInfo'
 import { addContactMutation, deleteContactMutation } from '../query/contact'
 import { desensitizationContact } from '../utils/helper'

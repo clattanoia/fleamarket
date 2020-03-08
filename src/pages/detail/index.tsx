@@ -12,7 +12,7 @@ import AuthInfoLayout from '../../components/authInfo'
 import Contact from './components/contact'
 import Manage from './components/manage'
 
-import { ProductInfoDetail, User } from '../../interfaces/types'
+import { ProductInfoDetail, User } from '../../interfaces/detail'
 import {
   contactsQuery,
   goodsDetailQuery,

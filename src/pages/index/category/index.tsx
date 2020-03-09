@@ -36,7 +36,7 @@ function CategorySection() {
   const gotoList = (id) => () => {
     dispatch({ type: SET_PRODUCT_SEARCH, payload: { categoryId: id }})
     Taro.redirectTo({
-      url: `/pages/searchList/index?categoryId=${id}`,
+      url: '/pages/search/index',
     })
   }
 

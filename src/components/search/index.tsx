@@ -15,18 +15,17 @@ import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
 import { ProductType } from '../../constants/enums'
 import { SET_PRODUCT_SEARCH } from '../../constants/actionTypes'
 
-const productTypes = [{
-  name: '求购',
-  id: ProductType.GOODS,
-}, {
-  name: '出售',
-  id: ProductType.PURCHASE,
-}]
+interface InProps {
+  productTypes: Search.SelectLayout[]
+  hasFetchSearch: boolean
+  onSetVal: (key, value) => void
+}
 
-function SeachSection() {
+function SeachSection(props: InProps) {
   const productSearch = useSelector((state: any) => {
     return state.global.productSearch
   })
+  const { productTypes, hasFetchSearch, onSetVal } = props
 
   const dispatch = useDispatch()
   const { currentProductType, title } = productSearch
@@ -47,9 +46,13 @@ function SeachSection() {
 
   useEffect(() => {
     setCurrentSelectInfoHandle(currentProductType)
-  }, [currentProductType])
+  }, [currentProductType, setCurrentSelectInfoHandle])
 
-  const goToHome = () => {
+  const cancleHandle = () => {
+    if(hasFetchSearch){
+      onSetVal('showResult', true)
+      return
+    }
     Taro.redirectTo({
       url: '/pages/index/index',
     })
@@ -187,7 +190,7 @@ function SeachSection() {
             <AtIcon prefixClass='at-icon' value="close-circle" size={title ? 16 : 0}></AtIcon>
           </View>
         </View>
-        <Text className={styles.searchBtn} onClick={goToHome}>取消</Text>
+        <Text className={styles.searchBtn} onClick={cancleHandle}>取消</Text>
       </View>
       <FloatLayout
         visible={!!title.length && !!searchResults.length && showResut}

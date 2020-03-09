@@ -8,7 +8,7 @@ interface InProps {
 }
 
 function ProductItem(props: InProps) {
-  const { productData } = props
+  const { productData = { owner: {}}} = props
 
   return (
     <View className={styles.productItem}>

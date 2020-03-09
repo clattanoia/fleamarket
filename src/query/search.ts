@@ -7,6 +7,23 @@ query($searchInput: SearchInput) {
     content {
       id
       title
+      price
+      coverUrl
+      category
+      categoryName
+      description
+      coverUrl
+      status
+      createTime
+      updateTime
+      pictures
+      contacts
+      readCount
+      owner {
+        id
+        nickname
+        avatarUrl
+      }
     }
     pageIndex
     pageSize
@@ -23,6 +40,23 @@ query($searchInput: SearchInput) {
     content {
       id
       title
+      price
+      coverUrl
+      category
+      categoryName
+      description
+      coverUrl
+      status
+      createTime
+      updateTime
+      pictures
+      contacts
+      readCount
+      owner {
+        id
+        nickname
+        avatarUrl
+      }
     }
     pageIndex
     pageSize

@@ -118,7 +118,7 @@ class Index extends Component {
           {this.state.goods.length === 0 ?
             <View className='no-goods'><Text>暂无信息</Text></View> :
             <View className='wrapper-list'>
-              <ProductList productListData={this.state.goods} />
+              <ProductList productListData={this.state.goods} productType={ProductType.GOODS} />
             </View>
           }
         </View>

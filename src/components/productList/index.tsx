@@ -7,15 +7,16 @@ import styles from './index.module.scss'
 
 interface InProps {
   productListData: Global.Goods[]
+  productType: ProductType
 }
 
 function ProductList(props: InProps) {
-  const { productListData } = props
+  const { productListData =[], productType } = props
 
 
   const onClickEvent = (id: string) => () => {
     Taro.navigateTo({
-      url: `/pages/detail/index?id=${id}&productType=${ProductType.GOODS}`,
+      url: `/pages/detail/index?id=${id}&productType=${productType}`,
     })
   }
 
@@ -30,6 +31,5 @@ function ProductList(props: InProps) {
   )
 
 }
-
 
 export default memo(ProductList)

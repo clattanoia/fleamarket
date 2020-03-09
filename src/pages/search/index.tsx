@@ -84,7 +84,6 @@ class Search extends Component<{}, PageState> {
     const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
     try {
       const { data } = await client.query({ query, variables: { searchInput }})
-      console.log(data)
       this.setState({
         searchListResult: data.searchResult.content,
       })
@@ -98,6 +97,7 @@ class Search extends Component<{}, PageState> {
 
   render() {
     const { showResult, hasFetchSearch, searchListResult } = this.state
+    const { productSearch } = this.props.global
 
     return (
       <View>
@@ -108,6 +108,7 @@ class Search extends Component<{}, PageState> {
               onSetVal={this.setStateValue}
               fetchSearch={this.fetchSearch}
               searchListResult={searchListResult}
+              productType={productSearch.currentProductType}
             />
           ) : (
             <SearchPage
@@ -118,7 +119,6 @@ class Search extends Component<{}, PageState> {
             />
           )
         }
-
       </View>
     )
   }

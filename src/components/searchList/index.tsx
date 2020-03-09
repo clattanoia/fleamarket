@@ -11,6 +11,7 @@ import { SET_PRODUCT_SEARCH } from '../../constants/actionTypes'
 
 interface InProps {
   productTypes: Search.SelectLayout[]
+  fetchSearch: () => void
   onSetVal: (key, value) => void
 }
 
@@ -18,13 +19,12 @@ function SeachListSection(props: InProps) {
   const productSearch = useSelector((state: any) => {
     return state.global.productSearch
   })
-  const { productTypes, onSetVal } = props
+  const { productTypes, onSetVal, fetchSearch } = props
 
   const dispatch = useDispatch()
   const { currentProductType, title } = productSearch
-
   const [forceHiddenFloatLayout, setForceHiddenFloatLayout] = useState(false)
-  const [currentSelectInfo, setCurrentSelectInfo] = useState(productTypes[0])
+  const [currentSelectInfo, setCurrentSelectInfo] = useState(productTypes && productTypes[0])
 
   const setSearch = (search) => {
     dispatch({ type: SET_PRODUCT_SEARCH, payload: search })
@@ -48,6 +48,7 @@ function SeachListSection(props: InProps) {
   const changeType = (type) => {
     setCurrentSelectInfo(type)
     setSearch({ currentProductType: type.id })
+    fetchSearch()
   }
 
   const showSearchPage = () => {

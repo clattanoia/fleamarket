@@ -42,12 +42,8 @@ function SelectLayout(props: InProps) {
     setArrowB(true)
   }
 
-  const otherClickHandle = (e) => {
-    console.log(e)
-  }
-
   return (
-    <View onClick={otherClickHandle} id="selectLayout">
+    <View  id="selectLayout">
       <View className={styles.selectLayout} style={{ marginBottom: `${textBottom}px` }}>
         <View className={styles.selectLayoutShow} onClick={selectClick}>
           <View className={styles.selectTitle}>{current.name}</View>

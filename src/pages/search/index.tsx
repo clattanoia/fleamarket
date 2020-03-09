@@ -19,6 +19,7 @@ type PageStateProps = {
 type PageState =  {
   hasFetchSearch: boolean
   showResult: boolean
+  searchListResult: any[]
 }
 type IProps = PageStateProps
 
@@ -42,12 +43,10 @@ class Search extends Component<{}, PageState> {
     navigationBarTitleText: '搜索',
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      hasFetchSearch: false,
-      showResult: false,
-    }
+  state = {
+    hasFetchSearch: false,
+    showResult: false,
+    searchListResult: [],
   }
 
   componentDidMount() {
@@ -69,31 +68,37 @@ class Search extends Component<{}, PageState> {
   }
 
   fetchSearch = async() => {
+    this.setState({
+      showResult: true,
+    })
     const { productSearch } = this.props.global
+    const { categoryId, title, currentProductType } = productSearch
 
     const searchInput = {
       pageIndex: 0,
       pageSize: 10,
-      title: '',
+      title,
+      categoryId,
     }
 
-    let query = searchGoodsQuery
-    if(productSearch.currentProductType === ProductType.PURCHASE) {
-      query = searchPurchaseQuery
-    }
+    const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
     try {
       const { data } = await client.query({ query, variables: { searchInput }})
       console.log(data)
-      // setSearchResults(data.searchResult.content)
+      this.setState({
+        searchListResult: data.searchResult.content,
+      })
     } catch (err){
       console.log(err)
-      // setSearchResults([])
+      this.setState({
+        searchListResult: [],
+      })
     }
   }
 
   render() {
-    const { showResult, hasFetchSearch } = this.state
-    console.log(showResult)
+    const { showResult, hasFetchSearch, searchListResult } = this.state
+
     return (
       <View>
         {
@@ -101,12 +106,15 @@ class Search extends Component<{}, PageState> {
             <ResultPage
               productTypes={productTypes}
               onSetVal={this.setStateValue}
+              fetchSearch={this.fetchSearch}
+              searchListResult={searchListResult}
             />
           ) : (
             <SearchPage
               productTypes={productTypes}
               hasFetchSearch={hasFetchSearch}
               onSetVal={this.setStateValue}
+              fetchSearch={this.fetchSearch}
             />
           )
         }

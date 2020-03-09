@@ -19,20 +19,21 @@ interface InProps {
   productTypes: Search.SelectLayout[]
   hasFetchSearch: boolean
   onSetVal: (key, value) => void
+  fetchSearch: () => void
 }
 
 function SeachSection(props: InProps) {
   const productSearch = useSelector((state: any) => {
     return state.global.productSearch
   })
-  const { productTypes, hasFetchSearch, onSetVal } = props
+  const { productTypes, hasFetchSearch, onSetVal, fetchSearch } = props
 
   const dispatch = useDispatch()
   const { currentProductType, title } = productSearch
 
   const [showResut, setShowResut] = useState(false)
   const [forceHiddenFloatLayout, setForceHiddenFloatLayout] = useState(false)
-  const [currentSelectInfo, setCurrentSelectInfo] = useState(productTypes[0])
+  const [currentSelectInfo, setCurrentSelectInfo] = useState(productTypes && productTypes[0])
   const [searchResults, setSearchResults] = useState([])
 
   const setSearch = (search) => {
@@ -84,10 +85,7 @@ function SeachSection(props: InProps) {
       pageSize: 5,
       title: keywords,
     }
-    let query = searchGoodsQuery
-    if(currentProductType === ProductType.PURCHASE) {
-      query = searchPurchaseQuery
-    }
+    const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
     try {
       const { data } = await client.query({ query, variables: { searchInput }})
       setSearchResults(data.searchResult.content)
@@ -106,9 +104,7 @@ function SeachSection(props: InProps) {
   }, 300)
 
   const onConfirm = () => {
-    // Taro.redirectTo({
-    //   url: '/pages/searchList/index',
-    // })
+    fetchSearch()
   }
 
   const onFocus = () => {

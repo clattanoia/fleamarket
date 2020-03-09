@@ -4,21 +4,20 @@ import SeachListSection from '../../../components/searchList'
 
 interface InProps {
   onSetVal: (key, value) => void
+  fetchSearch: () => void
   productTypes: Search.SelectLayout[]
+  searchListResult: any[]
 }
 
 function ResultPage(props: InProps) {
-  const { productTypes, onSetVal } = props
-
-  // const onSetP = (key, value) => {
-  //   onSetVal(key,value)
-  // }
+  const { productTypes, onSetVal, fetchSearch } = props
 
   return (
     <View>
       <SeachListSection
         onSetVal={onSetVal}
         productTypes={productTypes}
+        fetchSearch={fetchSearch}
       />
       11
     </View>

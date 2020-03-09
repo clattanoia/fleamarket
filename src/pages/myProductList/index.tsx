@@ -3,7 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import ProductList from './components/productList'
+import ProductListItem from './components/productListItem'
 
 import client from '../../graphql-client'
 import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
@@ -98,6 +98,12 @@ class MyProductList extends Component<PageOwnProps, PageState> {
     console.log('onScroll')
   }
 
+  renderListData() {
+    console.log('listData')
+    const { listData } = this.state
+    return listData.map((item: Product) => <ProductListItem item={item} key={item.id} />)
+  }
+
   render() {
     const Threshold = 20
     return (
@@ -110,7 +116,7 @@ class MyProductList extends Component<PageOwnProps, PageState> {
         onScrollToLower={this.onScrollToBottom} // 使用箭头函数的时候 可以这样写 `onScrollToUpper={this.onScrollToUpper}`
         onScroll={this.onScroll}
       >
-        <ProductList listData={this.state.listData} />
+        {this.renderListData()}
       </ScrollView>
     )
   }

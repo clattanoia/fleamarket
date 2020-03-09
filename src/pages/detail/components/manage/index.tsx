@@ -75,6 +75,13 @@ class Manage extends Component<PageOwnProps, PageState> {
     this.props.onClose(event)
   }
 
+  edit = (event) => {
+    this.props.onClose(event)
+    Taro.redirectTo({
+      url: `/pages/publish/index?productType=${this.props.productType}`,
+    })
+  }
+
   getShelvesMutation() {
     const { isForSale } = this.state
     const { productType } = this.props
@@ -134,6 +141,7 @@ class Manage extends Component<PageOwnProps, PageState> {
     return (
       <View>
         <AtActionSheet isOpened={isOpened} cancelText='取消'>
+          <AtActionSheetItem onClick={this.edit}>编辑</AtActionSheetItem>
           {
             isForSale ?
               <AtActionSheetItem onClick={this.soldout}>下架</AtActionSheetItem> :

@@ -1,7 +1,10 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { ScrollView } from '@tarojs/components'
+import { ScrollView, View } from '@tarojs/components'
+import { AtLoadMore } from 'taro-ui'
 import { connect } from '@tarojs/redux'
+import { ReactNodeLike } from 'prop-types'
+
 
 import ProductListItem from './components/productListItem'
 import Preload from './components/preload'
@@ -27,10 +30,13 @@ type PageDispatchProps = {}
 type PageOwnProps = {}
 
 type PageState = {
-  type: ProductType,
+  productType: ProductType,
   pageIndex: number,
   pageSize: number,
+  totalPages: number,
   listData: Product[],
+  showPreload: boolean,
+  showLoadMore: boolean,
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -44,11 +50,15 @@ interface MyProductList {
 }))
 class MyProductList extends Component<PageOwnProps, PageState> {
   state = {
-    type: ProductType.GOODS,
+    productType: ProductType.GOODS,
 
     pageIndex: 0,
-    pageSize: 20,
+    pageSize: 10,
+    totalPages: 0,
     listData: [],
+
+    showPreload: false,
+    showLoadMore: false,
   }
 
   config: Config = {
@@ -56,10 +66,10 @@ class MyProductList extends Component<PageOwnProps, PageState> {
   }
 
   componentWillMount(): void {
-    const { type } = this.$router.params
-    this.setState({ type: type as ProductType })
+    const { productType } = this.$router.params
+    this.setState({ productType: productType as ProductType })
     Taro.setNavigationBarTitle({
-      title: TITLES[type] || '列表',
+      title: TITLES[productType] || '列表',
     })
   }
 
@@ -70,6 +80,7 @@ class MyProductList extends Component<PageOwnProps, PageState> {
   getSearchInput() {
     const { pageIndex, pageSize } = this.state
     const { userId } = this.props
+
     return {
       pageIndex,
       pageSize,
@@ -79,53 +90,136 @@ class MyProductList extends Component<PageOwnProps, PageState> {
     }
   }
 
-  async fetchListData(): Promise<void> {
-    const query = this.state.type === ProductType.GOODS ? searchGoodsQuery : searchPurchaseQuery
-    const searchInput = this.getSearchInput()
-    const { data } = await client.query({ query, variables: { searchInput }})
+  isFetching(): boolean {
+    const { showLoadMore, showPreload } = this.state
+    return showLoadMore || showPreload
+  }
 
+  setLoading(): void {
     const { listData } = this.state
+
+    if(listData.length) {
+      this.setState({
+        showLoadMore: true,
+      })
+    } else {
+      this.setState({
+        showPreload: true,
+      })
+    }
+  }
+
+  cancelLoading(): void {
     this.setState({
-      listData: listData.concat(data.searchResult.content),
+      showPreload: false,
+      showLoadMore: false,
     })
-    console.log(data)
   }
 
-  onScrollToBottom = () => {
-    console.log('onScrollToBottom')
+  delay() {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(), 1200)
+    })
   }
 
-  onScroll = () => {
-    console.log('onScroll')
+  async fetchListData(): Promise<void> {
+    const query = this.state.productType === ProductType.GOODS ? searchGoodsQuery : searchPurchaseQuery
+    const searchInput = this.getSearchInput()
+
+    // console.log('searchInput:', searchInput)
+    this.setLoading()
+    try {
+      await this.delay()
+      const { data } = await client.query({ query, variables: { searchInput }})
+      const { listData } = this.state
+      this.setState({
+        pageIndex: this.state.pageIndex + 1,
+        totalPages: data.searchResult.totalPages,
+        listData: listData.concat(data.searchResult.content),
+      })
+
+    } catch (e) {
+      console.log(e)
+    }
+    finally {
+      this.cancelLoading()
+    }
   }
 
-  renderListData() {
-    console.log('listData')
+  handleGotoDetail(item: Product): void {
+    Taro.navigateTo({
+      url: `/pages/detail/index?id=${item.id}&productType=${this.state.productType}`,
+    })
+  }
+
+  onScrollToBottom = (): void => {
+    const { totalPages, pageIndex } = this.state
+    if(pageIndex >= totalPages || this.isFetching()) {
+      return
+    }
+
+    this.fetchListData()
+  }
+
+  renderEmpty(): ReactNodeLike {
     const { listData } = this.state
-    return listData.map((item: Product) => <ProductListItem item={item} key={item.id} />)
+
+    if(!listData.length && !this.isFetching()) {
+      return <View className={styles.empty}>暂无相关数据</View>
+    }
   }
 
-  render() {
+  renderListData(): ReactNodeLike {
+    const { listData } = this.state
+    return listData.map((item: Product) => (
+      <ProductListItem item={item} key={item.id} onClick={() => this.handleGotoDetail(item)} />
+    ))
+  }
+
+  renderLoadMore(): ReactNodeLike {
+    const { showLoadMore } = this.state
+    if(showLoadMore) {
+      return <AtLoadMore status="loading" />
+    }
+  }
+
+  renderNoMore(): ReactNodeLike {
+    const { totalPages, pageIndex, listData } = this.state
+
+    // TODO: 大于 5 条并且加载完
+    if((listData.length > 5 && pageIndex >= totalPages)) {
+      return <AtLoadMore status="noMore" />
+    }
+  }
+
+  renderScrollView(): ReactNodeLike {
     const Threshold = 20
+
     return (
       <ScrollView
-        className={styles.listContainer}
+        className={styles.scrollContainer}
         scrollY
         scrollWithAnimation
         lowerThreshold={Threshold}
         upperThreshold={Threshold}
         onScrollToLower={this.onScrollToBottom} // 使用箭头函数的时候 可以这样写 `onScrollToUpper={this.onScrollToUpper}`
-        onScroll={this.onScroll}
       >
-        <Preload />
+        {this.renderEmpty()}
         {this.renderListData()}
+        {this.renderLoadMore()}
+        {this.renderNoMore()}
       </ScrollView>
+    )
+  }
+
+  render() {
+    const { showPreload } = this.state
+    return (
+      <View className={styles.container}>
+        { showPreload ? <Preload /> : this.renderScrollView() }
+      </View>
     )
   }
 }
 
 export default MyProductList as ComponentClass<PageOwnProps, PageState>
-
-
-
-

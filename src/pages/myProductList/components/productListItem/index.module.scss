@@ -15,21 +15,20 @@
     background-color: #f1f1f1;
   }
 
-  .title {
-    margin-bottom: 10px;
-  }
-
-  .price {
-    color: red;
-    .priceUnit {
-      font-size: 20px;
+  .info {
+    flex: 1;
+    .price {
+      color: red;
+      .priceUnit {
+        font-size: 20px;
+      }
+      margin-bottom: 6px;
+      margin-top: 5px;
     }
-    margin-bottom: 6px;
-    margin-top: 5px;
-  }
-  .readCount {
-    font-size: 24px;
-    color: $grey;
+    .readCount {
+      font-size: 24px;
+      color: $grey;
+    }
   }
 }
 

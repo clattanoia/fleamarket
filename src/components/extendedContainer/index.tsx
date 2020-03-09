@@ -7,7 +7,7 @@ import './index.scss'
 interface InProps {
   content: string;
   maxLine: number;
-  needSwitch?: boolean;
+  showSwitch?: boolean;
   style?: {
     [key: string]: string
   };
@@ -18,6 +18,13 @@ class ExtendedContainer extends Component<InProps, {
   needSwitch: boolean
 }> {
 
+  static defaultProps = {
+    content: '',
+    maxLine: 5,
+    showSwitch: true,
+    style: {},
+  }
+
   constructor(props: InProps) {
     super(props)
     this.state = {
@@ -27,6 +34,9 @@ class ExtendedContainer extends Component<InProps, {
   }
 
   componentDidMount() {
+    if(!this.props.showSwitch) {
+      return
+    }
     const query = Taro.createSelectorQuery().in(this.$scope)
     query.select('#switch').boundingClientRect()
     query.select('#content').boundingClientRect().exec(res => {
@@ -55,7 +65,7 @@ class ExtendedContainer extends Component<InProps, {
 
   render() {
     const style = this.genStyle()
-    const { content } = this.props
+    const { content, showSwitch } = this.props
     const { extend, needSwitch } = this.state
     return (
       <View className="extend-container">
@@ -63,7 +73,7 @@ class ExtendedContainer extends Component<InProps, {
           <Text id="content">{content}</Text>
         </View>
         {
-          needSwitch ? (
+          showSwitch && needSwitch ? (
             <Text id="switch" className="switch" onClick={this.toggle}>{extend ? '收起' : '展开'}</Text>
           ) : null
         }

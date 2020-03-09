@@ -1,0 +1,15 @@
+.wrapperList {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .listItem {
+    margin-top: 10px;
+    width: calc(50% - 10px);
+
+    &:nth-child(even) {
+      margin-left: 20px;
+    }
+  }
+}
+

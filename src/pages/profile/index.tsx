@@ -72,9 +72,9 @@ class Profile extends Component {
     })
   }
 
-  toMyProductList = (type) => {
+  toMyProductList = (productType) => {
     Taro.navigateTo({
-      url: `/pages/myProductList/index?type=${type}`,
+      url: `/pages/myProductList/index?productType=${productType}`,
     })
   }
 

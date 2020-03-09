@@ -9,12 +9,12 @@ import { ReactNodeLike } from 'prop-types'
 import ProductListItem from './components/productListItem'
 import Preload from './components/preload'
 
-import client from '../../graphql-client'
 import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
-import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
 import { Product } from '../../interfaces/product'
+import { InMyProductListState } from '../../reducers/myProductList'
 
 import styles from './index.module.scss'
+import { fetchMyProductList, resetMyProductListState } from '../../actions/myProductList'
 
 const TITLES = {
   [ProductType.GOODS]: '我的出售',
@@ -22,21 +22,19 @@ const TITLES = {
 }
 
 type PageStateProps = {
-  userId: string
+  userId: string,
+  myProductList: InMyProductListState,
 }
 
-type PageDispatchProps = {}
+type PageDispatchProps = {
+  fetchMyProductList: (searchInput, productType: ProductType) => Function,
+  resetState: () => Function,
+}
 
 type PageOwnProps = {}
 
 type PageState = {
   productType: ProductType,
-  pageIndex: number,
-  pageSize: number,
-  totalPages: number,
-  listData: Product[],
-  showPreload: boolean,
-  showLoadMore: boolean,
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -45,20 +43,20 @@ interface MyProductList {
   props: IProps;
 }
 
-@connect(({ userInfo }) => ({
+@connect(({ userInfo, myProductList }) => ({
   userId: userInfo.id,
+  myProductList,
+}), (dispatch) => ({
+  fetchMyProductList(searchInput, productType) {
+    dispatch(fetchMyProductList(searchInput, productType))
+  },
+  resetState() {
+    dispatch(resetMyProductListState())
+  },
 }))
 class MyProductList extends Component<PageOwnProps, PageState> {
   state = {
     productType: ProductType.GOODS,
-
-    pageIndex: 0,
-    pageSize: 10,
-    totalPages: 0,
-    listData: [],
-
-    showPreload: false,
-    showLoadMore: false,
   }
 
   config: Config = {
@@ -77,8 +75,12 @@ class MyProductList extends Component<PageOwnProps, PageState> {
     this.fetchListData()
   }
 
+  componentWillUnmount(): void {
+    this.props.resetState()
+  }
+
   getSearchInput() {
-    const { pageIndex, pageSize } = this.state
+    const { pageIndex, pageSize } = this.props.myProductList
     const { userId } = this.props
 
     return {
@@ -91,59 +93,14 @@ class MyProductList extends Component<PageOwnProps, PageState> {
   }
 
   isFetching(): boolean {
-    const { showLoadMore, showPreload } = this.state
+    const { showLoadMore, showPreload } = this.props.myProductList
     return showLoadMore || showPreload
   }
 
-  setLoading(): void {
-    const { listData } = this.state
-
-    if(listData.length) {
-      this.setState({
-        showLoadMore: true,
-      })
-    } else {
-      this.setState({
-        showPreload: true,
-      })
-    }
-  }
-
-  cancelLoading(): void {
-    this.setState({
-      showPreload: false,
-      showLoadMore: false,
-    })
-  }
-
-  delay() {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(), 1200)
-    })
-  }
-
-  async fetchListData(): Promise<void> {
-    const query = this.state.productType === ProductType.GOODS ? searchGoodsQuery : searchPurchaseQuery
+  fetchListData(): void {
     const searchInput = this.getSearchInput()
 
-    // console.log('searchInput:', searchInput)
-    this.setLoading()
-    try {
-      await this.delay()
-      const { data } = await client.query({ query, variables: { searchInput }})
-      const { listData } = this.state
-      this.setState({
-        pageIndex: this.state.pageIndex + 1,
-        totalPages: data.searchResult.totalPages,
-        listData: listData.concat(data.searchResult.content),
-      })
-
-    } catch (e) {
-      console.log(e)
-    }
-    finally {
-      this.cancelLoading()
-    }
+    this.props.fetchMyProductList(searchInput, this.state.productType)
   }
 
   handleGotoDetail(item: Product): void {
@@ -153,7 +110,7 @@ class MyProductList extends Component<PageOwnProps, PageState> {
   }
 
   onScrollToBottom = (): void => {
-    const { totalPages, pageIndex } = this.state
+    const { totalPages, pageIndex } = this.props.myProductList
     if(pageIndex >= totalPages || this.isFetching()) {
       return
     }
@@ -162,7 +119,8 @@ class MyProductList extends Component<PageOwnProps, PageState> {
   }
 
   renderEmpty(): ReactNodeLike {
-    const { listData } = this.state
+    const { myProductList } = this.props
+    const { listData } = myProductList
 
     if(!listData.length && !this.isFetching()) {
       return <View className={styles.empty}>暂无相关数据</View>
@@ -170,21 +128,24 @@ class MyProductList extends Component<PageOwnProps, PageState> {
   }
 
   renderListData(): ReactNodeLike {
-    const { listData } = this.state
+    const { myProductList } = this.props
+    const { listData } = myProductList
     return listData.map((item: Product) => (
       <ProductListItem item={item} key={item.id} onClick={() => this.handleGotoDetail(item)} />
     ))
   }
 
   renderLoadMore(): ReactNodeLike {
-    const { showLoadMore } = this.state
+    const { myProductList } = this.props
+    const { showLoadMore } = myProductList
     if(showLoadMore) {
       return <AtLoadMore status="loading" />
     }
   }
 
   renderNoMore(): ReactNodeLike {
-    const { totalPages, pageIndex, listData } = this.state
+    const { myProductList } = this.props
+    const { totalPages, pageIndex, listData } = myProductList
 
     // TODO: 大于 5 条并且加载完
     if((listData.length > 5 && pageIndex >= totalPages)) {
@@ -213,7 +174,7 @@ class MyProductList extends Component<PageOwnProps, PageState> {
   }
 
   render() {
-    const { showPreload } = this.state
+    const { showPreload } = this.props.myProductList
     return (
       <View className={styles.container}>
         { showPreload ? <Preload /> : this.renderScrollView() }

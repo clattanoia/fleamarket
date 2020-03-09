@@ -13,12 +13,9 @@ export const fetch = (data) => {
 }
 
 export const addContacts = (data) => {
-  const maskContent = desensitizationContact(data.type, data.content)
-  const newContact = { ...data, content: maskContent }
-
   return {
     type: ADD_CONTACT,
-    data: newContact,
+    data,
   }
 }
 
@@ -52,7 +49,8 @@ export function addContact(addContactInput, userId) {
         variables: { userId, addContactInput },
       })
 
-      const newContact = { ...addContactInput, id: data.addContact }
+      const maskContent = desensitizationContact(addContactInput.type, addContactInput.content)
+      const newContact = { ...addContactInput, id: data.addContact, content: maskContent }
 
       dispatch(addContacts(newContact))
     } catch (error) {

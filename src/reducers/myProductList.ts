@@ -3,6 +3,7 @@ import {
   FETCH_MY_PRODUCT_LIST_SUCCESS,
   FETCH_MY_PRODUCT_LIST_FINALLY,
   RESET_MY_PRODUCT_LIST,
+  UPDATE_MY_PRODUCT_LIST_DATA,
 } from '../constants/actionTypes'
 import { Product } from '../interfaces/product'
 
@@ -63,9 +64,24 @@ export default function myProductList(state = INITIAL_STATE, action) {
     }
 
     case RESET_MY_PRODUCT_LIST: {
-      console.log('RESET_MY_PRODUCT_LIST', INITIAL_STATE)
       return {
         ...INITIAL_STATE,
+      }
+    }
+
+    case UPDATE_MY_PRODUCT_LIST_DATA: {
+      const { listData } = state
+      const { payload } = action
+
+      const index = listData.findIndex(item => item.id === payload.id)
+      if(index < 0) {
+        return state
+      }
+
+      listData[index] = { ...{}, ...listData[index], ...payload.modification }
+      return {
+        ...state,
+        listData,
       }
     }
 

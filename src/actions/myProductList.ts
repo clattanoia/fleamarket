@@ -6,6 +6,7 @@ import {
   FETCH_MY_PRODUCT_LIST_SUCCESS,
   FETCH_MY_PRODUCT_LIST_FINALLY,
   RESET_MY_PRODUCT_LIST,
+  UPDATE_MY_PRODUCT_LIST_DATA,
 } from '../constants/actionTypes'
 import { ProductType } from '../constants/enums'
 import { searchGoodsQuery, searchPurchaseQuery } from '../query/search'
@@ -32,6 +33,13 @@ const fetchFinally = () => {
 export const resetMyProductListState = () => {
   return {
     type: RESET_MY_PRODUCT_LIST,
+  }
+}
+
+export const updateListData = (payload) => {
+  return {
+    type: UPDATE_MY_PRODUCT_LIST_DATA,
+    payload,
   }
 }
 

@@ -25,6 +25,7 @@ import client from '../../graphql-client'
 import { ProductType, Status } from '../../constants/enums'
 import { InContact } from '../../interfaces/contact'
 import { authLogin } from '../../utils/auth'
+import { updateListData } from '../../actions/myProductList'
 
 import './index.scss'
 
@@ -32,7 +33,9 @@ type PageStateProps = {
   userId: string
 }
 
-type PageDispatchProps = {}
+type PageDispatchProps = {
+  updateMyProductList: (payload) => Function,
+}
 
 type PageOwnProps = {}
 
@@ -53,6 +56,10 @@ interface ProductDetail {
 
 @connect(({ userInfo }) => ({
   userId: userInfo.id,
+}), dispatch => ({
+  updateMyProductList(payload) {
+    dispatch(updateListData(payload))
+  },
 }))
 class ProductDetail extends Component<PageOwnProps, PageState> {
   constructor(props) {
@@ -60,7 +67,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     this.state = {
       id: null,
       productType: ProductType.GOODS,
-      detail: { id: '' },
+      detail: { id: '', readCount: 0 },
       isOpen: false,
       isOpened: false,
       contacts: [],
@@ -73,7 +80,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   async componentDidMount(): Promise<void> {
-    await this.fetchGoodsDetail()
+    await this.fetchProductDetail()
     this.increaseReadCount()
   }
 
@@ -81,7 +88,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     navigationBarTitleText: '二货详情',
   }
 
-  fetchGoodsDetail = async() => {
+  fetchProductDetail = async(): Promise<ProductInfoDetail> => {
     const { id, productType } = this.state
     const { data: { detailInfo }} = await client.query({
       query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
@@ -90,6 +97,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     this.setState({
       detail: detailInfo,
     })
+
+    return detailInfo as ProductInfoDetail
   }
 
   increaseReadCount = async() => {
@@ -97,6 +106,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     await client.query({
       query: productType === ProductType.GOODS ? increaseGoodsReadCount : increasePurchaseReadCount,
       variables: { id },
+    })
+    this.props.updateMyProductList({
+      id: this.state.id,
+      modification: { readCount: this.state.detail.readCount + 1 },
     })
   }
 
@@ -162,6 +175,15 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     return !!detail.owner && userId === detail.owner.id
   }
 
+  refreshDetail = async(): Promise<void> => {
+    const detail = await this.fetchProductDetail()
+    // update my product list data
+    this.props.updateMyProductList({
+      id: this.state.id,
+      modification: { status: detail.status },
+    })
+  }
+
   renderReadCount() {
     const { detail } = this.state
     if(detail.readCount) {
@@ -224,8 +246,20 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               <AtButton type='primary' className="btn contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
           }
         </View>
-        <Contact isOpen={this.state.isOpen} contacts={this.state.contacts} onClose={this.closeContact} />
-        <Manage productId={detail.id} userId={detail.owner.id} productStatus={(detail.status as Status)} productType={this.state.productType} isOpened={this.state.isOpened} onClose={this.closeManage} onRefresh={this.fetchGoodsDetail} />
+        <Contact
+          isOpen={this.state.isOpen}
+          contacts={this.state.contacts}
+          onClose={this.closeContact}
+        />
+        <Manage
+          productId={detail.id}
+          userId={detail.owner.id}
+          productStatus={(detail.status as Status)}
+          productType={this.state.productType}
+          isOpened={this.state.isOpened}
+          onClose={this.closeManage}
+          onRefresh={this.refreshDetail}
+        />
         <AuthInfoLayout authCallback={this.gotoPage} />
       </View>
     ) : <DetailPreload />

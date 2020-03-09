@@ -1,16 +1,20 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
+
+import ProductList from './components/productList'
 
 import client from '../../graphql-client'
 import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
 import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
+import { Product } from '../../interfaces/product'
 
+import styles from './index.module.scss'
 
 const TITLES = {
-  [ProductType.PURCHASE]: '求购列表',
-  [ProductType.GOODS]: '出售列表',
+  [ProductType.GOODS]: '我的出售',
+  [ProductType.PURCHASE]: '我的求购',
 }
 
 type PageStateProps = {
@@ -25,6 +29,7 @@ type PageState = {
   type: ProductType,
   pageIndex: number,
   pageSize: number,
+  listData: Product[],
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -42,6 +47,7 @@ class MyProductList extends Component<PageOwnProps, PageState> {
 
     pageIndex: 0,
     pageSize: 20,
+    listData: [],
   }
 
   config: Config = {
@@ -76,15 +82,36 @@ class MyProductList extends Component<PageOwnProps, PageState> {
     const query = this.state.type === ProductType.GOODS ? searchGoodsQuery : searchPurchaseQuery
     const searchInput = this.getSearchInput()
     const { data } = await client.query({ query, variables: { searchInput }})
+
+    const { listData } = this.state
+    this.setState({
+      listData: listData.concat(data.searchResult.content),
+    })
     console.log(data)
   }
 
+  onScrollToBottom = () => {
+    console.log('onScrollToBottom')
+  }
+
+  onScroll = () => {
+    console.log('onScroll')
+  }
+
   render() {
-    const { type } = this.state
+    const Threshold = 20
     return (
-      <View>
-        我的产品列表{type === ProductType.GOODS ? '出售' : '求购'}
-      </View>
+      <ScrollView
+        className={styles.listContainer}
+        scrollY
+        scrollWithAnimation
+        lowerThreshold={Threshold}
+        upperThreshold={Threshold}
+        onScrollToLower={this.onScrollToBottom} // 使用箭头函数的时候 可以这样写 `onScrollToUpper={this.onScrollToUpper}`
+        onScroll={this.onScroll}
+      >
+        <ProductList listData={this.state.listData} />
+      </ScrollView>
     )
   }
 }

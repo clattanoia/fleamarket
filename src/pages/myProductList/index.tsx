@@ -4,6 +4,7 @@ import { ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import ProductListItem from './components/productListItem'
+import Preload from './components/preload'
 
 import client from '../../graphql-client'
 import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
@@ -116,6 +117,7 @@ class MyProductList extends Component<PageOwnProps, PageState> {
         onScrollToLower={this.onScrollToBottom} // 使用箭头函数的时候 可以这样写 `onScrollToUpper={this.onScrollToUpper}`
         onScroll={this.onScroll}
       >
+        <Preload />
         {this.renderListData()}
       </ScrollView>
     )

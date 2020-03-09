@@ -1,0 +1,78 @@
+@import "../../../../styles/theme.scss";
+
+.preload {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  @keyframes progress-active {
+    0% {
+      width: 0;
+      opacity: 0.1;
+    }
+
+    40% {
+      width: 0;
+      opacity: 0.5;
+    }
+
+    100% {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+
+  .animation {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.08, 0.82, 0.17, 1) 0s;
+
+    &:before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #fff;
+      border-radius: 10px;
+      opacity: 0;
+      animation: progress-active 2.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+      content: '';
+    }
+  }
+
+  .cover {
+    width: 230px;
+    height: 230px;
+    border-radius: 20px;
+    margin-right: 20px;
+    background-color: #e8e8e8;
+  }
+
+  .info {
+    flex: 1;
+  }
+
+  .bar {
+    height: 30px;
+    background: #e8e8e8;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    width: 40%;
+    &:first-child {
+      width: 90%;
+    }
+  }
+
+  .tag {
+    width: 100px;
+  }
+  .price {
+    width: 130px;
+  }
+  .readCount {
+    width: 150px;
+  }
+}

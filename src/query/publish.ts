@@ -18,3 +18,15 @@ export const getQiniuTokenQuery = gql`
     token
   }
 }`
+
+export const editGoodsMutation = gql`
+mutation ($productId: String!, $publishInput: PublishInput!){
+  editGoods(productId: $productId, publishInput: $publishInput)
+}
+`
+
+export const editPurchaseMutation = gql`
+mutation ($productId: String!, $publishInput: PublishInput!){
+  editPurchase(productId: $productId, publishInput: $publishInput)
+}
+`

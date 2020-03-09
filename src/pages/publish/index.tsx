@@ -12,7 +12,12 @@ import PublishImages from './images'
 
 import { getToken, uploadQiniu } from '../../utils/qiniuUploader'
 import client from '../../graphql-client'
-import { publishGoodsMutation, publishPurchaseMutation } from '../../query/publish'
+import {
+  editGoodsMutation,
+  editPurchaseMutation,
+  publishGoodsMutation,
+  publishPurchaseMutation,
+} from '../../query/publish'
 import { ProductType } from '../../constants/enums'
 import { InContact } from '../../interfaces/contact'
 import { goodsDetailQuery, purchaseDetailQuery } from '../../query/detail'
@@ -224,8 +229,17 @@ class Publish extends Component {
       contacts: this.state.selectedContacts,
     }
 
-    const { productType } = this.state
+    const { productType, productId } = this.state
 
+    // console.log('productId', productId)
+    if(!productId) {
+      await this.publish(productType, publishInput)
+    } else {
+      await this.edit(productId, productType, publishInput)
+    }
+  }
+
+  async publish(productType, publishInput) {
     try {
       const { data } = await client.mutate({
         mutation: productType === ProductType.GOODS ? publishGoodsMutation : publishPurchaseMutation,
@@ -235,16 +249,36 @@ class Publish extends Component {
         url: `/pages/detail/index?id=${data.publishGoods || data.publishPurchase}&productType=${productType}`,
       })
     } catch (e) {
-      let error = 'systemError'
-      if(e.message.indexOf('400') > -1) {
-        error = 'invalidParameters'
-      } else if(e.message.indexOf('403') > -1) {
-        error = 'invalidUser'
-      }
-      this.showErrorMessage(error)
+      this.handleError(e)
     } finally {
       this.setLoading(false)
     }
+  }
+
+  async edit(productId, productType, publishInput) {
+    try {
+      const { data } = await client.mutate({
+        mutation: productType === ProductType.GOODS ? editGoodsMutation : editPurchaseMutation,
+        variables: { productId, publishInput },
+      })
+      Taro.redirectTo({
+        url: `/pages/detail/index?id=${data.publishGoods || data.publishPurchase}&productType=${productType}`,
+      })
+    } catch (e) {
+      this.handleError(e)
+    } finally {
+      this.setLoading(false)
+    }
+  }
+
+  handleError(e) {
+    let error = 'systemError'
+    if(e.message.indexOf('400') > -1) {
+      error = 'invalidParameters'
+    } else if(e.message.indexOf('403') > -1) {
+      error = 'invalidUser'
+    }
+    this.showErrorMessage(error)
   }
 
   handleCloseToast = (): void => {

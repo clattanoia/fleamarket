@@ -1,4 +1,4 @@
-import Taro, { memo, useState } from '@tarojs/taro'
+import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtIcon }  from 'taro-ui'
 import classNames from 'classnames'
@@ -10,11 +10,20 @@ interface InProps {
   list: Search.SelectLayout[]
   current: Search.SelectLayout
   onChangeSelect: (id) => void
+  textBottom?: number
+  forceHiddenFloatLayout: boolean
 }
 
 function SelectLayout(props: InProps) {
-  const { list, current, onChangeSelect } = props
+  const { list, current, onChangeSelect, textBottom = 0, forceHiddenFloatLayout = false } = props
   const [arrotB, setArrowB] = useState(true)
+
+
+  useEffect(() => {
+    if(forceHiddenFloatLayout){
+      setArrowB(true)
+    }
+  }, [forceHiddenFloatLayout])
 
   if(!list || !list.length){
     return null
@@ -30,7 +39,7 @@ function SelectLayout(props: InProps) {
 
   const listClick = (val) => () => {
     onChangeSelect(val)
-    setArrowB(!false)
+    setArrowB(true)
   }
 
   const otherClickHandle = (e) => {
@@ -39,7 +48,7 @@ function SelectLayout(props: InProps) {
 
   return (
     <View onClick={otherClickHandle} id="selectLayout">
-      <View className={styles.selectLayout}>
+      <View className={styles.selectLayout} style={{ marginBottom: `${textBottom}px` }}>
         <View className={styles.selectLayoutShow} onClick={selectClick}>
           <View className={styles.selectTitle}>{current.name}</View>
           <View className={styles.selectIcon}>

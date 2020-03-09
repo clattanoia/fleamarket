@@ -11,7 +11,7 @@ interface InProps {
 }
 
 function FloatLayout(props: InProps) {
-  const { visible, closeFloat, type = '', children } = props
+  const { visible, closeFloat, type = '' } = props
 
   const closeHandle = () => {
     closeFloat()
@@ -20,7 +20,7 @@ function FloatLayout(props: InProps) {
   return (
     <View className={styles.floatBody} style={{ 'display': visible ? 'block' : 'none' }}>
       <View className={classnames(styles.floatContent, { 'fullScreen': type === 'search' })}>
-        {children}
+        {props.children}
       </View>
       <View className={styles.shadow} onClick={closeHandle}></View>
     </View>

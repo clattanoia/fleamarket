@@ -27,11 +27,12 @@ function SeachSection() {
   const productSearch = useSelector((state: any) => {
     return state.global.productSearch
   })
-  console.log(productSearch)
+
   const dispatch = useDispatch()
   const { currentProductType, title } = productSearch
 
   const [showResut, setShowResut] = useState(false)
+  const [forceHiddenFloatLayout, setForceHiddenFloatLayout] = useState(false)
   const [currentSelectInfo, setCurrentSelectInfo] = useState(productTypes[0])
   const [searchResults, setSearchResults] = useState([])
 
@@ -95,7 +96,7 @@ function SeachSection() {
   }
 
   const handleChange = debounce((e) => {
-    const keywords = e.target.value
+    const keywords = e.target.value.replace(/^\s*/, '')
     setSearch({ title: keywords })
     if(keywords){
       searchQuery(keywords)
@@ -103,14 +104,22 @@ function SeachSection() {
   }, 300)
 
   const onConfirm = () => {
-    console.log('-----------onConfirm-------gotoList----')
+    Taro.redirectTo({
+      url: '/pages/searchList/index?categoryId=',
+    })
   }
 
   const onFocus = () => {
     if(title){
       searchQuery(title)
     }
+    setForceHiddenFloatLayout(true)
     layoutHadle(true)()
+  }
+
+  const onBlur = () => {
+    setForceHiddenFloatLayout(false)
+    layoutHadle(false)()
   }
 
   const clickHandle = (item) => () => {
@@ -119,29 +128,45 @@ function SeachSection() {
     })
   }
 
-  // const renderText = (title) => {
-  //   if(!title){
-  //     return ''
-  //   }
-  //   const reg = new RegExp(title,"g");
-  //   return title.replace(reg,`<Text className="activeColor">${title}</Text>`)
-  //   // const renderDom = (
-  //   //   title.replace(reg,`<Text className="activeColor">${title}</Text>`)
-  //   // )
-  //   // console.log(renderDom)
-  //   // return renderDom
-  // }
-
-  // const results = () => {
-  //   return searchResults.map(item => item.title = renderText(item.title))
-  // }
+  const renderResult = () => {
+    return searchResults.map(product => {
+      const result = product['title'].split(new RegExp(title, 'gi'))
+      product['resultLength'] = result.length - 1
+      return (
+        <View className={styles.searchResutList} onClick={clickHandle(product)} key={product.id}>
+          {
+            result.map((tit, index) => {
+              if(index === product['resultLength']){
+                return (
+                  <View key={Symbol(index).toString()}>
+                    {tit}
+                  </View>
+                )
+              }
+              return (
+                <View key={Symbol(index).toString()}>
+                  {tit}<Text className="activeColor">{title}</Text>
+                </View>
+              )
+            })
+          }
+        </View>
+      )
+    })
+  }
 
   return (
     <View className={styles.searchBody}>
       <View className={styles.search}>
         <View className={styles.searchLeft}>
           <View className={styles.searchType} onClick={closeResultFloat}>
-            <SelectLayout list={productTypes} current={currentSelectInfo} onChangeSelect={changeType} />
+            <SelectLayout
+              list={productTypes}
+              current={currentSelectInfo}
+              onChangeSelect={changeType}
+              textBottom={10}
+              forceHiddenFloatLayout={forceHiddenFloatLayout}
+            />
           </View>
           <View className={styles.searchText}>
             <Input
@@ -156,7 +181,7 @@ function SeachSection() {
               focus
               onConfirm={onConfirm}
               onFocus={onFocus}
-              onBlur={layoutHadle(false)}
+              onBlur={onBlur}
             />
           </View>
           <View className={styles.searchTextClear} onClick={clearKeyword}>
@@ -171,15 +196,7 @@ function SeachSection() {
         type="search"
       >
         <View className={styles.searchResult}>
-          {
-            searchResults.map(item =>
-              <View className={styles.searchResutList} onClick={clickHandle(item)} key={item.id}>
-                {item.title}
-                {/* <Text>{renderText(item.title)}</Text>
-                {<Text className="activeColor">{title}</Text>} */}
-              </View>
-            )
-          }
+          {renderResult}
         </View>
       </FloatLayout>
     </View>

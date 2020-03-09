@@ -111,7 +111,7 @@ class Publish extends Component {
   }
 
   fetchGoodsDetail = async() => {
-    const { productType } = this.state
+    const { productType } = this.$router.params
     const { data: { detailInfo }} = await client.query({
       query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
       variables: { id: this.$router.params.productId },

@@ -56,6 +56,17 @@ class Category extends Component {
     })
   }
 
+  componentDidUpdate(prevProps) {
+    if(prevProps.selectedCategory !== this.props.selectedCategory) {
+      const selectedItem = this.props.category.categories.find(item => item.id === this.props.selectedCategory)
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        selectedCategoryName: selectedItem && selectedItem.name,
+        selected: this.props.selectedCategory,
+      })
+    }
+  }
+
   onCategoryChange = (val) => {
     this.setState({
       selected: val,

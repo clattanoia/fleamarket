@@ -6,17 +6,29 @@ import './index.scss'
 
 const phoneInfo = Taro.getSystemInfoSync()
 
+interface PublishInfo {
+  title: string,
+  price: string,
+  detail: string,
+}
+
 interface InProps {
-  onSetVal: (key, value) => void
+  onSetVal: (key, value) => void,
+  publishInfo: PublishInfo,
 }
 
 function PublishInfo(props: InProps) {
   const [iosTextarea] = useState(phoneInfo.platform === 'ios')
-  const [title, setTitle] = useState('')
-  const [price, setPrice] = useState('')
-  const [detail, setDetail] = useState('')
+  const [title, setTitle] = useState(props.publishInfo && props.publishInfo.title)
+  const [price, setPrice] = useState(props.publishInfo && props.publishInfo.price)
+  const [detail, setDetail] = useState(props.publishInfo && props.publishInfo.detail)
   const [showTextarea, setShowTextarea] = useState(false)
 
+  Taro.useEffect(() => {
+    setTitle(props.publishInfo.title)
+    setPrice(props.publishInfo.price)
+    setDetail(props.publishInfo.detail)
+  }, [props.publishInfo])
 
   const handleChangeTitle = (value) => {
     setTitle(value)

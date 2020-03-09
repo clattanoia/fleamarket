@@ -15,6 +15,7 @@ import client from '../../graphql-client'
 import { publishGoodsMutation, publishPurchaseMutation } from '../../query/publish'
 import { ProductType } from '../../constants/enums'
 import { InContact } from '../../interfaces/contact'
+import { goodsDetailQuery, purchaseDetailQuery } from '../../query/detail'
 
 import './index.scss'
 
@@ -78,6 +79,7 @@ class Publish extends Component {
 
   state = {
     productType: ProductType.GOODS,
+    productId: '',
     toastText: '',
     showToast: false,
     toastStatus: 'error',
@@ -96,12 +98,34 @@ class Publish extends Component {
   }
 
   componentWillMount(): void {
-    const { productType } = this.$router.params
+    const { productType, productId } = this.$router.params
     Taro.setNavigationBarTitle({
       title: TITLE_TEXT[productType] || '发布',
     })
     productType && this.setState({ productType })
+    if(productId) {
+      this.setState({ productId })
+      this.fetchGoodsDetail()
+    }
     // console.log(this.$router.params)
+  }
+
+  fetchGoodsDetail = async() => {
+    const { productType } = this.state
+    const { data: { detailInfo }} = await client.query({
+      query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
+      variables: { id: this.$router.params.productId },
+    })
+    this.setState({
+      title: detailInfo.title,
+      price: detailInfo.price,
+      detail: detailInfo.description,
+      imagesUrls: detailInfo.imagesUrls,
+      selectedCategory: detailInfo.category,
+      selectedContacts: this.props.userInfo.contacts
+        .filter(item => detailInfo.contacts.includes(item.id))
+        .map(item => item.id),
+    })
   }
 
   getUploadPromises = (qiniuToken: string): Array<Promise<Publish.InPickerImageFiles>> => {
@@ -237,7 +261,12 @@ class Publish extends Component {
   render() {
     return (
       <View className="publish">
-        <PublishInfo onSetVal={this.setStateValue} />
+        <PublishInfo onSetVal={this.setStateValue} publishInfo={{
+          title: this.state.title,
+          price: this.state.price,
+          detail: this.state.detail,
+        }}
+        />
         <PublishImages onSetVal={this.setStateValue} showErrorMessage={this.showErrorMessage} />
         <Category
           onSetVal={this.setStateValue}

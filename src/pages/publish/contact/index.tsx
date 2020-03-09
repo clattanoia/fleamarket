@@ -53,6 +53,15 @@ class Contact extends Component<PageOwnProps, PageState> {
     })
   }
 
+  componentDidUpdate(prevProps) {
+    if(prevProps.selectedContacts !== this.props.selectedContacts) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        checkedOptions: this.props.selectedContacts,
+      })
+    }
+  }
+
   onClose = (): void => {
     this.setState({
       isOpen: false,

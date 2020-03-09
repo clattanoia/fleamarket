@@ -103,9 +103,9 @@ function SeachSection() {
   }, 300)
 
   const onConfirm = () => {
-    Taro.redirectTo({
-      url: '/pages/searchList/index?categoryId=',
-    })
+    // Taro.redirectTo({
+    //   url: '/pages/searchList/index',
+    // })
   }
 
   const onFocus = () => {
@@ -190,7 +190,7 @@ function SeachSection() {
         <Text className={styles.searchBtn} onClick={goToHome}>取消</Text>
       </View>
       <FloatLayout
-        visible={!!title.length && showResut}
+        visible={!!title.length && !!searchResults.length && showResut}
         closeFloat={closeResultFloat}
         type="search"
       >

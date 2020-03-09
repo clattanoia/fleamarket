@@ -1,6 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import SeachSection from '../../components/search'
+// import SeachSection from '../../components/search'
+import ResultPage from './resultPage'
+import SearchPage from './searchPage'
 
 export default class Search extends Component {
 
@@ -11,7 +13,8 @@ export default class Search extends Component {
   render() {
     return (
       <View>
-        <SeachSection />
+        <SearchPage />
+        <ResultPage />
       </View>
     )
   }

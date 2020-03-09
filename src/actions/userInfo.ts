@@ -3,6 +3,7 @@ import client from '../graphql-client'
 import { FETCH_USERINFO, ADD_CONTACT, DELETE_CONTACT } from '../constants'
 import { userInfoQuery } from '../query/userInfo'
 import { addContactMutation, deleteContactMutation } from '../query/contact'
+import { desensitizationContact } from '../utils/helper'
 
 export const fetch = (data) => {
   return {
@@ -12,9 +13,12 @@ export const fetch = (data) => {
 }
 
 export const addContacts = (data) => {
+  const maskContent = desensitizationContact(data.type, data.content)
+  const newContact = { ...data, content: maskContent }
+
   return {
     type: ADD_CONTACT,
-    data,
+    data: newContact,
   }
 }
 

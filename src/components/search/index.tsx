@@ -81,14 +81,13 @@ function SeachSection() {
       pageSize: 5,
       title: keywords,
     }
-    let query = searchGoodsQuery, dataParam = 'searchGoods'
+    let query = searchGoodsQuery
     if(currentProductType === ProductType.PURCHASE) {
       query = searchPurchaseQuery
-      dataParam = 'searchPurchase'
     }
     try {
       const { data } = await client.query({ query, variables: { searchInput }})
-      setSearchResults(data[dataParam].content)
+      setSearchResults(data.searchResult.content)
     } catch (err){
       console.log(err)
       setSearchResults([])

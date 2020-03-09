@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost'
 
 export const searchGoodsQuery = gql`
 query($searchInput: SearchInput) {
-  searchGoods (searchInput:$searchInput ){
+  searchResult: searchGoods (searchInput:$searchInput ){
     content {
       id
       title
@@ -19,7 +19,7 @@ query($searchInput: SearchInput) {
 
 export const searchPurchaseQuery = gql`
 query($searchInput: SearchInput) {
-  searchPurchase (searchInput:$searchInput ){
+  searchResult: searchPurchase (searchInput:$searchInput ){
     content {
       id
       title

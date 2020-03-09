@@ -8,6 +8,7 @@ import OperationItem from '../../components/operationItem'
 import './index.scss'
 import client from '../../graphql-client'
 import { profileInfoQuery } from '../../query/profile'
+import { ProductType } from '../../constants/enums'
 
 type UserInfo = {
   avatarUrl: string,
@@ -71,12 +72,10 @@ class Profile extends Component {
     })
   }
 
-  toMySalesList = () => {
-    console.log('sales list')
-  }
-
-  toMyPurchaseList = () => {
-    console.log('purchase list')
+  toMyProductList = (type) => {
+    Taro.navigateTo({
+      url: `/pages/myProductList/index?type=${type}`,
+    })
   }
 
   render() {
@@ -97,14 +96,14 @@ class Profile extends Component {
               icon='iconmaichu'
               hasDivision
               iconColor='#10ca2e'
-              handleClick={this.toMySalesList}
+              handleClick={() => this.toMyProductList(ProductType.GOODS)}
             ></OperationItem>
             <OperationItem
               title='我的求购'
               count={this.state.purchaseCount}
               icon='iconmairu'
               iconColor='#646de9'
-              handleClick={this.toMyPurchaseList}
+              handleClick={() => this.toMyProductList(ProductType.PURCHASE)}
             ></OperationItem>
           </View>
           <View className='contract'>

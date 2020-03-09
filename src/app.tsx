@@ -33,6 +33,7 @@ class App extends Component {
       'pages/searchList/index',
       'pages/profile/contact/index',
       'pages/profile/contact/add/index',
+      'pages/myProductList/index',
     ],
     window: {
       backgroundTextStyle: 'light',

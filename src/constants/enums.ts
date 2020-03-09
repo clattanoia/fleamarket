@@ -23,3 +23,15 @@ export enum ToastStatus {
   LOADING = 'loading',
   SUCCESS = 'success',
 }
+
+export enum SearchOrderBy {
+  RC = 'RC',
+  CT = 'CT',
+  UT = 'UT',
+  PC = 'PC',
+}
+
+export enum SearchSortDirection {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}

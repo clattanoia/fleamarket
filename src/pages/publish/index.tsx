@@ -116,11 +116,13 @@ class Publish extends Component {
       query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
       variables: { id: this.$router.params.productId },
     })
+    // console.log('detail', detailInfo)
     this.setState({
       title: detailInfo.title,
-      price: detailInfo.price,
+      price: `${detailInfo.price}`,
       detail: detailInfo.description,
-      imagesUrls: detailInfo.imagesUrls,
+      imagesUrls: detailInfo.pictures
+        .map(pic => Object.assign({}, { url: pic })),
       selectedCategory: detailInfo.category,
       selectedContacts: this.props.userInfo.contacts
         .filter(item => detailInfo.contacts.includes(item.id))
@@ -267,7 +269,11 @@ class Publish extends Component {
           detail: this.state.detail,
         }}
         />
-        <PublishImages onSetVal={this.setStateValue} showErrorMessage={this.showErrorMessage} />
+        <PublishImages
+          onSetVal={this.setStateValue}
+          showErrorMessage={this.showErrorMessage}
+          imagesUrls={this.state.imagesUrls}
+        />
         <Category
           onSetVal={this.setStateValue}
           selectedCategory={this.state.selectedCategory}

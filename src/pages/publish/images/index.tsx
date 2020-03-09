@@ -8,11 +8,16 @@ import { MaxImageCount, MaxImageSize, ImageSuffix } from '../../../constants/pub
 interface InProps {
   onSetVal: (key, value) => void
   showErrorMessage: (name) => void
+  imagesUrls: []
 }
 
 function PublishImages(props: InProps) {
 
-  const [files, setFiles] = useState([])
+  const [files, setFiles] = useState(props.imagesUrls || [])
+
+  Taro.useEffect(() => {
+    setFiles(props.imagesUrls)
+  }, [props.imagesUrls])
 
   const showImgError = () => {
     props.showErrorMessage('images')

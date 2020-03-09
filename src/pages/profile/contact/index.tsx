@@ -82,9 +82,9 @@ class Profile extends Component {
   }
 
   handleConfirm = async() => {
+    this.closeModal()
     try {
       await this.props.deleteContact(this.state.contactId, this.props.userInfo.id)
-      this.closeModal()
     } catch (e) {
       this.setState({
         toastText: '服务器异常，请稍后再试',

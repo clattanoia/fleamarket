@@ -65,3 +65,68 @@ query($searchInput: SearchInput) {
   }
 }
 `
+
+export const searchMyGoodsQuery = gql`
+  query($searchInput: SearchInput) {
+    searchResult: searchMyGoods (searchInput:$searchInput ){
+      content {
+        id
+        title
+        price
+        coverUrl
+        category
+        categoryName
+        description
+        coverUrl
+        status
+        createTime
+        updateTime
+        pictures
+        contacts
+        readCount
+        owner {
+          id
+          nickname
+          avatarUrl
+        }
+      }
+      pageIndex
+      pageSize
+      totalElements
+      totalPages
+    }
+  }
+`
+
+
+export const searchMyPurchaseQuery = gql`
+  query($searchInput: SearchInput) {
+    searchResult: searchMyPurchase (searchInput:$searchInput ){
+      content {
+        id
+        title
+        price
+        coverUrl
+        category
+        categoryName
+        description
+        coverUrl
+        status
+        createTime
+        updateTime
+        pictures
+        contacts
+        readCount
+        owner {
+          id
+          nickname
+          avatarUrl
+        }
+      }
+      pageIndex
+      pageSize
+      totalElements
+      totalPages
+    }
+  }
+`

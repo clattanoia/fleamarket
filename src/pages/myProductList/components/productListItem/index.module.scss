@@ -4,15 +4,11 @@
   padding: 20px;
   display: flex;
   flex-direction: row;
-  //align-items: center;
   .cover {
     width: 230px;
     height: 230px;
     border-radius: 20px;
     margin-right: 20px;
-  }
-  .defaultCover {
-    background-color: #f1f1f1;
   }
 
   .info {

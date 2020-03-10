@@ -22,7 +22,6 @@ const TITLES = {
 }
 
 type PageStateProps = {
-  userId: string,
   myProductList: InMyProductListState,
 }
 
@@ -43,8 +42,7 @@ interface MyProductList {
   props: IProps;
 }
 
-@connect(({ userInfo, myProductList }) => ({
-  userId: userInfo.id,
+@connect(({ myProductList }) => ({
   myProductList,
 }), (dispatch) => ({
   fetchMyProductList(searchInput, productType) {
@@ -81,12 +79,10 @@ class MyProductList extends Component<PageOwnProps, PageState> {
 
   getSearchInput() {
     const { pageIndex, pageSize } = this.props.myProductList
-    const { userId } = this.props
 
     return {
       pageIndex,
       pageSize,
-      userId,
       orderBy: SearchOrderBy.CT,
       sortDirection: SearchSortDirection.DESC,
     }
@@ -149,7 +145,7 @@ class MyProductList extends Component<PageOwnProps, PageState> {
 
     // TODO: 大于 5 条并且加载完
     if((listData.length > 5 && pageIndex >= totalPages)) {
-      return <AtLoadMore status="noMore" />
+      return <AtLoadMore status="noMore" noMoreTextStyle="color: #c8c8c8" />
     }
   }
 

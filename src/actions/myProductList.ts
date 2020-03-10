@@ -9,7 +9,7 @@ import {
   UPDATE_MY_PRODUCT_LIST_DATA,
 } from '../constants/actionTypes'
 import { ProductType } from '../constants/enums'
-import { searchGoodsQuery, searchPurchaseQuery } from '../query/search'
+import { searchMyGoodsQuery, searchMyPurchaseQuery } from '../query/search'
 
 const fetchStart = () => {
   return {
@@ -51,7 +51,7 @@ const delay = () => {
 
 export function fetchMyProductList(searchInput, productType) {
   return async(dispatch: Dispatch) => {
-    const query = productType === ProductType.GOODS ? searchGoodsQuery : searchPurchaseQuery
+    const query = productType === ProductType.GOODS ? searchMyGoodsQuery : searchMyPurchaseQuery
     try {
       dispatch(fetchStart())
       await delay()

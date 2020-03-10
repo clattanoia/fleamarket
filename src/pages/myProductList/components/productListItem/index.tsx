@@ -1,6 +1,5 @@
 import Taro, { memo } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import classNames from 'classnames'
 
 import { Product } from '../../../../interfaces/product'
 import Tag from '../../../../components/tag'
@@ -8,6 +7,7 @@ import { Status } from '../../../../constants/enums'
 import ExtendedContainer from '../../../../components/extendedContainer'
 
 import styles from './index.module.scss'
+import defaultProductCover from '../../../../assets/default_product_cover.png'
 
 interface InProps {
   item: Product,
@@ -26,14 +26,9 @@ function ProductListItem(props: InProps) {
 
   return (
     <View className={styles.item} onClick={props.onClick}>
-      {
-        item.coverUrl ?
-          <Image className={styles.cover} mode="aspectFill" src={item.coverUrl as string} />
-          : <View className={classNames(styles.defaultCover, styles.cover)} />
-      }
+      <Image className={styles.cover} mode="aspectFill" src={item.coverUrl as string || defaultProductCover} />
       <View className={styles.info}>
         <ExtendedContainer maxLine={2} content={(item.title as string)} showSwitch={false} />
-        {/*<View className={styles.title}><Text>{item.title}</Text></View>*/}
         <Tag tagName={tagName} />
         <View className={styles.price}><Text className={styles.priceUnit}>￥</Text>{item.price}</View>
         <View className={styles.readCount}>浏览次数：{item.readCount}</View>

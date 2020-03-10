@@ -51,9 +51,11 @@ function SeachSection(props: InProps) {
     setKeyword(title)
   }, [title])
 
+  /* eslint-disable */
   useEffect(() => {
     setCurrentSelectInfoHandle(currentProductType)
-  }, [currentProductType, setCurrentSelectInfoHandle])
+  }, [currentProductType])
+  /* eslint-disable */
 
   const cancleHandle = () => {
     if(hasFetchSearch){

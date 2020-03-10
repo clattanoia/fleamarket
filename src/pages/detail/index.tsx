@@ -84,6 +84,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     this.increaseReadCount()
   }
 
+  async componentDidShow(): Promise<void> {
+    await this.fetchProductDetail()
+  }
+
   config: Config = {
     navigationBarTitleText: '二货详情',
   }

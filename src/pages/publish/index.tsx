@@ -119,23 +119,35 @@ class Publish extends Component {
 
   fetchGoodsDetail = async() => {
     const { productType } = this.$router.params
-    const { data: { detailInfo }} = await client.query({
-      query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
-      variables: { id: this.$router.params.productId },
-    })
-    console.log('detail', detailInfo)
-    this.setState({
-      title: detailInfo.title,
-      price: `${detailInfo.price}`,
-      detail: detailInfo.description,
-      imagesUrls: detailInfo.pictures
-        .map(pic => Object.assign({}, { url: pic })),
-      selectedCategory: detailInfo.category,
-      selectedContacts: this.props.userInfo.contacts
-        .filter(item => detailInfo.contacts.includes(item.id))
-        .map(item => item.id),
-      isLoading: false,
-    })
+    try {
+      const { data: { detailInfo }} = await client.query({
+        query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
+        variables: { id: this.$router.params.productId },
+      })
+      this.setState({
+        title: detailInfo.title,
+        price: `${detailInfo.price}`,
+        detail: detailInfo.description,
+        imagesUrls: detailInfo.pictures
+          .map(pic => Object.assign({}, {
+            url: pic,
+            qiniuUrl: pic,
+          })),
+        selectedCategory: detailInfo.category,
+        selectedContacts: this.props.userInfo.contacts
+          .filter(item => detailInfo.contacts.includes(item.id))
+          .map(item => item.id),
+        isLoading: false,
+      })
+    } catch (e) {
+      this.setState({
+        isLoading: false,
+      })
+      this.showErrorMessage('systemError')
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 3000)
+    }
   }
 
   getUploadPromises = (qiniuToken: string): Array<Promise<Publish.InPickerImageFiles>> => {
@@ -144,6 +156,9 @@ class Publish extends Component {
     return imagesUrls.map((imageUrl: Publish.InPickerImageFiles) => {
       return new Promise(async(resolve, reject) => {
         try {
+          if(imageUrl.qiniuUrl) {
+            return resolve(imageUrl)
+          }
           const qiniuUrl = await uploadQiniu(imageUrl.url, qiniuToken)
           imageUrl.qiniuUrl = qiniuUrl
           // console.log(imageUrl)
@@ -260,13 +275,11 @@ class Publish extends Component {
 
   async edit(productId, productType, publishInput) {
     try {
-      const { data } = await client.mutate({
+      await client.mutate({
         mutation: productType === ProductType.GOODS ? editGoodsMutation : editPurchaseMutation,
         variables: { productId, publishInput },
       })
-      Taro.redirectTo({
-        url: `/pages/detail/index?id=${data.publishGoods || data.publishPurchase}&productType=${productType}`,
-      })
+      Taro.navigateBack()
     } catch (e) {
       this.handleError(e)
     } finally {

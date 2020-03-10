@@ -25,7 +25,8 @@ function PublishImages(props: InProps) {
 
   const validImage = (files) => {
     const validFiles = files.filter((item) => {
-      const { file, url } = item
+      const { file, url, qiniuUrl } = item
+      if(qiniuUrl) return true
       const { size } = file
       const isOversize = size > MaxImageSize
       const urlArr = url.split('.')

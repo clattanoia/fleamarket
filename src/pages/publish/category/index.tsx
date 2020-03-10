@@ -48,11 +48,14 @@ class Category extends Component {
   }
 
   componentDidMount() {
+    const selectedItem = this.props.category.categories.find(item => item.id === this.props.selectedCategory)
     this.setState({
       selector: this.props.category.categories.map(item => Object.assign({}, {
         label: item.name,
         value: item.id,
       })),
+      selected: this.props.selectedCategory,
+      selectedCategoryName: selectedItem && selectedItem.name,
     })
   }
 

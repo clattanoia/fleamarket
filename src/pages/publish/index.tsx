@@ -9,6 +9,7 @@ import PublishInfo from './info'
 import Category from './category'
 import Contact from './contact'
 import PublishImages from './images'
+import PublishPreload from './preload'
 
 import { getToken, uploadQiniu } from '../../utils/qiniuUploader'
 import client from '../../graphql-client'
@@ -89,6 +90,7 @@ class Publish extends Component {
     showToast: false,
     toastStatus: 'error',
     isPublishing: false,
+    isLoading: false,
 
     title: '',
     price: '',
@@ -109,7 +111,7 @@ class Publish extends Component {
     })
     productType && this.setState({ productType })
     if(productId) {
-      this.setState({ productId })
+      this.setState({ productId, isLoading: true })
       this.fetchGoodsDetail()
     }
     // console.log(this.$router.params)
@@ -121,7 +123,7 @@ class Publish extends Component {
       query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
       variables: { id: this.$router.params.productId },
     })
-    // console.log('detail', detailInfo)
+    console.log('detail', detailInfo)
     this.setState({
       title: detailInfo.title,
       price: `${detailInfo.price}`,
@@ -132,6 +134,7 @@ class Publish extends Component {
       selectedContacts: this.props.userInfo.contacts
         .filter(item => detailInfo.contacts.includes(item.id))
         .map(item => item.id),
+      isLoading: false,
     })
   }
 
@@ -297,36 +300,41 @@ class Publish extends Component {
   render() {
     return (
       <View className="publish">
-        <PublishInfo onSetVal={this.setStateValue} publishInfo={{
-          title: this.state.title,
-          price: this.state.price,
-          detail: this.state.detail,
-        }}
-        />
-        <PublishImages
-          onSetVal={this.setStateValue}
-          showErrorMessage={this.showErrorMessage}
-          imagesUrls={this.state.imagesUrls}
-        />
-        <Category
-          onSetVal={this.setStateValue}
-          selectedCategory={this.state.selectedCategory}
-        />
-        <Contact
-          contacts={this.props.userInfo.contacts}
-          selectedContacts={this.state.selectedContacts}
-          onSetVal={this.setStateValue}
-        />
-        <View className="form_btn">
-          <AtButton
-            type="primary"
-            onClick={this.handleSubmit}
-            disabled={!this.vaildInputValues() || this.state.isPublishing}
-            loading={this.state.isPublishing}
-          >发布</AtButton>
-        </View>
-        <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleCloseToast} hasMask status={this.state.toastStatus}></AtToast>
-        <TabBar  current={1} />
+        {this.state.isLoading ?
+          <PublishPreload /> :
+          <View>
+            <PublishInfo onSetVal={this.setStateValue} publishInfo={{
+              title: this.state.title,
+              price: this.state.price,
+              detail: this.state.detail,
+            }}
+            />
+            <PublishImages
+              onSetVal={this.setStateValue}
+              showErrorMessage={this.showErrorMessage}
+              imagesUrls={this.state.imagesUrls}
+            />
+            <Category
+              onSetVal={this.setStateValue}
+              selectedCategory={this.state.selectedCategory}
+            />
+            <Contact
+              contacts={this.props.userInfo.contacts}
+              selectedContacts={this.state.selectedContacts}
+              onSetVal={this.setStateValue}
+            />
+            <View className="form_btn">
+              <AtButton
+                type="primary"
+                onClick={this.handleSubmit}
+                disabled={!this.vaildInputValues() || this.state.isPublishing}
+                loading={this.state.isPublishing}
+              >发布</AtButton>
+            </View>
+            <AtToast isOpened={this.state.showToast} text={this.state.toastText} onClose={this.handleCloseToast} hasMask status={this.state.toastStatus}></AtToast>
+            <TabBar  current={1} />
+          </View>
+        }
       </View>
     )
   }

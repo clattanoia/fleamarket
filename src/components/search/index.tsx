@@ -12,7 +12,7 @@ import { placeholderText } from '../../constants/search'
 import SelectLayout from '../selectLayout'
 import FloatLayout from '../FloatLayout'
 import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
-import { ProductType } from '../../constants/enums'
+import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
 import { SET_PRODUCT_SEARCH } from '../../constants/actionTypes'
 
 interface InProps {
@@ -91,6 +91,8 @@ function SeachSection(props: InProps) {
       pageIndex: 0,
       pageSize: 5,
       title: keywords,
+      orderBy: SearchOrderBy.RC,
+      sortDirectionz: SearchSortDirection.DESC,
     }
     const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
     try {
@@ -105,7 +107,6 @@ function SeachSection(props: InProps) {
   const handleChange = debounce((e) => {
     const keywords = e.target.value.replace(/^\s*/, '')
     setKeyword(keywords)
-    // setSearch({ title: keywords })
     if(keywords){
       searchQuery(keywords)
     }

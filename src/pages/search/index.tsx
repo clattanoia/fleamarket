@@ -84,13 +84,15 @@ class Search extends Component<{}, PageState> {
       hasFetchSearch: true,
     })
     const { productSearch } = this.props.global
-    const { categoryId, title, currentProductType } = productSearch
+    const { categoryId, title, currentProductType, orderBy, sortDirectionz } = productSearch
 
     const searchInput = {
       pageIndex: 0,
       pageSize: 10,
       title,
       categoryId,
+      orderBy,
+      sortDirectionz,
     }
 
     const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery

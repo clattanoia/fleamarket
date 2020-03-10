@@ -26,7 +26,7 @@ function ResultPage(props: InProps) {
     Taro.getSystemInfo({
       success: res => {
         console.log(res)
-        setWidth(res.screenHeight - 50)
+        setWidth(res.windowHeight - 50)
       },
     })
   }, [])
@@ -43,13 +43,13 @@ function ResultPage(props: InProps) {
 
   return (
     <View className={styles.container}>
-      <view className={styles.searchConntainer}>
+      <View className={styles.search}>
         <SeachListSection
           onSetVal={onSetVal}
           productTypes={productTypes}
           refreshData={refreshData}
         />
-      </view>
+      </View>
       <View className={styles.scrollSection}>
         <ScrollView
           className={styles.scrollview}
@@ -57,16 +57,17 @@ function ResultPage(props: InProps) {
           scrollWithAnimation
           style={scrollStyle}
           lowerThreshold={20}
+          upperThreshold={20}
           onScrollToLower={onScrollToLower}
         >
-          <View>
+          <View className={styles.list}>
             <ProductList productListData={searchListResult} productType={productType} />
-            <View className={styles.noMore}>
-              { isLoading ? <AtLoadMore status="loading" /> : (
-                showNoMore && searchListResult.length && <AtLoadMore status="noMore" noMoreTextStyle="color: #c8c8c8" />
-              )
-              }
-            </View>
+          </View>
+          <View className={styles.noMore}>
+            { isLoading ? <AtLoadMore status="loading" /> : (
+              showNoMore && <AtLoadMore status="noMore" noMoreTextStyle="color: #c8c8c8" />
+            )
+            }
           </View>
         </ScrollView>
       </View>

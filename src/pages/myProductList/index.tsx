@@ -22,6 +22,7 @@ const TITLES = {
 }
 
 type PageStateProps = {
+  userId: string,
   myProductList: InMyProductListState,
 }
 
@@ -42,7 +43,8 @@ interface MyProductList {
   props: IProps;
 }
 
-@connect(({ myProductList }) => ({
+@connect(({ userInfo, myProductList }) => ({
+  userId: userInfo.id,
   myProductList,
 }), (dispatch) => ({
   fetchMyProductList(searchInput, productType) {
@@ -79,10 +81,12 @@ class MyProductList extends Component<PageOwnProps, PageState> {
 
   getSearchInput() {
     const { pageIndex, pageSize } = this.props.myProductList
+    const { userId } = this.props
 
     return {
       pageIndex,
       pageSize,
+      userId,
       orderBy: SearchOrderBy.CT,
       sortDirection: SearchSortDirection.DESC,
     }

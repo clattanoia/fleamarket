@@ -1,6 +1,6 @@
 import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import { View, Text, Input } from '@tarojs/components'
-import { AtIcon }  from 'taro-ui'
+import { AtIcon, AtToast }  from 'taro-ui'
 import { useSelector, useDispatch } from '@tarojs/redux'
 
 import debounce from 'lodash/debounce'
@@ -32,9 +32,11 @@ function SeachSection(props: InProps) {
   const { currentProductType, title } = productSearch
 
   const [showResut, setShowResut] = useState(false)
+  const [keyword, setKeyword] = useState('')
   const [forceHiddenFloatLayout, setForceHiddenFloatLayout] = useState(false)
   const [currentSelectInfo, setCurrentSelectInfo] = useState(productTypes && productTypes[0])
   const [searchResults, setSearchResults] = useState([])
+  const [showToast, setShowToast] = useState(false)
 
   const setSearch = (search) => {
     dispatch({ type: SET_PRODUCT_SEARCH, payload: search })
@@ -44,6 +46,10 @@ function SeachSection(props: InProps) {
     const info = productTypes.find(item => item.id === id)
     setCurrentSelectInfo(info)
   }
+
+  useEffect(() => {
+    setKeyword(title)
+  }, [title])
 
   useEffect(() => {
     setCurrentSelectInfoHandle(currentProductType)
@@ -70,6 +76,7 @@ function SeachSection(props: InProps) {
 
   const clearKeyword = () => {
     setSearch({ title: '' })
+    setKeyword('')
     closeResultFloat()
   }
 
@@ -97,14 +104,20 @@ function SeachSection(props: InProps) {
 
   const handleChange = debounce((e) => {
     const keywords = e.target.value.replace(/^\s*/, '')
-    setSearch({ title: keywords })
+    setKeyword(keywords)
+    // setSearch({ title: keywords })
     if(keywords){
       searchQuery(keywords)
     }
   }, 300)
 
   const onConfirm = () => {
-    fetchSearch()
+    if(keyword){
+      setSearch({ title: keyword, categoryId: '' })
+      fetchSearch()
+    } else {
+      setShowToast(true)
+    }
   }
 
   const onFocus = () => {
@@ -124,6 +137,10 @@ function SeachSection(props: InProps) {
     Taro.navigateTo({
       url: `/pages/detail/index?id=${item.id}&productType=${currentProductType}`,
     })
+  }
+
+  const handleCloseToast = () => {
+    setShowToast(false)
   }
 
   const renderResult = () => {
@@ -173,7 +190,7 @@ function SeachSection(props: InProps) {
               type='text'
               maxLength={10}
               placeholder={placeholderText}
-              value={title}
+              value={keyword}
               onInput={handleChange}
               confirmType="search"
               focus
@@ -183,13 +200,13 @@ function SeachSection(props: InProps) {
             />
           </View>
           <View className={styles.searchTextClear} onClick={clearKeyword}>
-            <AtIcon prefixClass='at-icon' value="close-circle" size={title ? 16 : 0}></AtIcon>
+            <AtIcon prefixClass='at-icon' value="close-circle" size={keyword ? 16 : 0}></AtIcon>
           </View>
         </View>
         <Text className={styles.searchBtn} onClick={cancleHandle}>取消</Text>
       </View>
       <FloatLayout
-        visible={!!title.length && !!searchResults.length && showResut}
+        visible={!!keyword.length && !!searchResults.length && showResut}
         closeFloat={closeResultFloat}
         type="search"
       >
@@ -197,6 +214,13 @@ function SeachSection(props: InProps) {
           {renderResult}
         </View>
       </FloatLayout>
+      <AtToast
+        isOpened={showToast}
+        text="关键词不能为空"
+        onClose={handleCloseToast}
+        hasMask
+      >
+      </AtToast>
     </View>
   )
 

@@ -6,6 +6,7 @@ import { connect } from '@tarojs/redux'
 import client from '../../graphql-client'
 import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
 import { ProductType } from '../../constants/enums'
+import { resetProductSearch } from '../../actions/global'
 
 import ResultPage from './resultPage'
 import SearchPage from './searchPage'
@@ -15,13 +16,15 @@ type PageStateProps = {
     productSearch: any
   }
 }
-
+type PageDispatchProps = {
+  resetProductSearch: () => Function,
+}
 type PageState =  {
   hasFetchSearch: boolean
   showResult: boolean
   searchListResult: any[]
 }
-type IProps = PageStateProps
+type IProps = PageStateProps & PageDispatchProps
 
 interface Search {
   props: IProps;
@@ -36,6 +39,10 @@ const productTypes = [{
 
 @connect(({ global }) => ({
   global,
+}), (dispatch) => ({
+  resetProductSearch() {
+    dispatch(resetProductSearch())
+  },
 }))
 class Search extends Component<{}, PageState> {
 
@@ -61,6 +68,10 @@ class Search extends Component<{}, PageState> {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetProductSearch()
+  }
+
   setStateValue = (key, value): void => {
     this.setState({
       [key]: value,
@@ -70,6 +81,7 @@ class Search extends Component<{}, PageState> {
   fetchSearch = async() => {
     this.setState({
       showResult: true,
+      hasFetchSearch: true,
     })
     const { productSearch } = this.props.global
     const { categoryId, title, currentProductType } = productSearch

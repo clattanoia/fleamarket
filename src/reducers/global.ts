@@ -1,7 +1,7 @@
-import { SET_AUTH_INFO, SET_PRODUCT_SEARCH } from '../constants/actionTypes'
+import { SET_AUTH_INFO, SET_PRODUCT_SEARCH, RESET_PRODUCT_SEARCH } from '../constants/actionTypes'
 import { ProductType } from '../constants/enums'
 
-export const INITIAL_STATE = {
+const INITIAL_STATE = {
   isOpenedAuthInfo: false,
   productSearch: {
     categoryId: '',
@@ -26,6 +26,11 @@ export default function global(state = INITIAL_STATE, action) {
         },
       }
     }
+    case RESET_PRODUCT_SEARCH:
+      return {
+        ...state,
+        productSearch: INITIAL_STATE.productSearch,
+      }
     default:
       return state
   }

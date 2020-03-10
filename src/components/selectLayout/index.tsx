@@ -18,7 +18,6 @@ function SelectLayout(props: InProps) {
   const { list, current, onChangeSelect, textBottom = 0, forceHiddenFloatLayout = false } = props
   const [arrotB, setArrowB] = useState(true)
 
-
   useEffect(() => {
     if(forceHiddenFloatLayout){
       setArrowB(true)

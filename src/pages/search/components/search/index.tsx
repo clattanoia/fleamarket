@@ -75,14 +75,14 @@ function SeachSection(props: InProps) {
   }
 
   const clearKeyword = () => {
-    setSearch({ title: '' })
+    // setSearch({ title: '' })
     setKeyword('')
     closeResultFloat()
   }
 
   const changeType = (type) => {
     setCurrentSelectInfo(type)
-    setSearch({ currentProductType: type.id })
+    // setSearch({ currentProductType: type.id })
     clearKeyword()
   }
 
@@ -114,7 +114,7 @@ function SeachSection(props: InProps) {
 
   const onConfirm = () => {
     if(keyword){
-      setSearch({ title: keyword, categoryId: '' })
+      setSearch({ title: keyword, categoryId: '', currentProductType: currentSelectInfo.id })
       refreshData(RefreshDataType.RESET_PAGE)
     } else {
       setShowToast(true)

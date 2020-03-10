@@ -25,6 +25,8 @@ type PageState =  {
   showResult: boolean
   searchListResult: any[]
   pageIndex: number
+  showNoMore: boolean
+  isLoading: boolean
 }
 type IProps = PageStateProps & PageDispatchProps
 
@@ -38,6 +40,7 @@ const productTypes = [{
   name: '出售',
   id: ProductType.PURCHASE,
 }]
+
 
 @connect(({ global }) => ({
   global,
@@ -57,6 +60,8 @@ class Search extends Component<{}, PageState> {
     showResult: false,
     searchListResult: [],
     pageIndex: 0,
+    showNoMore: false,
+    isLoading: false,
   }
 
   componentDidMount() {
@@ -87,11 +92,11 @@ class Search extends Component<{}, PageState> {
       hasFetchSearch: true,
     })
     const { productSearch } = this.props.global
-    const { pageIndex } = this.state
+    const { pageIndex, searchListResult } = this.state
     const { currentProductType, categoryId, title, orderBy, sortDirection } = productSearch
 
     const searchInput = {
-      pageSize: 10,
+      pageSize: 6,
       pageIndex,
       title,
       categoryId,
@@ -102,13 +107,17 @@ class Search extends Component<{}, PageState> {
     const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
     try {
       const { data } = await client.query({ query, variables: { searchInput }})
+      const { content, totalPages, totalElements } = data.searchResult
+      const newContent = pageIndex ? [...searchListResult, ...content] : content
       this.setState({
-        searchListResult: data.searchResult.content,
+        searchListResult: newContent,
+        showNoMore: (pageIndex === totalPages - 1) && (totalElements > 0),
       })
     } catch (err){
       console.log(err)
+    } finally {
       this.setState({
-        searchListResult: [],
+        isLoading: false,
       })
     }
   }
@@ -120,14 +129,17 @@ class Search extends Component<{}, PageState> {
 
     this.setState({
       pageIndex: newPageIndex,
+      isLoading: true,
     }, () => {
-      this.fetchSearch()
+      setTimeout(() => {
+        this.fetchSearch()
+      }, 3000)
     })
 
   }
 
   render() {
-    const { showResult, hasFetchSearch, searchListResult } = this.state
+    const { showResult, hasFetchSearch, searchListResult, showNoMore, isLoading } = this.state
     const { productSearch } = this.props.global
 
     return (
@@ -140,6 +152,8 @@ class Search extends Component<{}, PageState> {
               refreshData={this.refreshData}
               searchListResult={searchListResult}
               productType={productSearch.currentProductType}
+              showNoMore={showNoMore}
+              isLoading={isLoading}
             />
           ) : (
             <SearchPage

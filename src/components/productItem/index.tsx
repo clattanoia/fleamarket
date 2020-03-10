@@ -2,6 +2,7 @@ import Taro, { memo } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtAvatar } from 'taro-ui'
 import styles from './index.module.scss'
+import defaultProductCover from '../../assets/default_product_cover.png'
 
 interface InProps {
   productData: Global.Goods
@@ -13,7 +14,7 @@ function ProductItem(props: InProps) {
   return (
     <View className={styles.productItem}>
       <View className={styles.goodsImage}>
-        <Image className={styles.goodsImg} mode="widthFix" src={productData.coverUrl} />
+        <Image className={styles.goodsImg} mode="widthFix" src={productData.coverUrl || defaultProductCover} />
       </View>
       <Text className={styles.goodsName}>{productData.title}</Text>
       <View className={styles.detail}>

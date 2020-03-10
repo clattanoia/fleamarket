@@ -1,5 +1,7 @@
 import Taro, { memo, useEffect, useState } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
+import { AtLoadMore } from 'taro-ui'
+
 import SeachListSection from '../../../components/searchList'
 import ProductList from '../../../components/productList'
 import { ProductType, RefreshDataType } from '../../../constants/enums'
@@ -12,15 +14,18 @@ interface InProps {
   productTypes: Search.SelectLayout[]
   searchListResult: any[]
   productType: ProductType
+  showNoMore: boolean
+  isLoading: boolean
 }
 
 function ResultPage(props: InProps) {
-  const { productTypes, onSetVal, refreshData, searchListResult, productType } = props
+  const { productTypes, onSetVal, refreshData, searchListResult, productType, showNoMore= false, isLoading=false } = props
   const [width, setWidth]=useState(0)
 
   useEffect(() => {
     Taro.getSystemInfo({
       success: res => {
+        console.log(res)
         setWidth(res.screenHeight - 50)
       },
     })
@@ -29,9 +34,10 @@ function ResultPage(props: InProps) {
   const scrollStyle = {
     height: `${width}px`,
   }
-  const onScrollToLower = (e) => {
-    console.log('--------onScrollToLower----------------------')
-    console.log(e)
+  const onScrollToLower = () => {
+    if(isLoading || showNoMore){
+      return
+    }
     refreshData(RefreshDataType.ADD_PAGE)
   }
 
@@ -53,7 +59,15 @@ function ResultPage(props: InProps) {
           lowerThreshold={20}
           onScrollToLower={onScrollToLower}
         >
-          <ProductList productListData={searchListResult} productType={productType} />
+          <View>
+            <ProductList productListData={searchListResult} productType={productType} />
+            <View className={styles.noMore}>
+              { isLoading ? <AtLoadMore status="loading" /> : (
+                showNoMore && searchListResult.length && <AtLoadMore status="noMore" noMoreTextStyle="color: #c8c8c8" />
+              )
+              }
+            </View>
+          </View>
         </ScrollView>
       </View>
     </View>

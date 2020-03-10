@@ -22,7 +22,7 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  addContact: (addContact: AddContactInput, userId: string) => Function,
+  addContact: (addContact: AddContactInput, userId: string) => any,
 }
 
 type PageOwnProps = {}
@@ -54,7 +54,7 @@ const ERROR_MESSAGE = {
   userInfo: userInfo,
 }), (dispatch) => ({
   addContact(data, userId) {
-    dispatch(addContact(data, userId))
+    return dispatch(addContact(data, userId))
   },
 }))
 class AddContact extends Component {
@@ -118,9 +118,13 @@ class AddContact extends Component {
       await this.props.addContact(addContactInput, this.props.userInfo.id)
       Taro.navigateBack()
     } catch (e) {
+      let toastText = ERROR_MESSAGE.SYSTEM_ERROR
+      if(e.message.indexOf('400') > -1) {
+        toastText =  ERROR_MESSAGE[this.state.type]
+      }
       this.setState({
         showToast: true,
-        toastText: ERROR_MESSAGE.SYSTEM_ERROR,
+        toastText,
       })
     }
   }

@@ -141,7 +141,9 @@ class Manage extends Component<PageOwnProps, PageState> {
     return (
       <View>
         <AtActionSheet isOpened={isOpened} cancelText='取消'>
-          <AtActionSheetItem onClick={this.edit}>编辑</AtActionSheetItem>
+          {
+            isForSale && <AtActionSheetItem onClick={this.edit}>编辑</AtActionSheetItem>
+          }
           {
             isForSale ?
               <AtActionSheetItem onClick={this.soldout}>下架</AtActionSheetItem> :

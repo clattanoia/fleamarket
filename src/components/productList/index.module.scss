@@ -5,10 +5,10 @@
 
   .listItem {
     margin-top: 10px;
-    width: calc(50% - 10px);
+    width: calc(50% - 5PX);
 
     &:nth-child(even) {
-      margin-left: 20px;
+      margin-left: 10PX;
     }
   }
   .noProduct {

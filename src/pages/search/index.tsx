@@ -5,11 +5,12 @@ import { connect } from '@tarojs/redux'
 
 import client from '../../graphql-client'
 import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
-import { ProductType } from '../../constants/enums'
+import { ProductType, RefreshDataType } from '../../constants/enums'
 import { resetProductSearch } from '../../actions/global'
 
 import ResultPage from './resultPage'
 import SearchPage from './searchPage'
+import './index.module.scss'
 
 type PageStateProps = {
   global: {
@@ -23,6 +24,7 @@ type PageState =  {
   hasFetchSearch: boolean
   showResult: boolean
   searchListResult: any[]
+  pageIndex: number
 }
 type IProps = PageStateProps & PageDispatchProps
 
@@ -54,6 +56,7 @@ class Search extends Component<{}, PageState> {
     hasFetchSearch: false,
     showResult: false,
     searchListResult: [],
+    pageIndex: 0,
   }
 
   componentDidMount() {
@@ -84,11 +87,12 @@ class Search extends Component<{}, PageState> {
       hasFetchSearch: true,
     })
     const { productSearch } = this.props.global
-    const { categoryId, title, currentProductType, orderBy, sortDirection } = productSearch
+    const { pageIndex } = this.state
+    const { currentProductType, categoryId, title, orderBy, sortDirection } = productSearch
 
     const searchInput = {
-      pageIndex: 0,
       pageSize: 10,
+      pageIndex,
       title,
       categoryId,
       orderBy,
@@ -109,6 +113,19 @@ class Search extends Component<{}, PageState> {
     }
   }
 
+  refreshData = (type: RefreshDataType) => {
+    const { pageIndex } =this.state
+
+    const newPageIndex = type === RefreshDataType.RESET_PAGE ? 0 : (pageIndex + 1)
+
+    this.setState({
+      pageIndex: newPageIndex,
+    }, () => {
+      this.fetchSearch()
+    })
+
+  }
+
   render() {
     const { showResult, hasFetchSearch, searchListResult } = this.state
     const { productSearch } = this.props.global
@@ -120,7 +137,7 @@ class Search extends Component<{}, PageState> {
             <ResultPage
               productTypes={productTypes}
               onSetVal={this.setStateValue}
-              fetchSearch={this.fetchSearch}
+              refreshData={this.refreshData}
               searchListResult={searchListResult}
               productType={productSearch.currentProductType}
             />
@@ -129,7 +146,7 @@ class Search extends Component<{}, PageState> {
               productTypes={productTypes}
               hasFetchSearch={hasFetchSearch}
               onSetVal={this.setStateValue}
-              fetchSearch={this.fetchSearch}
+              refreshData={this.refreshData}
             />
           )
         }

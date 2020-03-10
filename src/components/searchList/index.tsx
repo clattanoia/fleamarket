@@ -8,10 +8,11 @@ import styles from './index.module.scss'
 import { placeholderText } from '../../constants/search'
 import SelectLayout from '../selectLayout'
 import { SET_PRODUCT_SEARCH } from '../../constants/actionTypes'
+import { RefreshDataType } from '../../constants/enums'
 
 interface InProps {
   productTypes: Search.SelectLayout[]
-  fetchSearch: () => void
+  refreshData: (type: RefreshDataType) => void
   onSetVal: (key, value) => void
 }
 
@@ -19,7 +20,7 @@ function SeachListSection(props: InProps) {
   const productSearch = useSelector((state: any) => {
     return state.global.productSearch
   })
-  const { productTypes, onSetVal, fetchSearch } = props
+  const { productTypes, onSetVal, refreshData } = props
 
   const dispatch = useDispatch()
   const { currentProductType, title } = productSearch
@@ -48,7 +49,7 @@ function SeachListSection(props: InProps) {
   const changeType = (type) => {
     setCurrentSelectInfo(type)
     setSearch({ currentProductType: type.id })
-    fetchSearch()
+    refreshData(RefreshDataType.RESET_PAGE)
   }
 
   const showSearchPage = () => {

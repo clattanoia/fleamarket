@@ -1,16 +1,18 @@
 import Taro, { memo } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import SeachSection from '../../../components/search'
+import { RefreshDataType } from '../../../constants/enums'
 
 interface InProps {
   productTypes: Search.SelectLayout[]
   hasFetchSearch: boolean
   onSetVal: (key, value) => void
-  fetchSearch: () => void
+  refreshData: (type: RefreshDataType) => void
 }
 
 function SearchPage(props: InProps) {
-  const { productTypes, hasFetchSearch, onSetVal, fetchSearch } = props
+  const { productTypes, hasFetchSearch, onSetVal, refreshData } = props
+
 
   return (
     <View>
@@ -18,7 +20,7 @@ function SearchPage(props: InProps) {
         productTypes={productTypes}
         hasFetchSearch={hasFetchSearch}
         onSetVal={onSetVal}
-        fetchSearch={fetchSearch}
+        refreshData={refreshData}
       />
     </View>
   )

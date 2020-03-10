@@ -115,12 +115,9 @@ class Index extends Component {
           */}
 
           <Text className='category'>看推荐</Text>
-          {this.state.goods.length === 0 ?
-            <View className='no-goods'><Text>暂无信息</Text></View> :
-            <View className='wrapper-list'>
-              <ProductList productListData={this.state.goods} productType={ProductType.GOODS} />
-            </View>
-          }
+          <View className='wrapper-list'>
+            <ProductList productListData={this.state.goods} productType={ProductType.GOODS} />
+          </View>
         </View>
         <TabBar current={0} />
       </View>

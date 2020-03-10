@@ -1,5 +1,5 @@
 import Taro, { memo } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import ProductItem from '../productItem'
 import { ProductType } from '../../constants/enums'
 
@@ -22,11 +22,18 @@ function ProductList(props: InProps) {
 
   return (
     <View className={styles.wrapperList}>
-      {productListData.map(item =>
-        <View className={styles.listItem} key={item.id} onClick={onClickEvent(item.id)}>
-          <ProductItem productData={item} />
-        </View>
-      )}
+      {
+        productListData.length ?
+          productListData.map(item =>
+            <View className={styles.listItem} key={item.id} onClick={onClickEvent(item.id)}>
+              <ProductItem productData={item} />
+            </View>
+          )
+          : (
+            <View className={styles.noProduct}><Text>暂无相关数据</Text></View>
+          )
+      }
+
     </View>
   )
 

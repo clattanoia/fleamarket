@@ -13,6 +13,11 @@ export enum ProductType {
   PURCHASE = 'PURCHASE',
 }
 
+export enum RefreshDataType {
+  RESET_PAGE = 'RESET_PAGE',
+  ADD_PAGE = 'ADD_PAGE'
+}
+
 export enum ProductHandleType {
   SOLDOUT = '下架',
   ACTIVATE = '激活',

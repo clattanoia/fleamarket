@@ -12,21 +12,21 @@ import { placeholderText } from '../../constants/search'
 import SelectLayout from '../selectLayout'
 import FloatLayout from '../FloatLayout'
 import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
-import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
+import { ProductType, SearchOrderBy, SearchSortDirection, RefreshDataType } from '../../constants/enums'
 import { SET_PRODUCT_SEARCH } from '../../constants/actionTypes'
 
 interface InProps {
   productTypes: Search.SelectLayout[]
   hasFetchSearch: boolean
   onSetVal: (key, value) => void
-  fetchSearch: () => void
+  refreshData: (type: RefreshDataType) => void
 }
 
 function SeachSection(props: InProps) {
   const productSearch = useSelector((state: any) => {
     return state.global.productSearch
   })
-  const { productTypes, hasFetchSearch, onSetVal, fetchSearch } = props
+  const { productTypes, hasFetchSearch, onSetVal, refreshData } = props
 
   const dispatch = useDispatch()
   const { currentProductType, title } = productSearch
@@ -115,7 +115,7 @@ function SeachSection(props: InProps) {
   const onConfirm = () => {
     if(keyword){
       setSearch({ title: keyword, categoryId: '' })
-      fetchSearch()
+      refreshData(RefreshDataType.RESET_PAGE)
     } else {
       setShowToast(true)
     }

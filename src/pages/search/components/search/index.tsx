@@ -96,7 +96,8 @@ function SeachSection(props: InProps) {
       orderBy: SearchOrderBy.RC,
       sortDirection: SearchSortDirection.DESC,
     }
-    const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
+    // const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
+    const query = currentSelectInfo.id === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
     try {
       const { data } = await client.query({ query, variables: { searchInput }})
       setSearchResults(data.searchResult.content)
@@ -138,7 +139,7 @@ function SeachSection(props: InProps) {
 
   const clickHandle = (item) => () => {
     Taro.navigateTo({
-      url: `/pages/detail/index?id=${item.id}&productType=${currentProductType}`,
+      url: `/pages/detail/index?id=${item.id}&productType=${currentSelectInfo.id}`,
     })
   }
 
@@ -148,7 +149,7 @@ function SeachSection(props: InProps) {
 
   const renderResult = () => {
     return searchResults.map(product => {
-      const result = product['title'].split(new RegExp(title, 'gi'))
+      const result = product['title'].split(new RegExp(keyword, 'gi'))
       product['resultLength'] = result.length - 1
       return (
         <View className={styles.searchResutList} onClick={clickHandle(product)} key={product.id}>
@@ -163,7 +164,7 @@ function SeachSection(props: InProps) {
               }
               return (
                 <View key={Symbol(index).toString()}>
-                  {tit}<Text className="activeColor">{title}</Text>
+                  {tit}<Text className="activeColor">{keyword}</Text>
                 </View>
               )
             })

@@ -130,9 +130,7 @@ class Search extends Component<{}, PageState> {
       pageIndex: newPageIndex,
       isLoading: true,
     }, () => {
-      setTimeout(() => {
-        this.fetchSearch()
-      }, 3000)
+      this.fetchSearch()
     })
 
   }

@@ -63,7 +63,6 @@
     "qiniu-js": "^2.5.5",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
-    "redux-promise-middleware": "^6.1.2",
     "redux-thunk": "^2.3.0",
     "taro-ui": "^2.2.4"
   },

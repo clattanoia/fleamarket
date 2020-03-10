@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import promise from 'redux-promise-middleware'
 import rootReducer from '../reducers'
 
 const composeEnhancers =
@@ -12,7 +11,6 @@ const composeEnhancers =
 
 const middlewares = [
   thunkMiddleware,
-  promise,
 ]
 
 if(process.env.NODE_ENV === 'development' && process.env.TARO_ENV !== 'quickapp') {

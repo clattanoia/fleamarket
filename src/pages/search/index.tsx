@@ -10,7 +10,6 @@ import { resetProductSearch } from '../../actions/global'
 
 import ResultPage from './resultPage'
 import SearchPage from './searchPage'
-import './index.module.scss'
 
 type PageStateProps = {
   global: {
@@ -96,7 +95,7 @@ class Search extends Component<{}, PageState> {
     const { currentProductType, categoryId, title, orderBy, sortDirection } = productSearch
 
     const searchInput = {
-      pageSize: 6,
+      pageSize: 10,
       pageIndex,
       title,
       categoryId,

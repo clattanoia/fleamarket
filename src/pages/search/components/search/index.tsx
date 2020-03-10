@@ -4,16 +4,16 @@ import { AtIcon, AtToast }  from 'taro-ui'
 import { useSelector, useDispatch } from '@tarojs/redux'
 
 import debounce from 'lodash/debounce'
-import client from '../../graphql-client'
+import client from '../../../../graphql-client'
 
 import styles from './index.module.scss'
 
-import { placeholderText } from '../../constants/search'
-import SelectLayout from '../selectLayout'
-import FloatLayout from '../FloatLayout'
-import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
-import { ProductType, SearchOrderBy, SearchSortDirection, RefreshDataType } from '../../constants/enums'
-import { SET_PRODUCT_SEARCH } from '../../constants/actionTypes'
+import { placeholderText } from '../../../../constants/search'
+import SelectLayout from '../../../../components/selectLayout'
+import FloatLayout from '../../../../components/FloatLayout'
+import { searchGoodsQuery, searchPurchaseQuery } from '../../../../query/search'
+import { ProductType, SearchOrderBy, SearchSortDirection, RefreshDataType } from '../../../../constants/enums'
+import { SET_PRODUCT_SEARCH } from '../../../../constants/actionTypes'
 
 interface InProps {
   productTypes: Search.SelectLayout[]

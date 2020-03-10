@@ -2,7 +2,7 @@ import Taro, { memo, useEffect, useState } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { AtLoadMore } from 'taro-ui'
 
-import SeachListSection from '../../../components/searchList'
+import SeachListSection from '../components/searchList'
 import ProductList from '../../../components/productList'
 import { ProductType, RefreshDataType } from '../../../constants/enums'
 

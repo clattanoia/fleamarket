@@ -1,6 +1,6 @@
 import Taro, { memo } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import SeachSection from '../../../components/search'
+import SeachSection from '../components/search'
 import { RefreshDataType } from '../../../constants/enums'
 
 interface InProps {

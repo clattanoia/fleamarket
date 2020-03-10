@@ -5,10 +5,10 @@ import { useSelector, useDispatch } from '@tarojs/redux'
 
 import styles from './index.module.scss'
 
-import { placeholderText } from '../../constants/search'
-import SelectLayout from '../selectLayout'
-import { SET_PRODUCT_SEARCH } from '../../constants/actionTypes'
-import { RefreshDataType } from '../../constants/enums'
+import { placeholderText } from '../../../../constants/search'
+import SelectLayout from '../../../../components/selectLayout'
+import { SET_PRODUCT_SEARCH } from '../../../../constants/actionTypes'
+import { RefreshDataType } from '../../../../constants/enums'
 
 interface InProps {
   productTypes: Search.SelectLayout[]

@@ -92,7 +92,7 @@ function SeachSection(props: InProps) {
       pageSize: 5,
       title: keywords,
       orderBy: SearchOrderBy.RC,
-      sortDirectionz: SearchSortDirection.DESC,
+      sortDirection: SearchSortDirection.DESC,
     }
     const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
     try {

@@ -113,7 +113,7 @@ function SeachSection(props: InProps) {
     if(keywords){
       searchQuery(keywords)
     }
-  }, 300)
+  }, 200)
 
   const onConfirm = () => {
     if(keyword){

@@ -82,7 +82,7 @@ function SeachListSection(props: InProps) {
             />
           </View>
         </View>
-        <Text className={styles.searchBtn} onClick={cancleHandle}>取消</Text>
+        <Text className={styles.searchBtn} onClick={cancleHandle}>返回</Text>
       </View>
     </View>
   )

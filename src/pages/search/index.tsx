@@ -33,10 +33,10 @@ interface Search {
   props: IProps;
 }
 const productTypes = [{
-  name: '求购',
+  name: '出售',
   id: ProductType.GOODS,
 }, {
-  name: '出售',
+  name: '求购',
   id: ProductType.PURCHASE,
 }]
 

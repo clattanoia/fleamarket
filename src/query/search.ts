@@ -1,9 +1,7 @@
 import { gql } from 'apollo-boost'
 
-
-export const searchGoodsQuery = gql`
-query($searchInput: SearchInput) {
-  searchResult: searchGoods (searchInput:$searchInput ){
+const SearchResultFragment =  gql`
+  fragment SearchResultFragment on SearchResult {
     content {
       id
       title
@@ -30,103 +28,43 @@ query($searchInput: SearchInput) {
     totalElements
     totalPages
   }
+`
+
+
+export const searchGoodsQuery = gql`
+query($searchInput: SearchInput) {
+  searchResult: searchGoods (searchInput:$searchInput ){
+    ...SearchResultFragment
+  }
 }
+${SearchResultFragment}
 `
 
 
 export const searchPurchaseQuery = gql`
 query($searchInput: SearchInput) {
   searchResult: searchPurchase (searchInput:$searchInput ){
-    content {
-      id
-      title
-      price
-      coverUrl
-      category
-      categoryName
-      description
-      coverUrl
-      status
-      createTime
-      updateTime
-      pictures
-      contacts
-      readCount
-      owner {
-        id
-        nickname
-        avatarUrl
-      }
-    }
-    pageIndex
-    pageSize
-    totalElements
-    totalPages
+    ...SearchResultFragment
   }
 }
+${SearchResultFragment}
 `
 
 export const searchMyGoodsQuery = gql`
   query($searchInput: SearchInput) {
     searchResult: searchMyGoods (searchInput:$searchInput ){
-      content {
-        id
-        title
-        price
-        coverUrl
-        category
-        categoryName
-        description
-        coverUrl
-        status
-        createTime
-        updateTime
-        pictures
-        contacts
-        readCount
-        owner {
-          id
-          nickname
-          avatarUrl
-        }
-      }
-      pageIndex
-      pageSize
-      totalElements
-      totalPages
+      ...SearchResultFragment
     }
   }
+  ${SearchResultFragment}
 `
 
 
 export const searchMyPurchaseQuery = gql`
   query($searchInput: SearchInput) {
     searchResult: searchMyPurchase (searchInput:$searchInput ){
-      content {
-        id
-        title
-        price
-        coverUrl
-        category
-        categoryName
-        description
-        coverUrl
-        status
-        createTime
-        updateTime
-        pictures
-        contacts
-        readCount
-        owner {
-          id
-          nickname
-          avatarUrl
-        }
-      }
-      pageIndex
-      pageSize
-      totalElements
-      totalPages
+      ...SearchResultFragment
     }
   }
+  ${SearchResultFragment}
 `

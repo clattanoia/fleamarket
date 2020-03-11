@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { ScrollView, View } from '@tarojs/components'
-import { AtLoadMore } from 'taro-ui'
+import { AtLoadMore, AtToast } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { ReactNodeLike } from 'prop-types'
 
@@ -169,11 +169,20 @@ class MyProductList extends Component<PageOwnProps, PageState> {
     )
   }
 
+  renderToast() {
+    const { myProductList } = this.props
+    const { isToastOpened, toastText } = myProductList
+
+    return <AtToast isOpened={isToastOpened} hasMask status="error" text={toastText}></AtToast>
+  }
+
   render() {
+
     const { showPreload } = this.props.myProductList
     return (
       <View className={styles.container}>
         { showPreload ? <Preload /> : this.renderScrollView() }
+        {this.renderToast()}
       </View>
     )
   }

@@ -3,7 +3,7 @@ import {
   FETCH_MY_PRODUCT_LIST_SUCCESS,
   FETCH_MY_PRODUCT_LIST_FINALLY,
   RESET_MY_PRODUCT_LIST,
-  UPDATE_MY_PRODUCT_LIST_DATA,
+  UPDATE_MY_PRODUCT_LIST_DATA, FETCH_MY_PRODUCT_LIST_ERROR,
 } from '../constants/actionTypes'
 import { Product } from '../interfaces/product'
 
@@ -14,6 +14,8 @@ export interface InMyProductListState {
   listData: Product[]
   showPreload: boolean
   showLoadMore: boolean
+  isToastOpened: boolean,
+  toastText: string,
 }
 
 const INITIAL_STATE: InMyProductListState = {
@@ -24,6 +26,8 @@ const INITIAL_STATE: InMyProductListState = {
 
   showPreload: false,
   showLoadMore: false,
+  isToastOpened: false,
+  toastText: '',
 }
 
 export default function myProductList(state = INITIAL_STATE, action) {
@@ -52,6 +56,20 @@ export default function myProductList(state = INITIAL_STATE, action) {
       newState.listData = state.listData.concat(payload.searchResult.content)
       return {
         ...newState,
+      }
+    }
+
+    case FETCH_MY_PRODUCT_LIST_ERROR: {
+      const { payload } = action
+      let toastText = '加载失败'
+      console.log('payload.error.message', payload.error.message)
+      if(payload.error.message.indexOf('400') > -1) {
+        toastText = '登陆失效，请返回重新操作'
+      }
+      return {
+        ...state,
+        isToastOpened: true,
+        toastText,
       }
     }
 

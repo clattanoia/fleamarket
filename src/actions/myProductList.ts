@@ -6,7 +6,7 @@ import {
   FETCH_MY_PRODUCT_LIST_SUCCESS,
   FETCH_MY_PRODUCT_LIST_FINALLY,
   RESET_MY_PRODUCT_LIST,
-  UPDATE_MY_PRODUCT_LIST_DATA,
+  UPDATE_MY_PRODUCT_LIST_DATA, FETCH_MY_PRODUCT_LIST_ERROR,
 } from '../constants/actionTypes'
 import { ProductType } from '../constants/enums'
 import { searchMyGoodsQuery, searchMyPurchaseQuery } from '../query/search'
@@ -20,6 +20,13 @@ const fetchStart = () => {
 const fetchSuccess = (payload) => {
   return {
     type: FETCH_MY_PRODUCT_LIST_SUCCESS,
+    payload,
+  }
+}
+
+const fetchError = (payload) => {
+  return {
+    type: FETCH_MY_PRODUCT_LIST_ERROR,
     payload,
   }
 }
@@ -58,8 +65,7 @@ export function fetchMyProductList(searchInput, productType) {
       const { data } = await client.query({ query, variables: { searchInput }})
       dispatch(fetchSuccess(data))
     } catch (error) {
-      console.log('fetchMyProductList-->', error)
-      throw error
+      dispatch(fetchError({ error }))
     } finally {
       dispatch(fetchFinally())
     }

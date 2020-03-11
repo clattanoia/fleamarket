@@ -16,10 +16,9 @@
 
   .goodsName {
     margin-left: 10px;
+    min-height: 36PX;
     overflow : hidden;
-    text-overflow: ellipsis;
     display: block;
-    white-space: nowrap;
     font-size: 26px;
     color: #101010;
     font-weight: bold;

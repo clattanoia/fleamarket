@@ -28,6 +28,7 @@ import ProductList from '../../components/productList'
 
 interface State {
   goods: Array<Global.Goods>,
+  isLoading: boolean
 }
 
 type PageStateProps = {
@@ -72,6 +73,7 @@ class Index extends Component {
 
   state: State = {
     goods: [],
+    isLoading: false,
   }
 
   componentDidMount() {
@@ -83,15 +85,27 @@ class Index extends Component {
   }
 
   componentDidShow() {
-    this.fetchRecommendList()
+    this.setState({
+      isLoading: true,
+    }, () => {
+      this.fetchRecommendList()
+    })
   }
 
   async fetchRecommendList() {
     const query = recommendListQuery
-    const { data } = await client.query({ query, variables: {}})
-    this.setState({
-      goods: data.goods,
-    })
+    try {
+      const { data } = await client.query({ query, variables: {}})
+      this.setState({
+        goods: data.goods,
+      })
+    } catch (err){
+      console.log(err)
+    } finally {
+      this.setState({
+        isLoading: false,
+      })
+    }
   }
 
   handleGotoPurchase(id): void {
@@ -101,6 +115,7 @@ class Index extends Component {
   }
 
   render() {
+    const { isLoading, goods } = this.state
     return (
       <View className='index'>
         <View className="fixedTop">
@@ -116,7 +131,7 @@ class Index extends Component {
 
           <Text className='category'>看推荐</Text>
           <View className='wrapper-list'>
-            <ProductList productListData={this.state.goods} productType={ProductType.GOODS} />
+            <ProductList productListData={goods} productType={ProductType.GOODS} showPreload={isLoading} />
           </View>
         </View>
         <TabBar current={0} />

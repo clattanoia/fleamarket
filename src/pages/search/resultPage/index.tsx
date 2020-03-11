@@ -5,7 +5,6 @@ import { AtLoadMore } from 'taro-ui'
 import SeachListSection from '../components/searchList'
 import ProductList from '../../../components/productList'
 import { ProductType, RefreshDataType } from '../../../constants/enums'
-import ProductListPreload from '../components/preload'
 
 import styles from './index.module.scss'
 
@@ -61,10 +60,7 @@ function ResultPage(props: InProps) {
           onScrollToLower={onScrollToLower}
         >
           <View className={styles.list}>
-            {
-              (isLoading && !searchListResult.length) ? <ProductListPreload />  :
-                <ProductList productListData={searchListResult} productType={productType} />
-            }
+            <ProductList productListData={searchListResult} productType={productType} showPreload={isLoading && !searchListResult.length} />
           </View>
           <View className={styles.noMore}>
             { isLoading ? <AtLoadMore status="loading" /> : (

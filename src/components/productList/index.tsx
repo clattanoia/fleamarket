@@ -2,7 +2,7 @@ import Taro, { memo } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import ProductItem from '../productItem'
 import { ProductType } from '../../constants/enums'
-// import ProductListPreload from '../preloadProduct'
+import ProductListPreload from '../preloadProduct'
 import styles from './index.module.scss'
 
 interface InProps {
@@ -12,7 +12,7 @@ interface InProps {
 }
 
 function ProductList(props: InProps) {
-  const { productListData =[], productType } = props
+  const { productListData =[], productType, showPreload = false } = props
 
 
   const onClickEvent = (id: string) => () => {
@@ -21,45 +21,23 @@ function ProductList(props: InProps) {
     })
   }
 
-  // const renderResult = () => {
-  //   return (
-  //     <View className={styles.wrapperList}>
-  //       {
-  //         productListData.length ?
-  //           productListData.map(item =>
-  //             <View className={styles.listItem} key={item.id} onClick={onClickEvent(item.id)}>
-  //               <ProductItem productData={item} />
-  //             </View>
-  //           )
-  //           : (
-  //             <View className={styles.noProduct}><Text>暂无相关数据</Text></View>
-  //           )
-  //       }
-
-  //     </View>
-  //   )
-  // }
-
-  // return (
-  //   <View>{showPreload ? <ProductListPreload/> : renderResult()}</View>
-  // )
-
-
-
   return (
-    <View className={styles.wrapperList}>
-      {
-        productListData.length ?
-          productListData.map(item =>
-            <View className={styles.listItem} key={item.id} onClick={onClickEvent(item.id)}>
-              <ProductItem productData={item} />
-            </View>
-          )
-          : (
-            <View className={styles.noProduct}><Text>暂无相关数据</Text></View>
-          )
-      }
-
+    <View>
+      {showPreload ? <ProductListPreload /> : (
+        <View className={styles.wrapperList}>
+          {
+            productListData.length ?
+              productListData.map(item =>
+                <View className={styles.listItem} key={item.id} onClick={onClickEvent(item.id)}>
+                  <ProductItem productData={item} />
+                </View>
+              )
+              : (
+                <View className={styles.noProduct}><Text>暂无相关数据</Text></View>
+              )
+          }
+        </View>
+      )}
     </View>
   )
 

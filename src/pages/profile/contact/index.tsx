@@ -95,12 +95,13 @@ class Profile extends Component {
   }
 
   render() {
+    const { contacts = []} = this.props.userInfo
     return (
       <View className='contact'>
         <View className='contact-list'>
-          { this.props.userInfo.contacts.length === 0 ?
+          { contacts.length === 0 ?
             <View className='no-contacts'><Text>暂无联系方式，请先新增联系方式吧~</Text></View>
-            : this.props.userInfo.contacts.map(item =>
+            : contacts.map(item =>
               <View key={item.id} className='contact-item'>
                 <View className='left-container'>
                   <Text className='label'>{item.label}</Text>

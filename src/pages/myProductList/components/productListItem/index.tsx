@@ -21,7 +21,7 @@ const STATUS_MAPPING = {
 }
 
 function ProductListItem(props: InProps) {
-  const { item } = props
+  const { item = {}} = props
   const tagName = STATUS_MAPPING[item.status as Status]
 
   return (

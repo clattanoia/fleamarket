@@ -122,13 +122,15 @@ class Search extends Component<{}, PageState> {
   }
 
   refreshData = (type: RefreshDataType) => {
-    const { pageIndex } =this.state
+    const { pageIndex, searchListResult } =this.state
 
     const newPageIndex = type === RefreshDataType.RESET_PAGE ? 0 : (pageIndex + 1)
+    const newResult = type === RefreshDataType.RESET_PAGE ? [] : searchListResult
 
     this.setState({
       pageIndex: newPageIndex,
       isLoading: true,
+      searchListResult: newResult,
     }, () => {
       this.fetchSearch()
     })

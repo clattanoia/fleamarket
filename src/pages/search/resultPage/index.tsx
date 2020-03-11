@@ -5,6 +5,7 @@ import { AtLoadMore } from 'taro-ui'
 import SeachListSection from '../components/searchList'
 import ProductList from '../../../components/productList'
 import { ProductType, RefreshDataType } from '../../../constants/enums'
+import ProductListPreload from '../components/preload'
 
 import styles from './index.module.scss'
 
@@ -25,7 +26,6 @@ function ResultPage(props: InProps) {
   useEffect(() => {
     Taro.getSystemInfo({
       success: res => {
-        console.log(res)
         setWidth(res.windowHeight - 50)
       },
     })
@@ -61,7 +61,10 @@ function ResultPage(props: InProps) {
           onScrollToLower={onScrollToLower}
         >
           <View className={styles.list}>
-            <ProductList productListData={searchListResult} productType={productType} />
+            {
+              (isLoading && !searchListResult.length) ? <ProductListPreload />  :
+                <ProductList productListData={searchListResult} productType={productType} />
+            }
           </View>
           <View className={styles.noMore}>
             { isLoading ? <AtLoadMore status="loading" /> : (

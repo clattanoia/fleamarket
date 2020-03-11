@@ -102,6 +102,16 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       detail: detailInfo,
     })
 
+    this.props.updateMyProductList({
+      id: this.state.id,
+      modification: {
+        title: detailInfo.title,
+        price: detailInfo.price,
+        status: detailInfo.status,
+        coverUrl: detailInfo.coverUrl,
+      },
+    })
+
     return detailInfo as ProductInfoDetail
   }
 

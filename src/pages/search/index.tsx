@@ -69,6 +69,7 @@ class Search extends Component<{}, PageState> {
       this.setState({
         hasFetchSearch: true,
         showResult: true,
+        isLoading: true,
       }, () => {
         this.fetchSearch()
       })

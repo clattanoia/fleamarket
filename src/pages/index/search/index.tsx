@@ -9,7 +9,7 @@ import { placeholderText } from '../../../constants/search'
 function SeachSection() {
 
   const goToSearch = () => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/search/index',
     })
   }

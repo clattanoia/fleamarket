@@ -118,7 +118,6 @@ function SeachSection(props: InProps) {
     if(!newSearchHistory.includes(keyword)){
       newSearchHistory.unshift(keyword)
       const currentSearchHistory = newSearchHistory.slice(0,10)
-      console.log(currentSearchHistory)
       Taro.setStorageSync('searchHistory',currentSearchHistory)
     }
   }

@@ -2,17 +2,26 @@ import Taro, { memo } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtIcon }  from 'taro-ui'
 import classNames from 'classnames'
+import { useDispatch } from '@tarojs/redux'
 
+import { RefreshDataType } from '../../../../constants/enums'
+import { SET_PRODUCT_SEARCH, RESET_PRODUCT_SEARCH } from '../../../../constants/actionTypes'
 
 import styles from './index.module.scss'
 
 interface InProps {
   searchHistory: string[]
+  refreshData: (type: RefreshDataType) => void
   onClearHistory: () => void
 }
 
 function SeachHistory(props: InProps) {
-  const { searchHistory=[], onClearHistory } = props
+  const { searchHistory=[], onClearHistory, refreshData } = props
+  const dispatch = useDispatch()
+
+  const setSearch = (search) => {
+    dispatch({ type: SET_PRODUCT_SEARCH, payload: search })
+  }
 
   const clearHistory = () => {
     if(searchHistory.length){
@@ -22,6 +31,9 @@ function SeachHistory(props: InProps) {
 
   const searchKeyword = (keyword) => () => {
     console.log(keyword)
+    dispatch({ type: RESET_PRODUCT_SEARCH })
+    setSearch({ title: keyword })
+    refreshData(RefreshDataType.RESET_PAGE)
   }
 
   const renderKeywordsEmpty = () => {

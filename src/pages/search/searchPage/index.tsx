@@ -37,6 +37,7 @@ function SearchPage(props: InProps) {
       <SeachHistory
         searchHistory={searchHistory}
         onClearHistory={clearHistory}
+        refreshData={refreshData}
       />
     </View>
   )

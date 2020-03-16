@@ -33,7 +33,9 @@ function SeachHistory(props: InProps) {
     console.log(keyword)
     dispatch({ type: RESET_PRODUCT_SEARCH })
     setSearch({ title: keyword })
-    refreshData(RefreshDataType.RESET_PAGE)
+    setTimeout(() => {
+      refreshData(RefreshDataType.RESET_PAGE)
+    }, 600)
   }
 
   const renderKeywordsEmpty = () => {

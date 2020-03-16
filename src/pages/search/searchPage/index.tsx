@@ -1,6 +1,7 @@
-import Taro, { memo } from '@tarojs/taro'
+import Taro, { memo, useEffect, useState } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import SeachSection from '../components/search'
+import SeachHistory from '../components/searchHistory'
 import { RefreshDataType } from '../../../constants/enums'
 
 interface InProps {
@@ -12,7 +13,17 @@ interface InProps {
 
 function SearchPage(props: InProps) {
   const { productTypes, hasFetchSearch, onSetVal, refreshData } = props
+  const [searchHistory, setSearchHistory] = useState([])
 
+  useEffect(() => {
+    const searchHistory = Taro.getStorageSync('searchHistory')
+    setSearchHistory(searchHistory || [])
+  }, [])
+
+  const clearHistory = () => {
+    Taro.removeStorageSync('searchHistory')
+    setSearchHistory([])
+  }
 
   return (
     <View>
@@ -21,6 +32,11 @@ function SearchPage(props: InProps) {
         hasFetchSearch={hasFetchSearch}
         onSetVal={onSetVal}
         refreshData={refreshData}
+        searchHistory={searchHistory}
+      />
+      <SeachHistory
+        searchHistory={searchHistory}
+        onClearHistory={clearHistory}
       />
     </View>
   )

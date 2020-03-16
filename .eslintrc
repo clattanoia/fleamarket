@@ -42,7 +42,8 @@
     "@typescript-eslint/quotes": ["error", "single"],
     "@typescript-eslint/semi": ["error", "never"],
     "taro/this-props-function": 0,
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "react/no-multi-comp": 1
   },
   "parserOptions": {
     "ecmaFeatures": {

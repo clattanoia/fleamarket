@@ -20,13 +20,14 @@ interface InProps {
   hasFetchSearch: boolean
   onSetVal: (key, value) => void
   refreshData: (type: RefreshDataType) => void
+  searchHistory: string[]
 }
 
 function SeachSection(props: InProps) {
   const productSearch = useSelector((state: any) => {
     return state.global.productSearch
   })
-  const { productTypes, hasFetchSearch, onSetVal, refreshData } = props
+  const { productTypes, hasFetchSearch, onSetVal, refreshData, searchHistory } = props
 
   const dispatch = useDispatch()
   const { currentProductType, title } = productSearch
@@ -77,14 +78,12 @@ function SeachSection(props: InProps) {
   }
 
   const clearKeyword = () => {
-    // setSearch({ title: '' })
     setKeyword('')
     closeResultFloat()
   }
 
   const changeType = (type) => {
     setCurrentSelectInfo(type)
-    // setSearch({ currentProductType: type.id })
     clearKeyword()
   }
 
@@ -96,7 +95,6 @@ function SeachSection(props: InProps) {
       orderBy: SearchOrderBy.RC,
       sortDirection: SearchSortDirection.DESC,
     }
-    // const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
     const query = currentSelectInfo.id === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery
     try {
       const { data } = await client.query({ query, variables: { searchInput }})
@@ -115,10 +113,21 @@ function SeachSection(props: InProps) {
     }
   }, 200)
 
+  const setSearchHistory = (keyword) => {
+    const newSearchHistory = [...searchHistory]
+    if(!newSearchHistory.includes(keyword)){
+      newSearchHistory.unshift(keyword)
+      const currentSearchHistory = newSearchHistory.slice(0,10)
+      console.log(currentSearchHistory)
+      Taro.setStorageSync('searchHistory',currentSearchHistory)
+    }
+  }
+
   const onConfirm = () => {
     if(keyword){
       setSearch({ title: keyword, categoryId: '', currentProductType: currentSelectInfo.id })
       refreshData(RefreshDataType.RESET_PAGE)
+      setSearchHistory(keyword)
     } else {
       setShowToast(true)
     }

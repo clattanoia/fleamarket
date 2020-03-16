@@ -6,3 +6,10 @@ $inputColor: #333333;
 $inputPlaceholderColor: #CCC;
 $operateBtn: #FEB60A;
 $grey: #808080;
+
+@mixin widthPadding($padTB,$padLR) {
+  width: 100%;
+  padding: $padTB $padLR;
+  box-sizing: border-box;
+}
+

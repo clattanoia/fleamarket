@@ -8,3 +8,9 @@ export const profileInfoQuery = gql`
     }
   }
 `
+
+export const certificationApplyQuery = gql`
+  mutation ($email: String!){
+    certifyEmailApply(email: $email)
+  }
+`

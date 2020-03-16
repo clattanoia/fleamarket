@@ -50,18 +50,11 @@ export const updateListData = (payload) => {
   }
 }
 
-const delay = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(), 1200)
-  })
-}
-
 export function fetchMyProductList(searchInput, productType) {
   return async(dispatch: Dispatch) => {
     const query = productType === ProductType.GOODS ? searchMyGoodsQuery : searchMyPurchaseQuery
     try {
       dispatch(fetchStart())
-      await delay()
       const { data } = await client.query({ query, variables: { searchInput }})
       dispatch(fetchSuccess(data))
     } catch (error) {

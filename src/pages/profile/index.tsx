@@ -1,15 +1,19 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+import { AtIcon } from 'taro-ui'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
 
 import TabBar from '../../components/tabBar'
+import Avatar from '../../components/avatar'
 import OperationItem from '../../components/operationItem'
-import './index.scss'
+import CertifyModal from './cetification'
+
 import client from '../../graphql-client'
 import { profileInfoQuery } from '../../query/profile'
 import { ProductType } from '../../constants/enums'
-import Avatar from '../../components/avatar'
+
+import './index.scss'
 
 type UserInfo = {
   avatarUrl: string,
@@ -54,6 +58,8 @@ class Profile extends Component {
   state = {
     salesCount: 0,
     purchaseCount: 0,
+
+    certificationModalOpened: false,
   }
 
   async componentDidMount() {
@@ -79,6 +85,15 @@ class Profile extends Component {
     })
   }
 
+  renderCertificationTip = () => {
+    return (
+      <View className="certification-tip" onClick={() => this.setState({ certificationModalOpened: true })}>
+        <Text>偷偷告诉你，认证后更容易被联系哦~</Text>
+        <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#fff'></AtIcon>
+      </View>
+    )
+  }
+
   render() {
     return (
       <View className='profile'>
@@ -94,6 +109,7 @@ class Profile extends Component {
           </View>
         </View>
         <View className='scroll-section'>
+          {this.renderCertificationTip()}
           <View className='operation-list'>
             <OperationItem
               title='我的出售'
@@ -121,6 +137,10 @@ class Profile extends Component {
           </View>
         </View>
         <TabBar  current={2} />
+        <CertifyModal
+          isOpened={this.state.certificationModalOpened}
+          onClose={() => this.setState({ certificationModalOpened: false })}
+        />
       </View>
     )
   }

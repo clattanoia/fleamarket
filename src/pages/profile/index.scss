@@ -38,6 +38,19 @@ page {
     overflow: auto;
     margin: 40px 20px 0;
 
+    .certification-tip {
+      display: flex;
+      justify-content: space-between;
+      height: 68px;
+      line-height: 68px;
+      padding: 0 16px;
+      margin-bottom: 40px;
+      color: #fff;
+      font-size: 26px;
+      background-color: rgb(255, 112, 111);
+      border-radius: 10px;
+    }
+
     .operation-list {
       background-color: #ffffff;
       border-radius: 20px;

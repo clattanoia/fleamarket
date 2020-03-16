@@ -30,7 +30,6 @@ function SeachHistory(props: InProps) {
   }
 
   const searchKeyword = (keyword) => () => {
-    console.log(keyword)
     dispatch({ type: RESET_PRODUCT_SEARCH })
     setSearch({ title: keyword })
     setTimeout(() => {

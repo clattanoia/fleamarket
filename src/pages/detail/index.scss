@@ -9,6 +9,16 @@ page {
     overflow-y: auto;
     background: $greyBg;
 
+    .owner-container {
+      display: flex;
+      .nickname {
+        padding-left: 20px;
+        font-size: 36px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
     .price-container {
       color: $baseColor;
       margin: 40px 0;

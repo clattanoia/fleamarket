@@ -219,13 +219,14 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     const { detail, productType } = this.state
     return detail && detail.owner ? (
       <View className="detail">
-        <Avatar
-          userId={detail.owner.id}
-          avatarUrl={detail.owner.avatarUrl}
-          nickname={detail.owner.nickname}
-          avatarSize={80}
-          nameSize={36}
-        />
+        <View className="owner-container">
+          <Avatar
+            userId={detail.owner.id}
+            avatarUrl={detail.owner.avatarUrl}
+            avatarSize={80}
+          />
+          <Text className="nickname">{detail.owner.nickname}</Text>
+        </View>
         <View className="price-container">
           <Text className="unit">￥</Text>
           <Text className="price">

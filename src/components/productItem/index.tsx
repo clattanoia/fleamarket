@@ -1,9 +1,9 @@
 import Taro, { memo } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtAvatar } from 'taro-ui'
 import styles from './index.module.scss'
 import defaultProductCover from '../../assets/default_product_cover.png'
 import ExtendedContainer from '../extendedContainer'
+import Avatar from '../avatar'
 
 interface InProps {
   productData: Global.Goods
@@ -25,7 +25,11 @@ function ProductItem(props: InProps) {
         <Text className={styles.goodsTag}>{productData.categoryName}</Text>
       </View>
       <View className={styles.userInfo}>
-        <AtAvatar circle size="small" image={productData.owner.avatarUrl}></AtAvatar>
+        <Avatar
+          userId={productData.owner.id}
+          avatarUrl={productData.owner.avatarUrl}
+          avatarSize={80}
+        />
         <Text className={styles.name}>{productData.owner.nickname}</Text>
       </View>
     </View>

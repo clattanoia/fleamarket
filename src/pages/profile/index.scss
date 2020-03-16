@@ -17,12 +17,6 @@ page {
     display: flex;
     background-color: $baseColor;
 
-    .image {
-      height: 108px;
-      width: 108px;
-      border-radius: 50%;
-    }
-
     .name {
       padding-left: 20px;
       font-size: 40px;

@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
 
@@ -9,6 +9,7 @@ import './index.scss'
 import client from '../../graphql-client'
 import { profileInfoQuery } from '../../query/profile'
 import { ProductType } from '../../constants/enums'
+import Avatar from '../../components/avatar'
 
 type UserInfo = {
   avatarUrl: string,
@@ -82,7 +83,11 @@ class Profile extends Component {
     return (
       <View className='profile'>
         <View className='profile-header'>
-          <Image className="image" src={this.props.userInfo.avatarUrl} />
+          <Avatar
+            userId={this.props.userInfo.id}
+            avatarUrl={this.props.userInfo.avatarUrl}
+            avatarSize={108}
+          />
           <View className='header-right'>
             <Text className='name'>{this.props.userInfo.nickname}</Text>
             <Text className='description'>{this.props.userInfo.brief || '这个人很懒，什么也没有留下~'}</Text>

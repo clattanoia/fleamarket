@@ -19,6 +19,7 @@ export const userInfoQuery = gql`
         content
         label
       }
+      certification
     }
   }
 `

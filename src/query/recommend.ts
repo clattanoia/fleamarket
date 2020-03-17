@@ -10,7 +10,8 @@ export const recommendListQuery = gql`
      categoryName,
      owner {
        nickname,
-       avatarUrl
+       avatarUrl,
+       certification
      }
    }
 }

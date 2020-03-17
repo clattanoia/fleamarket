@@ -8,12 +8,14 @@ import { certificationApplyQuery } from '../../../query/profile'
 
 interface InProps {
   isOpened: boolean,
-  onClose: () => void
+  onClose: () => void,
+  onConfirm: () => void,
 }
 
-function CetificationModal({ isOpened, onClose }: InProps) {
+function CetificationModal({ isOpened, onClose, onConfirm }: InProps) {
   const suffix = '@thoughtworks.com'
-  const duration = 2000
+  const duration = 3000
+  let loading = false
 
   const [email, setEmail] = useState('')
   const [toastOpened, setToastOpened] = useState(false)
@@ -34,24 +36,30 @@ function CetificationModal({ isOpened, onClose }: InProps) {
     if(!email.trim()) {
       return
     }
+    if(loading) {
+      return
+    }
+    loading = true
     try {
       await client.mutate({
         mutation: certificationApplyQuery,
         variables: { email: email.trim() + suffix },
       })
       await showToast('success')
-      onClose()
+      setEmail('')
+      onConfirm()
     } catch (e) {
       await showToast('error')
+    } finally {
+      loading = false
     }
-
   }
 
   return (
     <View>
       <AtToast
         isOpened={toastOpened}
-        text={toastStatus === 'success' ? '操作成功' : '操作失败'}
+        text={toastStatus === 'success' ? `邮件发送成功，请登录邮箱${email}${suffix}进行认证` : '操作失败'}
         status={toastStatus}
         duration={duration}
       />
@@ -59,13 +67,13 @@ function CetificationModal({ isOpened, onClose }: InProps) {
         isOpened={isOpened}
         onClose={handleClose}
       >
-        <AtModalHeader>邮箱认证</AtModalHeader>
+        <AtModalHeader>tw邮箱认证</AtModalHeader>
         <AtModalContent>
           <AtInput
             name="email"
             type='text'
-            placeholder='前缀'
-            placeholderStyle=""
+            placeholder='邮箱前缀'
+            placeholderStyle="font-size: 13px"
             value={email}
             onChange={val => setEmail(val)}
           >

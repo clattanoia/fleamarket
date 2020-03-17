@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import client from '../graphql-client'
-import { FETCH_USERINFO, ADD_CONTACT, DELETE_CONTACT } from '../constants/actionTypes'
+import { FETCH_USERINFO, UPDATE_USER_INFO, ADD_CONTACT, DELETE_CONTACT } from '../constants/actionTypes'
 import { userInfoQuery } from '../query/userInfo'
 import { addContactMutation, deleteContactMutation } from '../query/contact'
 import { desensitizationContact } from '../utils/helper'
@@ -23,6 +23,13 @@ export const deleteContacts = (data) => {
   return {
     type: DELETE_CONTACT,
     data,
+  }
+}
+
+export const updateUserInfo = (data) => {
+  return {
+    type: UPDATE_USER_INFO,
+    payload: data,
   }
 }
 

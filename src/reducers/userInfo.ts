@@ -1,4 +1,4 @@
-import { FETCH_USERINFO, ADD_CONTACT, DELETE_CONTACT } from '../constants/actionTypes'
+import { FETCH_USERINFO, UPDATE_USER_INFO, ADD_CONTACT, DELETE_CONTACT } from '../constants/actionTypes'
 
 const INITIAL_STATE = {}
 
@@ -51,6 +51,12 @@ export default function category(state = INITIAL_STATE, action) {
       return {
         ...state,
         contacts: newContactsList,
+      }
+    }
+    case UPDATE_USER_INFO: {
+      return {
+        ...state,
+        ...action.payload,
       }
     }
     default:

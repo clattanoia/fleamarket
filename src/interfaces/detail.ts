@@ -13,6 +13,7 @@ export type User = {
   lastVisitTime: Date;
   platform: Platform
   contacts: InContact[]
+  certification: string
 }
 
 export interface ProductInfoDetail {

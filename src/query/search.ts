@@ -21,6 +21,7 @@ const SearchResultFragment =  gql`
         id
         nickname
         avatarUrl
+        certification
       }
     }
     pageIndex

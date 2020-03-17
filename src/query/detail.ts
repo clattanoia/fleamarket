@@ -21,6 +21,7 @@ query($id: String!) {
       id
       nickname
       avatarUrl
+      certification
       }
     }
   }

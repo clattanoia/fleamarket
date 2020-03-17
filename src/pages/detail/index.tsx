@@ -22,7 +22,7 @@ import {
 } from '../../query/detail'
 
 import client from '../../graphql-client'
-import { ProductType, Status } from '../../constants/enums'
+import { ProductType, Status, CertifyEmail } from '../../constants/enums'
 import { InContact } from '../../interfaces/contact'
 import { authLogin } from '../../utils/auth'
 import { updateListData } from '../../actions/myProductList'
@@ -221,6 +221,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       <View className="detail">
         <View className="owner-container">
           <Avatar
+            certificate={detail.owner.certification === CertifyEmail.CERTIFIED}
             userId={detail.owner.id}
             avatarUrl={detail.owner.avatarUrl}
             avatarSize={80}

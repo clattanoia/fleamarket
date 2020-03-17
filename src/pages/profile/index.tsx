@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { Text, View } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
@@ -11,7 +11,8 @@ import CertifyModal from './cetification'
 
 import client from '../../graphql-client'
 import { profileInfoQuery } from '../../query/profile'
-import { ProductType } from '../../constants/enums'
+import { CertifyEmail, ProductType } from '../../constants/enums'
+import { updateUserInfo } from '../../actions/userInfo'
 
 import './index.scss'
 
@@ -20,13 +21,16 @@ type UserInfo = {
   id: string,
   nickname: string,
   brief: string,
+  certification: string,
 }
 
 type PageStateProps = {
   userInfo: UserInfo
 }
 
-type PageDispatchProps = {}
+type PageDispatchProps = {
+  updateMyUserInfo: (payload) => Function,
+}
 
 type PageOwnProps = {}
 
@@ -40,9 +44,12 @@ interface Profile {
 
 @connect(({ userInfo }) => ({
   userInfo: userInfo,
+}), (dispatch) => ({
+  updateMyUserInfo(payload){
+    dispatch(updateUserInfo(payload))
+  },
 }))
-
-class Profile extends Component {
+class Profile extends Component<PageOwnProps, PageState> {
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -85,9 +92,34 @@ class Profile extends Component {
     })
   }
 
+  handleConfirmCertify = () => {
+    this.setState({
+      certificationModalOpened: false,
+    })
+    this.props.updateMyUserInfo({
+      certification: CertifyEmail.UNCERTIFIED,
+    })
+  }
+
   renderCertificationTip = () => {
+    const { userInfo } = this.props
+    const { certification } = userInfo
+
+    if(certification === CertifyEmail.CERTIFIED) {
+      return
+    } else if(certification === CertifyEmail.UNCERTIFIED) {
+      return (
+        <View className="certification-tip">
+          <Text>认证邮件已发送，请登录您的邮箱完成验证。</Text>
+        </View>
+      )
+    }
+
     return (
-      <View className="certification-tip" onClick={() => this.setState({ certificationModalOpened: true })}>
+      <View
+        className="certification-tip"
+        onClick={() => this.setState({ certificationModalOpened: true })}
+      >
         <Text>偷偷告诉你，认证后更容易被联系哦~</Text>
         <AtIcon prefixClass='iconfont' value='iconright' size="22" color='#fff'></AtIcon>
       </View>
@@ -99,6 +131,7 @@ class Profile extends Component {
       <View className='profile'>
         <View className='profile-header'>
           <Avatar
+            certificate={this.props.userInfo.certification === CertifyEmail.CERTIFIED}
             userId={this.props.userInfo.id}
             avatarUrl={this.props.userInfo.avatarUrl}
             avatarSize={108}
@@ -140,6 +173,7 @@ class Profile extends Component {
         <CertifyModal
           isOpened={this.state.certificationModalOpened}
           onClose={() => this.setState({ certificationModalOpened: false })}
+          onConfirm={this.handleConfirmCertify}
         />
       </View>
     )

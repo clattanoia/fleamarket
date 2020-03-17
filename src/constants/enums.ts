@@ -46,3 +46,8 @@ export enum SearchSortDirection {
   ASC = 'ASC',
   DESC = 'DESC',
 }
+
+export enum CertifyEmail {
+  UNCERTIFIED = 'UNCERTIFIED',
+  CERTIFIED = 'CERTIFIED',
+}

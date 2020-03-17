@@ -47,9 +47,11 @@ function SeachListSection(props: InProps) {
   }
 
   const changeType = (type) => {
-    setCurrentSelectInfo(type)
-    setSearch({ currentProductType: type.id })
-    refreshData(RefreshDataType.RESET_PAGE)
+    const typeCurrent = type.id
+    if(typeCurrent!==currentProductType){
+      setSearch({ currentProductType: typeCurrent })
+      refreshData(RefreshDataType.RESET_PAGE)
+    }
   }
 
   const showSearchPage = () => {
@@ -59,7 +61,7 @@ function SeachListSection(props: InProps) {
 
   return (
     <View className={styles.searchBody}>
-      <View className={styles.search}>
+      <View className={styles.search} style={{ paddingBottom: '5px' }}>
         <View className={styles.searchLeft}>
           <View className={styles.searchType}>
             <SelectLayout

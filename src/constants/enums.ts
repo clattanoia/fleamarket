@@ -13,6 +13,12 @@ export enum ProductType {
   PURCHASE = 'PURCHASE',
 }
 
+export enum ProductStatus {
+  ALL = 'ALL',
+  FOR_SALE = 'FOR_SALE',
+  SALE_OUT = 'SALE_OUT'
+}
+
 export enum RefreshDataType {
   RESET_PAGE = 'RESET_PAGE',
   ADD_PAGE = 'ADD_PAGE'

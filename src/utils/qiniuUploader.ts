@@ -236,7 +236,7 @@ const auditImg = async(url, qiniuToken) => {
     },
     header: {
       'content-type': 'application/json',
-      'Authorization': qiniuToken,
+      'Authorization': `Qiniu KoYz6qXPSSZHnvIUqxfcEJkXN-0_on3L9-pd-ryD:${qiniuToken}`,
     },
   }).then(res => {
     console.log(res)

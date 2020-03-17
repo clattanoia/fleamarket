@@ -4,6 +4,7 @@ import { AtLoadMore } from 'taro-ui'
 
 import SeachListSection from '../components/searchList'
 import ProductList from '../../../components/productList'
+import SeachFilter from '../components/searchFilter'
 import { ProductType, RefreshDataType } from '../../../constants/enums'
 
 import styles from './index.module.scss'
@@ -25,7 +26,7 @@ function ResultPage(props: InProps) {
   useEffect(() => {
     Taro.getSystemInfo({
       success: res => {
-        setWidth(res.windowHeight - 50)
+        setWidth(res.windowHeight - 75)
       },
     })
   }, [])
@@ -46,6 +47,9 @@ function ResultPage(props: InProps) {
         <SeachListSection
           onSetVal={onSetVal}
           productTypes={productTypes}
+          refreshData={refreshData}
+        />
+        <SeachFilter
           refreshData={refreshData}
         />
       </View>

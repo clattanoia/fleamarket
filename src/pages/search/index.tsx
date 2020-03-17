@@ -5,7 +5,7 @@ import { connect } from '@tarojs/redux'
 
 import client from '../../graphql-client'
 import { searchGoodsQuery, searchPurchaseQuery } from '../../query/search'
-import { ProductType, RefreshDataType } from '../../constants/enums'
+import { ProductType, RefreshDataType, ProductStatus } from '../../constants/enums'
 import { resetProductSearch } from '../../actions/global'
 
 import ResultPage from './resultPage'
@@ -93,7 +93,7 @@ class Search extends Component<{}, PageState> {
     })
     const { productSearch } = this.props.global
     const { pageIndex, searchListResult } = this.state
-    const { currentProductType, categoryId, title, orderBy, sortDirection } = productSearch
+    const { currentProductType, categoryId, title, orderBy, sortDirection, status } = productSearch
 
     const searchInput = {
       pageSize: 10,
@@ -102,6 +102,10 @@ class Search extends Component<{}, PageState> {
       categoryId,
       orderBy,
       sortDirection,
+    }
+
+    if(status !== ProductStatus.ALL){
+      searchInput['status'] = status
     }
 
     const query = currentProductType === ProductType.PURCHASE ? searchPurchaseQuery : searchGoodsQuery

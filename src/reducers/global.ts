@@ -1,5 +1,5 @@
 import { SET_AUTH_INFO, SET_PRODUCT_SEARCH, RESET_PRODUCT_SEARCH } from '../constants/actionTypes'
-import { ProductType, SearchOrderBy, SearchSortDirection } from '../constants/enums'
+import { ProductType, SearchOrderBy, SearchSortDirection, ProductStatus } from '../constants/enums'
 
 const INITIAL_STATE = {
   isOpenedAuthInfo: false,
@@ -8,7 +8,8 @@ const INITIAL_STATE = {
     currentProductType: ProductType.GOODS,
     title: '',
     orderBy: SearchOrderBy.RC,
-    sortDirectionz: SearchSortDirection.DESC,
+    sortDirection: SearchSortDirection.DESC,
+    status: ProductStatus.ALL,
   },
 }
 

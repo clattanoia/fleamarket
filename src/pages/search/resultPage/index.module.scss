@@ -10,11 +10,13 @@ page {
 
   .search {
     width: 100%;
-    height: 100px;
+    height: 150px;
+    border-bottom: 1PX solid $greyBg;
+    box-sizing: border-box;
   }
 
   .scrollSection{
-    height: calc(100% - 100px);
+    height: calc(100% - 150px);
     .scrollview{
       width:100%;
       height: 100%;

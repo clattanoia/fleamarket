@@ -59,6 +59,10 @@ function SeachListSection(props: InProps) {
     setForceHiddenFloatLayout(false)
   }
 
+  const resetForceHiddenFloatLayout = (val) => {
+    setForceHiddenFloatLayout(val)
+  }
+
   return (
     <View className={styles.searchBody}>
       <View className={styles.search} style={{ paddingBottom: '5px' }}>
@@ -70,6 +74,7 @@ function SeachListSection(props: InProps) {
               onChangeSelect={changeType}
               textBottom={10}
               forceHiddenFloatLayout={forceHiddenFloatLayout}
+              resetForceHiddenFloatLayout={resetForceHiddenFloatLayout}
             />
           </View>
           <View className={styles.searchText} onClick={showSearchPage}>

@@ -155,6 +155,10 @@ function SeachSection(props: InProps) {
     setShowToast(false)
   }
 
+  const resetForceHiddenFloatLayout = (val) => {
+    setForceHiddenFloatLayout(val)
+  }
+
   const renderResult = () => {
     return searchResults.map(product => {
       const result = product['title'].split(new RegExp(keyword, 'gi'))
@@ -193,6 +197,7 @@ function SeachSection(props: InProps) {
               onChangeSelect={changeType}
               textBottom={10}
               forceHiddenFloatLayout={forceHiddenFloatLayout}
+              resetForceHiddenFloatLayout={resetForceHiddenFloatLayout}
             />
           </View>
           <View className={styles.searchText}>

@@ -77,7 +77,6 @@ function SeachFilter(props: InProps) {
     console.log(type)
     setCurrentSelectInfo(type)
     refreshData(RefreshDataType.RESET_PAGE)
-    setForceHiddenFloatLayout(false)
   }
 
   const changeStatusType = (type) => {
@@ -86,17 +85,22 @@ function SeachFilter(props: InProps) {
       setSearch({ status: statusCurrent })
       refreshData(RefreshDataType.RESET_PAGE)
     }
-    setForceHiddenStatusFloatLayout(false)
   }
 
   const filterClick = () => {
-    console.log('---------hiddenStatusLayout----------------------')
     setForceHiddenStatusFloatLayout(true)
   }
 
   const statusClick = () => {
-    console.log('---------hiddenFilterLayout----------------------')
     setForceHiddenFloatLayout(true)
+  }
+
+  const resetForceHiddenFloatLayout = (val) => {
+    setForceHiddenFloatLayout(val)
+  }
+
+  const resetStatusForceHiddenFloatLayout = (val) => {
+    setForceHiddenStatusFloatLayout(val)
   }
 
   return (
@@ -107,6 +111,7 @@ function SeachFilter(props: InProps) {
           current={currentSelectInfo}
           onChangeSelect={changeType}
           forceHiddenFloatLayout={forceHiddenFloatLayout}
+          resetForceHiddenFloatLayout={resetForceHiddenFloatLayout}
         />
       </View>
       <View className={styles.searchFilterRight}  onClick={statusClick}>
@@ -115,6 +120,7 @@ function SeachFilter(props: InProps) {
           current={currentSelectStautsInfo}
           onChangeSelect={changeStatusType}
           forceHiddenFloatLayout={forceHiddenStatusFloatLayout}
+          resetForceHiddenFloatLayout={resetStatusForceHiddenFloatLayout}
         />
       </View>
     </View>

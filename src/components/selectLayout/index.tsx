@@ -12,17 +12,24 @@ interface InProps {
   onChangeSelect: (id) => void
   textBottom?: number
   forceHiddenFloatLayout: boolean
+  resetForceHiddenFloatLayout: (val) => void
 }
 
 function SelectLayout(props: InProps) {
-  const { list, current, onChangeSelect, textBottom = 0, forceHiddenFloatLayout = false } = props
+  const { list, current, onChangeSelect, textBottom = 0, forceHiddenFloatLayout = false, resetForceHiddenFloatLayout } = props
   const [arrotB, setArrowB] = useState(true)
+
+
+  const closeFloat = useCallback(() => {
+    setArrowB(true)
+    resetForceHiddenFloatLayout(false)
+  })
 
   useEffect(() => {
     if(forceHiddenFloatLayout){
-      setArrowB(true)
+      closeFloat()
     }
-  }, [forceHiddenFloatLayout])
+  }, [closeFloat, forceHiddenFloatLayout])
 
   if(!list || !list.length){
     return null
@@ -32,13 +39,9 @@ function SelectLayout(props: InProps) {
     setArrowB(!arrotB)
   }
 
-  const closeFloat = () => {
-    setArrowB(true)
-  }
-
   const listClick = (val) => () => {
     onChangeSelect(val)
-    setArrowB(true)
+    closeFloat()
   }
 
   return (

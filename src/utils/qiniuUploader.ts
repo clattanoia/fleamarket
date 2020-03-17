@@ -1,3 +1,5 @@
+import Taro from '@tarojs/taro'
+
 import client from '../graphql-client'
 import { getQiniuTokenQuery } from '../query/publish'
 
@@ -223,6 +225,27 @@ export const getToken = async() => {
   return data.qiniuToken.token
 }
 
+
+const auditImg = async(url, qiniuToken) => {
+  console.log('----------auditImg-----------------------------')
+  Taro.request({
+    url: 'https://ai.qiniuapi.com/v3/image/censor?scenes=[\'pulp\',\'terror\',\'politician\']',
+    method: 'POST',
+    data: {
+      url: url,
+    },
+    header: {
+      'content-type': 'application/json',
+      'Authorization': qiniuToken,
+    },
+  }).then(res => {
+    console.log(res)
+    console.log(res.data)
+  }).catch((err) => {
+    console.log(err)
+  })
+}
+
 export const uploadQiniu = async(filePath: string, qiniuToken: string): Promise<string> => {
   const qiniuUrl: string = await new Promise((resolve, reject) => {
     upload({
@@ -236,6 +259,7 @@ export const uploadQiniu = async(filePath: string, qiniuToken: string): Promise<
       before: () => {
       },
       success: (res) => {
+        auditImg(res.domainUrl, qiniuToken)
         return resolve(res.domainUrl)
       },
       fail: () => {

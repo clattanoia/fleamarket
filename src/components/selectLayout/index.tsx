@@ -1,4 +1,4 @@
-import Taro, { memo, useState, useEffect } from '@tarojs/taro'
+import Taro, { memo, useState, useEffect, useCallback } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtIcon }  from 'taro-ui'
 import classNames from 'classnames'

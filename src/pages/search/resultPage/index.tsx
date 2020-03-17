@@ -22,6 +22,7 @@ interface InProps {
 function ResultPage(props: InProps) {
   const { productTypes, onSetVal, refreshData, searchListResult, productType, showNoMore= false, isLoading=false } = props
   const [width, setWidth]=useState(0)
+  const [isForceCloseFloatLayout, setIsForceCloseFilterLayout]=useState(false)
 
   useEffect(() => {
     Taro.getSystemInfo({
@@ -41,16 +42,28 @@ function ResultPage(props: InProps) {
     refreshData(RefreshDataType.ADD_PAGE)
   }
 
+  const searchSectionClick = () => {
+    setIsForceCloseFilterLayout(true)
+  }
+
+  const resetIsForceCloseFilterLayout = () => {
+    setIsForceCloseFilterLayout(false)
+  }
+
   return (
     <View className={styles.container}>
       <View className={styles.search}>
-        <SeachListSection
-          onSetVal={onSetVal}
-          productTypes={productTypes}
-          refreshData={refreshData}
-        />
+        <View onClick={searchSectionClick}>
+          <SeachListSection
+            onSetVal={onSetVal}
+            productTypes={productTypes}
+            refreshData={refreshData}
+          />
+        </View>
         <SeachFilter
           refreshData={refreshData}
+          isForceCloseFloatLayout={isForceCloseFloatLayout}
+          resetIsForceCloseFilterLayout={resetIsForceCloseFilterLayout}
         />
       </View>
       <View className={styles.scrollSection}>

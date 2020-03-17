@@ -10,6 +10,8 @@ import styles from './index.module.scss'
 
 interface InProps {
   refreshData: (type: RefreshDataType) => void
+  isForceCloseFloatLayout: boolean
+  resetIsForceCloseFilterLayout: () => void
 }
 const productFilter = [{
   name: '浏览次数降序',
@@ -51,7 +53,7 @@ function SeachFilter(props: InProps) {
   const productSearch = useSelector((state: any) => {
     return state.global.productSearch
   })
-  const { refreshData } = props
+  const { refreshData, isForceCloseFloatLayout, resetIsForceCloseFilterLayout } = props
   const dispatch = useDispatch()
   const { status } = productSearch
   const [currentSelectInfo, setCurrentSelectInfo] = useState(productFilter && productFilter[0])
@@ -69,6 +71,14 @@ function SeachFilter(props: InProps) {
     setCurrentSelectStatusInfoHandle(status)
   }, [status])
   /* eslint-disable */
+
+  useEffect(() => {
+    if(isForceCloseFloatLayout){
+      setForceHiddenFloatLayout(true)
+      setForceHiddenStatusFloatLayout(true)
+      resetIsForceCloseFilterLayout()
+    }
+  }, [isForceCloseFloatLayout])
 
   const setSearch = (search) => {
     dispatch({ type: SET_PRODUCT_SEARCH, payload: search })

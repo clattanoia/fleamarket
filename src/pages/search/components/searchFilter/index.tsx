@@ -15,28 +15,22 @@ interface InProps {
 }
 const productFilter = [{
   name: '浏览次数降序',
-  id: 1,
-  filter: { orderBy: SearchOrderBy.RC, sortDirection: SearchSortDirection.DESC },
+  id: `${SearchOrderBy.RC}_${SearchSortDirection.DESC}`,
 }, {
   name: '浏览次数升序',
-  id: 2,
-  filter: { orderBy: SearchOrderBy.RC, sortDirection: SearchSortDirection.ASC },
+  id: `${SearchOrderBy.RC}_${SearchSortDirection.ASC}`,
 }, {
   name: '期望价格降序',
-  id: 3,
-  filter: { orderBy: SearchOrderBy.PC, sortDirection: SearchSortDirection.DESC },
+  id: `${SearchOrderBy.PC}_${SearchSortDirection.DESC}`,
 }, {
   name: '期望价格升序',
-  id: 4,
-  filter: { orderBy: SearchOrderBy.PC, sortDirection: SearchSortDirection.ASC },
+  id: `${SearchOrderBy.PC}_${SearchSortDirection.ASC}`,
 }, {
   name: '发布时间降序',
-  id: 5,
-  filter: { orderBy: SearchOrderBy.CT, sortDirection: SearchSortDirection.DESC },
+  id: `${SearchOrderBy.CT}_${SearchSortDirection.DESC}`,
 }, {
   name: '发布时间升序',
-  id: 6,
-  filter: { orderBy: SearchOrderBy.CT, sortDirection: SearchSortDirection.ASC },
+  id: `${SearchOrderBy.CT}_${SearchSortDirection.ASC}`,
 }]
 const productStatus = [{
   name: '全部',
@@ -55,7 +49,7 @@ function SeachFilter(props: InProps) {
   })
   const { refreshData, isForceCloseFloatLayout, resetIsForceCloseFilterLayout } = props
   const dispatch = useDispatch()
-  const { status } = productSearch
+  const { status, orderBy, sortDirection } = productSearch
   const [currentSelectInfo, setCurrentSelectInfo] = useState(productFilter && productFilter[0])
   const [currentSelectStautsInfo, setCurrentSelectStatusInfo] = useState(productStatus[0])
   const [forceHiddenFloatLayout, setForceHiddenFloatLayout] = useState(false)
@@ -65,11 +59,18 @@ function SeachFilter(props: InProps) {
     const info = productStatus.find(item => item.id === id)
     setCurrentSelectStatusInfo(info)
   }
+  const setCurrentSelectInfoHandle = (id) => {
+    const info = productFilter.find(item => item.id === id)
+    setCurrentSelectInfo(info)
+  }
 
   /* eslint-disable */
   useEffect(() => {
     setCurrentSelectStatusInfoHandle(status)
   }, [status])
+  useEffect(() => {
+    setCurrentSelectInfoHandle(`${orderBy}_${sortDirection}`)
+  }, [orderBy,sortDirection])
   /* eslint-disable */
 
   useEffect(() => {
@@ -84,15 +85,19 @@ function SeachFilter(props: InProps) {
     dispatch({ type: SET_PRODUCT_SEARCH, payload: search })
   }
   const changeType = (type) => {
-    console.log(type)
-    setCurrentSelectInfo(type)
-    refreshData(RefreshDataType.RESET_PAGE)
+    const current = type.id
+    if(current!==`${orderBy}_${sortDirection}`){
+      const arr = current.split('_')
+      setSearch({ orderBy: arr[0], sortDirection:arr[1] })
+      refreshData(RefreshDataType.RESET_PAGE)
+    }
+
   }
 
   const changeStatusType = (type) => {
-    const statusCurrent = type.id
-    if(statusCurrent!==status){
-      setSearch({ status: statusCurrent })
+    const current = type.id
+    if(current!==status){
+      setSearch({ status: current })
       refreshData(RefreshDataType.RESET_PAGE)
     }
   }

@@ -1,10 +1,13 @@
 import Taro, { memo, useState } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { AtTabBar, AtFloatLayout, AtActionSheet, AtActionSheetItem } from 'taro-ui'
+import { AtTabBar, AtFloatLayout, AtActionSheet, AtActionSheetItem, AtToast } from 'taro-ui'
+import { useSelector } from '@tarojs/redux'
 
 import AuthInfoLayout from '../authInfo'
 import { authLogin } from '../../utils/auth'
-import { ProductType } from '../../constants/enums'
+import { ProductType, CertifyEmail } from '../../constants/enums'
+import client from '../../graphql-client'
+import { profileInfoQuery } from '../../query/profile'
 
 import './index.scss'
 
@@ -12,12 +15,19 @@ interface InProps {
   current: number
 }
 
+const MAX_PUBLISH_COUNT=10
+
 function TabBar(props: InProps) {
 
+  const userInfo = useSelector((state: any) => {
+    return state.userInfo
+  })
   const pageUrl = ['/pages/index/index', '/pages/publish/index', '/pages/profile/index']
 
   const [isPublishLayoutOpen, setPublishLayoutOpen] = useState(false)
   const [isOpenedTel, setIsOpenedTel] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+
   let toUrl = ''
   let openPublishLayout = false  // 登录回调判断是跳转页面还是打开弹窗
 
@@ -35,10 +45,28 @@ function TabBar(props: InProps) {
     }
   }
 
+  const authLoginCallback = async() => {
+    const { id, certification } = userInfo
+    if(certification === CertifyEmail.CERTIFIED){
+      setPublishLayoutOpen(true)
+      return
+    }
+    const { data: { profileInfo }} = await client.query({
+      query: profileInfoQuery,
+      variables: { userId: id },
+    })
+    const { salesCount, purchaseCount } = profileInfo
+    if(salesCount + purchaseCount >= MAX_PUBLISH_COUNT){
+      setShowToast(true)
+    } else {
+      setPublishLayoutOpen(true)
+    }
+  }
+
   const handleClick = (value) => {
     if(value === 1){
       openPublishLayout = true
-      return authLogin({ callback: () => { setPublishLayoutOpen(true) } })
+      return authLogin({ callback: authLoginCallback })
     }
 
     openPublishLayout = false
@@ -82,6 +110,10 @@ function TabBar(props: InProps) {
     gotoPage()
   }
 
+  const handleCloseToast = () => {
+    setShowToast(false)
+  }
+
   return (
     <View>
       <AtTabBar
@@ -121,6 +153,14 @@ function TabBar(props: InProps) {
           <Button open-type='getPhoneNumber' onGetPhoneNumber={clickAuthTelBtn} >获取手机号码授权</Button>
         </View>
       </AtFloatLayout>
+
+      <AtToast
+        isOpened={showToast}
+        text={`您的发布已达到${MAX_PUBLISH_COUNT}条。认证后，才可以发布更多！`}
+        onClose={handleCloseToast}
+        hasMask
+      >
+      </AtToast>
     </View>
   )
 

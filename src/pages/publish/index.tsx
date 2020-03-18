@@ -44,6 +44,11 @@ const TITLE_TEXT = {
   [ProductType.GOODS]: '发布出售',
 }
 
+const UPLOAD_IMG_PATH = {
+  [ProductType.PURCHASE]: 'product/purchase/',
+  [ProductType.GOODS]: 'product/goods/',
+}
+
 type UserInfo = {
   contacts: InContact[],
   id: string,
@@ -151,7 +156,9 @@ class Publish extends Component {
   }
 
   getUploadPromises = (qiniuToken: string): Array<Promise<Publish.InPickerImageFiles>> => {
-    const { imagesUrls } = this.state
+    const { imagesUrls, productType } = this.state
+    const { id } = this.props.userInfo
+    const imgPath = `${UPLOAD_IMG_PATH[productType]}${id}/`
 
     return imagesUrls.map((imageUrl: Publish.InPickerImageFiles) => {
       return new Promise(async(resolve, reject) => {
@@ -159,7 +166,7 @@ class Publish extends Component {
           if(imageUrl.qiniuUrl) {
             return resolve(imageUrl)
           }
-          const qiniuUrl = await uploadQiniu(imageUrl.url, qiniuToken)
+          const qiniuUrl = await uploadQiniu(imageUrl.url, qiniuToken, imgPath)
           imageUrl.qiniuUrl = qiniuUrl
           // console.log(imageUrl)
           resolve(imageUrl)

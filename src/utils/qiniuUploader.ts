@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 
 import client from '../graphql-client'
-import { getQiniuTokenQuery } from '../query/publish'
+import { getQiniuTokenQuery, auditImageQuery } from '../query/publish'
 
 type TokenFunction = () => string
 type AnyFunction = (...args: any[]) => any
@@ -113,7 +113,7 @@ function doUpload({
   const url = uploadURLFromRegionCode(config.qiniuRegion || 'ECN')
   let fileName = filePath.split('//')[1]
   if(options && options.key) {
-    fileName = options.key
+    fileName = options.key+fileName
   }
   const formData: { token: string; key?: string } = {
     token: config.qiniuUploadToken,
@@ -133,6 +133,7 @@ function doUpload({
       //   if(res.data.hasOwnProperty('type') && res.data.type === 'Buffer'){
       //     dataString = String.fromCharCode.apply(null, res.data.data)
       //   }
+      console.log(res)
       try {
         const dataObject = JSON.parse(dataString)
         //do something
@@ -225,18 +226,30 @@ export const getToken = async() => {
   return data.qiniuToken.token
 }
 
+const scenes = ['pulp', 'terror', 'politician']
+const accessKey = 'KoYz6qXPSSZHnvIUqxfcEJkXN-0_on3L9-pd-ryD'
 
-const auditImg = async(url, qiniuToken) => {
+const auditImg = async(url) => {
   console.log('----------auditImg-----------------------------')
+  accessKey
+  const { data } = await client.query({ query: auditImageQuery, variables: { imgUrl: url }})
+  const token = data.auditImage.token
   Taro.request({
-    url: 'https://ai.qiniuapi.com/v3/image/censor?scenes=[\'pulp\',\'terror\',\'politician\']',
+    // url: 'https://ai.qiniuapi.com/v3/image/censor?scenes=[\'pulp\',\'terror\',\'politician\']',
+    // url: `https://ai.qiniuapi.com/v3/image/censor?scenes=${scenes}`,
+    url: 'https://ai.qiniuapi.com/v3/image/censor',
     method: 'POST',
-    data: {
-      url: url,
-    },
     header: {
-      'content-type': 'application/json',
-      'Authorization': `Qiniu KoYz6qXPSSZHnvIUqxfcEJkXN-0_on3L9-pd-ryD:${qiniuToken}`,
+      'Content-Type': 'application/json',
+      'Authorization': `Qiniu ${accessKey}:${token}`,
+    },
+    data: {
+      data: {
+        uri: url,
+      },
+      params: {
+        scenes,
+      },
     },
   }).then(res => {
     console.log(res)
@@ -246,20 +259,22 @@ const auditImg = async(url, qiniuToken) => {
   })
 }
 
-export const uploadQiniu = async(filePath: string, qiniuToken: string): Promise<string> => {
+export const uploadQiniu = async(filePath: string, qiniuToken: string, imgPath: string): Promise<string> => {
   const qiniuUrl: string = await new Promise((resolve, reject) => {
     upload({
       filePath: filePath,
       options: {
         region: 'ECN',
-        domain: 'q67pnvkzx.bkt.clouddn.com',
+        domain: 'qiniu.yaya12.com',
         uptoken: qiniuToken,
-        shouldUseQiniuFileName: true,
+        shouldUseQiniuFileName: false,
+        key: imgPath,
       },
       before: () => {
       },
       success: (res) => {
-        auditImg(res.domainUrl, qiniuToken)
+        console.log(res)
+        auditImg(res.domainUrl)
         return resolve(res.domainUrl)
       },
       fail: () => {

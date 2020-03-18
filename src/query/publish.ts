@@ -19,6 +19,13 @@ export const getQiniuTokenQuery = gql`
   }
 }`
 
+export const auditImageQuery = gql`
+query auditImageQuery($imgUrl: String!) {
+  auditImage (imgUrl:$imgUrl ){
+    token
+  }
+}`
+
 export const editGoodsMutation = gql`
 mutation ($productId: String!, $publishInput: PublishInput!){
   editGoods(productId: $productId, publishInput: $publishInput)

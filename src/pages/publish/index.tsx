@@ -168,7 +168,6 @@ class Publish extends Component {
           }
           const qiniuUrl = await uploadQiniu(imageUrl.url, qiniuToken, imgPath)
           imageUrl.qiniuUrl = qiniuUrl
-          // console.log(imageUrl)
           resolve(imageUrl)
         } catch (e) {
           reject(e)

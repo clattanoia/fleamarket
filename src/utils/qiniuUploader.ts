@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 
 import client from '../graphql-client'
-import { getQiniuTokenQuery, auditImageQuery } from '../query/publish'
+import { getQiniuTokenQuery, auditImageTokenQuery } from '../query/publish'
 
 type TokenFunction = () => string
 type AnyFunction = (...args: any[]) => any
@@ -133,7 +133,6 @@ function doUpload({
       //   if(res.data.hasOwnProperty('type') && res.data.type === 'Buffer'){
       //     dataString = String.fromCharCode.apply(null, res.data.data)
       //   }
-      console.log(res)
       try {
         const dataObject = JSON.parse(dataString)
         //do something
@@ -225,38 +224,38 @@ export const getToken = async() => {
   const { data } = await client.query({ query: getQiniuTokenQuery, variables: {}})
   return data.qiniuToken.token
 }
-
-const scenes = ['pulp', 'terror', 'politician']
-const accessKey = 'KoYz6qXPSSZHnvIUqxfcEJkXN-0_on3L9-pd-ryD'
+const reqURL = 'https://ai.qiniuapi.com/v3/image/censor'
+const SUGGESTION = {
+  'block': 'block',
+  'review': 'review',
+  'pass': 'pass',
+}
 
 const auditImg = async(url) => {
-  console.log('----------auditImg-----------------------------')
-  accessKey
-  const { data } = await client.query({ query: auditImageQuery, variables: { imgUrl: url }})
+  const { data } = await client.query({ query: auditImageTokenQuery, variables: { imgUrl: url }})
   const token = data.auditImage.token
-  Taro.request({
-    // url: 'https://ai.qiniuapi.com/v3/image/censor?scenes=[\'pulp\',\'terror\',\'politician\']',
-    // url: `https://ai.qiniuapi.com/v3/image/censor?scenes=${scenes}`,
-    url: 'https://ai.qiniuapi.com/v3/image/censor',
-    method: 'POST',
-    header: {
-      'Content-Type': 'application/json',
-      'Authorization': `Qiniu ${accessKey}:${token}`,
-    },
-    data: {
-      data: {
-        uri: url,
+  const reqBody = `{"data": {"uri": "${url}"},"params": {"scenes": ["pulp","terror","politician"]}}`
+  const auditResult: boolean = await new Promise((resolve, reject) => {
+    Taro.request({
+      url: reqURL,
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': token,
       },
-      params: {
-        scenes,
-      },
-    },
-  }).then(res => {
-    console.log(res)
-    console.log(res.data)
-  }).catch((err) => {
-    console.log(err)
+      data: reqBody,
+    }).then(res => {
+      console.log(res)
+      console.log(res.data)
+      const { suggestion } = res.data.result
+      const isValid = suggestion === SUGGESTION['pass']
+      return resolve(isValid)
+    }).catch((err) => {
+      console.log(err)
+      return reject('get accesstoken fail')
+    })
   })
+  return auditResult
 }
 
 export const uploadQiniu = async(filePath: string, qiniuToken: string, imgPath: string): Promise<string> => {
@@ -272,10 +271,15 @@ export const uploadQiniu = async(filePath: string, qiniuToken: string, imgPath: 
       },
       before: () => {
       },
-      success: (res) => {
-        console.log(res)
-        auditImg(res.domainUrl)
-        return resolve(res.domainUrl)
+      success: async(res) => {
+        try {
+          const auditResult = await auditImg(res.domainUrl)
+          console.log('----uploadQiniu------auditImg-----------------', auditResult)
+          const result = auditResult === true ? res.domainUrl : ''
+          return resolve(result)
+        } catch (err) {
+          return reject('')
+        }
       },
       fail: () => {
         return reject('')

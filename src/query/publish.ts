@@ -19,9 +19,9 @@ export const getQiniuTokenQuery = gql`
   }
 }`
 
-export const auditImageQuery = gql`
-query auditImageQuery($imgUrl: String!) {
-  auditImage (imgUrl:$imgUrl ){
+export const auditImageTokenQuery = gql`
+query auditImageTokenQuery($imgUrl: String!) {
+  auditImageToken (imgUrl:$imgUrl ){
     token
   }
 }`

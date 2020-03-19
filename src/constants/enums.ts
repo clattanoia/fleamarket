@@ -51,3 +51,9 @@ export enum CertifyEmail {
   UNCERTIFIED = 'UNCERTIFIED',
   CERTIFIED = 'CERTIFIED',
 }
+
+export enum ImageScenes {
+  PULP = 'pulp',
+  TERROR = 'terror',
+  POLITICIAN = 'politician',
+}

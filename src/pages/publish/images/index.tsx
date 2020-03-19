@@ -8,7 +8,7 @@ import { MaxImageCount, MaxImageSize, ImageSuffix } from '../../../constants/pub
 interface InProps {
   onSetVal: (key, value) => void
   showErrorMessage: (name) => void
-  imagesUrls: []
+  imagesUrls: Array<Publish.InPickerImageFiles>
 }
 
 function PublishImages(props: InProps) {

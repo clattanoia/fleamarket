@@ -226,7 +226,7 @@ export const getToken = async() => {
 }
 
 const reqURL = 'https://ai.qiniuapi.com/v3/image/censor'
-const SUGGESTION = {
+const SUGGESTION_RESULT = {
   'block': 'block',
   'review': 'review',
   'pass': 'pass',
@@ -236,7 +236,7 @@ const auditImg = async(url) => {
   const { data } = await client.query({ query: auditImageTokenQuery, variables: { imgUrl: url }})
   const token = data.auditImageToken.token
   const reqBody = `{"data": {"uri": "${url}"},"params": {"scenes": ["pulp","terror","politician"]}}`
-  const auditResult: boolean = await new Promise((resolve, reject) => {
+  const auditResult: Publish.InImageAuditResult = await new Promise((resolve, reject) => {
     Taro.request({
       url: reqURL,
       method: 'POST',
@@ -246,10 +246,16 @@ const auditImg = async(url) => {
       },
       data: reqBody,
     }).then(res => {
-      console.log(res.data)
-      const { suggestion } = res.data.result
-      const isValid = suggestion === SUGGESTION['pass']
-      return resolve(isValid)
+      const { suggestion, scenes } = res.data.result
+      const isValid = suggestion === SUGGESTION_RESULT['pass']
+      const auditResult: Publish.InImageAuditResult = {
+        isValid,
+      }
+      if(!isValid){
+        const keys = Object.keys(scenes)
+        auditResult.scenes = keys.filter(key => scenes[key].suggestion !== SUGGESTION_RESULT['pass'])
+      }
+      return resolve(auditResult)
     }).catch((err) => {
       console.log(err)
       return reject('get accesstoken fail')
@@ -258,8 +264,8 @@ const auditImg = async(url) => {
   return auditResult
 }
 
-export const uploadQiniu = async(filePath: string, qiniuToken: string, imgPath: string): Promise<string> => {
-  const qiniuUrl: string = await new Promise((resolve, reject) => {
+export const uploadQiniu = async(filePath: string, qiniuToken: string, imgPath: string): Promise<Publish.InImageUploadResult> => {
+  const qiniuUrl: Publish.InImageUploadResult = await new Promise((resolve, reject) => {
     upload({
       filePath: filePath,
       options: {
@@ -273,17 +279,10 @@ export const uploadQiniu = async(filePath: string, qiniuToken: string, imgPath: 
       },
       success: async(res) => {
         try {
-          console.log('----uploadQiniu------auditImg-----------------')
-          console.log(res)
           const auditResult = await auditImg(res.domainUrl)
-          console.log('----uploadQiniu------auditImg--------success---------', auditResult)
-          if(auditResult === true){
-            return resolve(res.domainUrl)
-          } else {
-            return reject('图片不规范')
-          }
+          const result = { auditResult, qiniuUrl: res.domainUrl }
+          return resolve(result)
         } catch (err) {
-          console.log('----uploadQiniu------auditImg--------error---------')
           console.log(err)
           return reject(err)
         }

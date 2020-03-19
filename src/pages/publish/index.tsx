@@ -166,9 +166,9 @@ class Publish extends Component {
           if(imageUrl.qiniuUrl) {
             return resolve(imageUrl)
           }
-          const qiniuUrl = await uploadQiniu(imageUrl.url, qiniuToken, imgPath)
-          imageUrl.qiniuUrl = qiniuUrl
-          resolve(imageUrl)
+          const result = await uploadQiniu(imageUrl.url, qiniuToken, imgPath)
+          const newImg = { ...imageUrl, ...result }
+          resolve(newImg)
         } catch (e) {
           reject(e)
         }
@@ -225,6 +225,28 @@ class Publish extends Component {
     })
   }
 
+  auditImage = (uploadedImages: Publish.InPickerImageFiles[]): boolean => {
+    let errorText = ''
+    uploadedImages.forEach((item, index) => {
+      const { auditResult } = item
+      if(auditResult && !auditResult.isValid){
+        errorText += `、第${index+1}张`
+      }
+    })
+    const isError = !!errorText
+
+    if(isError){
+      errorText = errorText.slice(1)
+      this.setState({
+        showToast: true,
+        toastText: errorText+'图片不服务文明网络要求，请删除后重新发布',
+        toastStatus: 'error',
+        isPublishing: false,
+      })
+    }
+    return isError
+  }
+
   handleSubmit = async(): Promise<void> => {
     if(!this.vaildInputValues(true)) return
 
@@ -235,6 +257,10 @@ class Publish extends Component {
     try {
       if(this.state.imagesUrls.length) {
         uploadedImages = await this.uploadImages()
+        const isError = this.auditImage(uploadedImages)
+        if(isError){
+          return
+        }
       }
     } catch (e) {
       this.showErrorMessage('uploadError')

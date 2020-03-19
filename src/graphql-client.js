@@ -27,7 +27,7 @@ const client = new ApolloClient({
         })
       }
 
-      if(clientStasusCode === 400) {
+      if(clientStasusCode !== 200) {
         throw new Error(JSON.stringify(errors[0].message ? errors[0].message : errors[0]))
       }
 

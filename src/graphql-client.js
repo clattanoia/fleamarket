@@ -3,7 +3,7 @@ import ApolloClient from 'apollo-boost'
 import { authLogin } from './utils/auth'
 
 const client = new ApolloClient({
-  uri: 'https://miniprogram.yacnlee.top/graphql',
+  uri: 'https://www.2hj.com.cn/graphql',
   fetch: async(url, options) => {
     const { headers } = options || {
       headers: {},

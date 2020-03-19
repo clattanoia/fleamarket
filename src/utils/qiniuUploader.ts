@@ -224,6 +224,7 @@ export const getToken = async() => {
   const { data } = await client.query({ query: getQiniuTokenQuery, variables: {}})
   return data.qiniuToken.token
 }
+
 const reqURL = 'https://ai.qiniuapi.com/v3/image/censor'
 const SUGGESTION = {
   'block': 'block',
@@ -263,7 +264,7 @@ export const uploadQiniu = async(filePath: string, qiniuToken: string, imgPath: 
       filePath: filePath,
       options: {
         region: 'ECN',
-        domain: 'qiniu.yaya12.com',
+        domain: 'qiniu.2hj.com.cn',
         uptoken: qiniuToken,
         shouldUseQiniuFileName: false,
         key: imgPath,

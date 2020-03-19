@@ -32,7 +32,9 @@ const ERROR_MESSAGES = {
   imagesUrls: '图片不能为空',
   selectedCategory: '分类不能为空',
   selectedContacts: '联系方式不能为空',
-  invalidParameters: '参数错误',
+  invalidParameters: '发布内容不合法，请修改后重新发送',
+  /* eslint-disable-next-line */
+  content_risky: '发布内容包含敏感信息，请修改后重新发送',
   systemError: '服务异常',
   invalidUser: '用户已被禁用',
   images: '最多上传10张图片（JPG/PNG）,图片不能大于10M',
@@ -277,7 +279,6 @@ class Publish extends Component {
     }
 
     const publishInput = {
-      owner: this.props.userInfo.id,
       title: this.state.title,
       price: Number(this.state.price),
       description: this.state.detail,
@@ -304,7 +305,7 @@ class Publish extends Component {
         variables: { publishInput },
       })
       Taro.redirectTo({
-        url: `/pages/detail/index?id=${data.publishGoods || data.publishPurchase}&productType=${productType}`,
+        url: `/pages/detail/index?id=${data.publishedProduct}&productType=${productType}`,
       })
     } catch (e) {
       this.handleError(e)
@@ -330,7 +331,11 @@ class Publish extends Component {
   handleError(e) {
     let error = 'systemError'
     if(e.message.indexOf('400') > -1) {
-      error = 'invalidParameters'
+      if(e.message.indexOf('content_risky') > -1) {
+        error = 'content_risky'
+      } else {
+        error = 'invalidParameters'
+      }
     } else if(e.message.indexOf('403') > -1) {
       error = 'invalidUser'
     }

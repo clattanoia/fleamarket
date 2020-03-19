@@ -26,6 +26,11 @@ const client = new ApolloClient({
           },
         })
       }
+
+      if(clientStasusCode === 400) {
+        throw new Error(JSON.stringify(errors[0].message ? errors[0].message : errors[0]))
+      }
+
       return {
         ok: () => {
           return statusCode >= 200 && statusCode < 300

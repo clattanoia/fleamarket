@@ -246,6 +246,10 @@ const auditImg = async(url) => {
       },
       data: reqBody,
     }).then(res => {
+      console.log('---auditImg-----auditResult-------------------------------')
+      console.log(res)
+      console.log(res.data)
+      console.log(res.data.result)
       const { suggestion, scenes } = res.data.result
       const isValid = suggestion === SUGGESTION_RESULT['pass']
       const auditResult: Publish.InImageAuditResult = {

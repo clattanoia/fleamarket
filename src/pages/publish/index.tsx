@@ -137,6 +137,9 @@ class Publish extends Component {
           .map(pic => Object.assign({}, {
             url: pic,
             qiniuUrl: pic,
+            auditResult: {
+              isValid: true,
+            },
           })),
         selectedCategory: detailInfo.category,
         selectedContacts: this.props.userInfo.contacts
@@ -162,8 +165,9 @@ class Publish extends Component {
 
     return imagesUrls.map((imageUrl: Publish.InPickerImageFiles) => {
       return new Promise(async(resolve, reject) => {
+        const { qiniuUrl, auditResult } = imageUrl
         try {
-          if(imageUrl.qiniuUrl) {
+          if(qiniuUrl && auditResult && auditResult.isValid) {
             return resolve(imageUrl)
           }
           const result = await uploadQiniu(imageUrl.url, qiniuToken, imgPath)
@@ -257,6 +261,9 @@ class Publish extends Component {
     try {
       if(this.state.imagesUrls.length) {
         uploadedImages = await this.uploadImages()
+        this.setState({
+          imagesUrls: uploadedImages,
+        })
         const isError = this.auditImage(uploadedImages)
         if(isError){
           return

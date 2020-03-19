@@ -233,7 +233,7 @@ const SUGGESTION = {
 
 const auditImg = async(url) => {
   const { data } = await client.query({ query: auditImageTokenQuery, variables: { imgUrl: url }})
-  const token = data.auditImage.token
+  const token = data.auditImageToken.token
   const reqBody = `{"data": {"uri": "${url}"},"params": {"scenes": ["pulp","terror","politician"]}}`
   const auditResult: boolean = await new Promise((resolve, reject) => {
     Taro.request({
@@ -245,7 +245,6 @@ const auditImg = async(url) => {
       },
       data: reqBody,
     }).then(res => {
-      console.log(res)
       console.log(res.data)
       const { suggestion } = res.data.result
       const isValid = suggestion === SUGGESTION['pass']
@@ -273,16 +272,23 @@ export const uploadQiniu = async(filePath: string, qiniuToken: string, imgPath: 
       },
       success: async(res) => {
         try {
+          console.log('----uploadQiniu------auditImg-----------------')
+          console.log(res)
           const auditResult = await auditImg(res.domainUrl)
-          console.log('----uploadQiniu------auditImg-----------------', auditResult)
-          const result = auditResult === true ? res.domainUrl : ''
-          return resolve(result)
+          console.log('----uploadQiniu------auditImg--------success---------', auditResult)
+          if(auditResult === true){
+            return resolve(res.domainUrl)
+          } else {
+            return reject('图片不规范')
+          }
         } catch (err) {
-          return reject('')
+          console.log('----uploadQiniu------auditImg--------error---------')
+          console.log(err)
+          return reject(err)
         }
       },
-      fail: () => {
-        return reject('')
+      fail: (err) => {
+        return reject(err)
       },
       progress: () => {
       },

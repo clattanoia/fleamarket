@@ -37,14 +37,6 @@ function TabBar(props: InProps) {
     })
   }
 
-  const authCallback = () => {
-    if(openPublishLayout) {
-      setPublishLayoutOpen(true)
-    } else {
-      gotoPage()
-    }
-  }
-
   const authLoginCallback = async() => {
     const { id, certification } = userInfo
     if(certification === CertifyEmail.CERTIFIED){
@@ -60,6 +52,14 @@ function TabBar(props: InProps) {
       setShowToast(true)
     } else {
       setPublishLayoutOpen(true)
+    }
+  }
+
+  const authCallback = () => {
+    if(openPublishLayout) {
+      authLoginCallback()
+    } else {
+      gotoPage()
     }
   }
 

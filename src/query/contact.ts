@@ -1,13 +1,13 @@
 import { gql } from 'apollo-boost'
 
 export const addContactMutation = gql`
-mutation ($userId: String!, $addContactInput: AddContactInput!){
-  addContact(userId: $userId, addContactInput: $addContactInput)
+mutation ($addContactInput: AddContactInput!){
+  addContact(addContactInput: $addContactInput)
 }
 `
 
 export const deleteContactMutation = gql`
-mutation ($userId: String!, $contactId: String!) {
-  deleteContact(userId: $userId, contactId: $contactId)
+mutation ($contactId: String!) {
+  deleteContact(contactId: $contactId)
 }
 `

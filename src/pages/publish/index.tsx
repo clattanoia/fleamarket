@@ -244,7 +244,7 @@ class Publish extends Component {
       errorText = errorText.slice(1)
       this.setState({
         showToast: true,
-        toastText: errorText+'图片不服务文明网络要求，请删除后重新发布',
+        toastText: errorText+'图片不符合文明网络要求，请删除后重新发布',
         toastStatus: 'error',
         isPublishing: false,
       })

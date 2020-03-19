@@ -57,3 +57,8 @@ export enum ImageScenes {
   TERROR = 'terror',
   POLITICIAN = 'politician',
 }
+
+export enum AuditImageStatus {
+  ERROR = 'error',
+  SUCCESS = 'success',
+}

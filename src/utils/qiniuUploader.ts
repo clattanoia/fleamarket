@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro'
 
 import client from '../graphql-client'
 import { getQiniuTokenQuery, auditImageTokenQuery } from '../query/publish'
+import { AuditImageStatus } from '../constants/enums'
 
 type TokenFunction = () => string
 type AnyFunction = (...args: any[]) => any
@@ -246,15 +247,18 @@ const auditImg = async(url) => {
       },
       data: reqBody,
     }).then(res => {
-      console.log('---auditImg-----auditResult-------------------------------')
-      console.log(res)
-      console.log(res.data)
-      console.log(res.data.result)
-      const { suggestion, scenes } = res.data.result
-      const isValid = suggestion === SUGGESTION_RESULT['pass']
+      const { statusCode, data } = res
       const auditResult: Publish.InImageAuditResult = {
-        isValid,
+        isValid: false,
+        auditStatus: AuditImageStatus.ERROR,
       }
+      if(statusCode !== 200){
+        return resolve(auditResult)
+      }
+      auditResult.auditStatus = AuditImageStatus.SUCCESS
+      const { suggestion, scenes } = data.result
+      const isValid = suggestion === SUGGESTION_RESULT['pass']
+      auditResult.isValid = isValid
       if(!isValid){
         const keys = Object.keys(scenes)
         auditResult.scenes = keys.filter(key => scenes[key].suggestion !== SUGGESTION_RESULT['pass'])

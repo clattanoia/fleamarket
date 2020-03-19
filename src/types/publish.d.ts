@@ -1,7 +1,12 @@
 declare namespace Publish {
 
+  enum AuditImageStatus {
+    ERROR = 'error',
+    SUCCESS = 'success',
+  }
 
   interface InImageAuditResult {
+    auditStatus: AuditImageStatus.ERROR | AuditImageStatus.SUCCESS
     isValid: boolean
     scenes?: string[]
   }

@@ -19,7 +19,7 @@ import {
   publishGoodsMutation,
   publishPurchaseMutation,
 } from '../../query/publish'
-import { ProductType } from '../../constants/enums'
+import { ProductType, AuditImageStatus } from '../../constants/enums'
 import { InContact } from '../../interfaces/contact'
 import { goodsDetailQuery, purchaseDetailQuery } from '../../query/detail'
 
@@ -139,6 +139,7 @@ class Publish extends Component {
             qiniuUrl: pic,
             auditResult: {
               isValid: true,
+              auditStatus: AuditImageStatus.SUCCESS,
             },
           })),
         selectedCategory: detailInfo.category,
@@ -167,7 +168,7 @@ class Publish extends Component {
       return new Promise(async(resolve, reject) => {
         const { qiniuUrl, auditResult } = imageUrl
         try {
-          if(qiniuUrl && auditResult && auditResult.isValid) {
+          if(qiniuUrl && auditResult && auditResult.auditStatus === AuditImageStatus.SUCCESS) {
             return resolve(imageUrl)
           }
           const result = await uploadQiniu(imageUrl.url, qiniuToken, imgPath)

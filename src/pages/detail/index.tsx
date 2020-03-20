@@ -1,8 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Image, Text, View } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { AtButton, AtIcon, AtToast } from 'taro-ui'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
+import classNames from 'classnames'
 
 import Avatar from '../../components/avatar'
 import Tag from '../../components/tag'
@@ -46,6 +47,9 @@ type PageState = {
   isOpen: boolean
   isOpened: boolean
   contacts: InContact[]
+  isCollected: boolean
+  toastText: string
+  isToastOpened: boolean
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -71,6 +75,9 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       isOpen: false,
       isOpened: false,
       contacts: [],
+      isCollected: false,
+      toastText: '',
+      isToastOpened: false,
     }
   }
 
@@ -82,6 +89,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   async componentDidMount(): Promise<void> {
     await this.fetchProductDetail()
     this.increaseReadCount()
+    //TODO get iscollect query
   }
 
   async componentDidShow(): Promise<void> {
@@ -215,8 +223,29 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }
   }
 
+  collectHandle = () => {
+    if(this.isOwnProduct()){
+      this.setState({
+        toastText: '不能收藏自己的"二货"哦～',
+        isToastOpened: true,
+      })
+      return
+    }
+    const { isCollected } = this.state
+    this.setState({
+      isCollected: !isCollected,
+    })
+  }
+
+  handleCloseToast = () => {
+    this.setState({
+      toastText: '',
+      isToastOpened: false,
+    })
+  }
+
   render() {
-    const { detail, productType } = this.state
+    const { detail, productType, isCollected, toastText, isToastOpened } = this.state
     return detail && detail.owner ? (
       <View className="detail">
         <View className="owner-container">
@@ -256,11 +285,21 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           </View>
         </View>
         <View className="footer">
-          {
-            this.isOwnProduct() ?
-              <AtButton type='primary' className="btn manage-btn" onClick={this.showManage}>管理</AtButton> :
-              <AtButton type='primary' className="btn contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
-          }
+          <View className="footer_left">
+            <View className="collect" onClick={this.collectHandle}>
+              <View className={classNames({ 'active': isCollected })}>
+                <AtIcon value={isCollected ? 'star-2' : 'star'} size='20'></AtIcon>
+              </View>
+              <Text>{isCollected ? '已收藏' : '收藏'}</Text>
+            </View>
+          </View>
+          <View className="footer_right">
+            {
+              this.isOwnProduct() ?
+                <AtButton type='primary' className="btn manage-btn" onClick={this.showManage}>管理</AtButton> :
+                <AtButton type='primary' className="btn contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
+            }
+          </View>
         </View>
         <Contact
           isOpen={this.state.isOpen}
@@ -277,6 +316,14 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           onRefresh={this.refreshDetail}
         />
         <AuthInfoLayout authCallback={this.gotoPage} />
+        <AtToast
+          isOpened={isToastOpened}
+          hasMask
+          status="error"
+          text={toastText}
+          onClose={this.handleCloseToast}
+        >
+        </AtToast>
       </View>
     ) : <DetailPreload />
   }

@@ -113,7 +113,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       productId: id,
       productType,
     }
-    console.log('-------------getIsCollected------------------------------------------')
     const { data } = await client.query({
       query: collectedQuery,
       variables: { postData },
@@ -267,6 +266,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       })
     } catch (err){
       console.log(err)
+      this.setState({
+        toastText: '操作失败，请稍后重试',
+        isToastOpened: true,
+      })
     }
   }
 
@@ -289,8 +292,9 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }
   }
 
-  collectAuthCallback = () => {
-    this.getIsCollected()
+  collectAuthCallback = async() => {
+    await this.getIsCollected()
+    this.collectHandle()
   }
 
   handleCloseToast = () => {

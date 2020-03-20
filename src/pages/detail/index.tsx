@@ -50,6 +50,7 @@ type PageState = {
   isCollected: boolean
   toastText: string
   isToastOpened: boolean
+  isOwner: boolean
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -78,6 +79,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       isCollected: false,
       toastText: '',
       isToastOpened: false,
+      isOwner: false,
     }
   }
 
@@ -106,8 +108,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
       variables: { id },
     })
+    const isOwner = !!detailInfo.owner && this.props.userId === detailInfo.owner.id
     this.setState({
       detail: detailInfo,
+      isOwner,
     })
 
     this.props.updateMyProductList({
@@ -194,6 +198,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   isOwnProduct = (): boolean => {
     const { detail } = this.state
     const { userId } = this.props
+    console.log(userId)
+    console.log(detail.owner.id)
     return !!detail.owner && userId === detail.owner.id
   }
 
@@ -224,17 +230,25 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   collectHandle = () => {
-    if(this.isOwnProduct()){
+    console.log('--------------collectHandle------------------------')
+    if(Taro.getStorageSync('token')) {
+      const isOwner = this.isOwnProduct()
+      console.log(isOwner)
+      if(isOwner){
+        this.setState({
+          toastText: '不能收藏自己的"二货"哦～',
+          isToastOpened: true,
+          isOwner,
+        })
+        return
+      }
+      const { isCollected } = this.state
       this.setState({
-        toastText: '不能收藏自己的"二货"哦～',
-        isToastOpened: true,
+        isCollected: !isCollected,
       })
-      return
+    } else {
+      authLogin({ callback: this.collectHandle })
     }
-    const { isCollected } = this.state
-    this.setState({
-      isCollected: !isCollected,
-    })
   }
 
   handleCloseToast = () => {
@@ -245,7 +259,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   render() {
-    const { detail, productType, isCollected, toastText, isToastOpened } = this.state
+    const { detail, productType, isCollected, toastText, isToastOpened, isOwner } = this.state
     return detail && detail.owner ? (
       <View className="detail">
         <View className="owner-container">
@@ -295,7 +309,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           </View>
           <View className="footer_right">
             {
-              this.isOwnProduct() ?
+              isOwner ?
                 <AtButton type='primary' className="btn manage-btn" onClick={this.showManage}>管理</AtButton> :
                 <AtButton type='primary' className="btn contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
             }
@@ -319,7 +333,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         <AtToast
           isOpened={isToastOpened}
           hasMask
-          status="error"
           text={toastText}
           onClose={this.handleCloseToast}
         >

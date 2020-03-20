@@ -55,6 +55,7 @@ export async function authLogin(props: Inprops) {
     })
     // tslint:disable-next-line
     await store.dispatch(fetchUserInfo())
+    console.log(props.callback)
     props.callback && props.callback()
   } catch (error) {
     throw error

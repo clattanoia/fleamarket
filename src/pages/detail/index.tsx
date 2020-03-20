@@ -21,6 +21,7 @@ import {
   increaseGoodsReadCount,
   increasePurchaseReadCount,
 } from '../../query/detail'
+import { collectedQuery } from '../../query/collect'
 
 import client from '../../graphql-client'
 import { ProductType, Status, CertifyEmail } from '../../constants/enums'
@@ -92,6 +93,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     await this.fetchProductDetail()
     this.increaseReadCount()
     //TODO get iscollect query
+    this.getIsCollected()
   }
 
   async componentDidShow(): Promise<void> {
@@ -100,6 +102,26 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
 
   config: Config = {
     navigationBarTitleText: '二货详情',
+  }
+
+  getIsCollected = async() => {
+    const { productType, id } = this.state
+    const { userId } = this.props
+    if(!userId){
+      return
+    }
+    const postData = {
+      productId: id,
+      productType,
+    }
+    console.log('-------------getIsCollected------------------------------------------')
+    const { data } = await client.query({
+      query: collectedQuery,
+      variables: { postData },
+    })
+    this.setState({
+      isCollected: data.collected.result,
+    })
   }
 
   fetchProductDetail = async(): Promise<ProductInfoDetail> => {

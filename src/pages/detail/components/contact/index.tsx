@@ -27,11 +27,17 @@ interface Contact {
   props: IProps;
 }
 
+const CONTACT_TYPE = {
+  EMAIL: '邮箱',
+  PHONE: '电话',
+  WECHAT: '微信',
+}
+
 class Contact extends Component {
   renderContactItem(contacts): ReactNodeLike {
     return <View>
       {contacts.map(contact => (<View key={contact} className='contact-item'>
-        <Text>{contact.label}：</Text>
+        <Text>{CONTACT_TYPE[contact.type]}：</Text>
         <Text selectable>{contact.content}</Text>
       </View>))}
     </View>
@@ -44,7 +50,7 @@ class Contact extends Component {
       <AtFloatLayout isOpened={isOpen} onClose={onClose}>
         <View className='contact'>
           <View className='contact-title'>
-            <Text className='contact-title'>这是发帖者提供的联系方式，赶快联系他吧～</Text>
+            <Text className='contact-title'>这是发帖者提供的联系方式，赶快联系TA吧～</Text>
           </View>
           {
             contacts && contacts.length > 0 ?

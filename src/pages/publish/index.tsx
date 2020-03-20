@@ -32,9 +32,9 @@ const ERROR_MESSAGES = {
   imagesUrls: '图片不能为空',
   selectedCategory: '分类不能为空',
   selectedContacts: '联系方式不能为空',
-  invalidParameters: '发布内容不合法，请修改后重新发送',
+  invalidParameters: '发布内容不合法，请修改后重新发布',
   /* eslint-disable-next-line */
-  content_risky: '发布内容包含敏感信息，请修改后重新发送',
+  content_risky: '发布内容包含敏感信息，请修改后重新发布',
   systemError: '服务异常',
   invalidUser: '用户已被禁用',
   images: '最多上传10张图片（JPG/PNG）,图片不能大于10M',
@@ -279,6 +279,7 @@ class Publish extends Component {
     }
 
     const publishInput = {
+      owner: this.props.userInfo.id,
       title: this.state.title,
       price: Number(this.state.price),
       description: this.state.detail,

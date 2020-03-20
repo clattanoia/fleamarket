@@ -21,7 +21,7 @@ import {
   increaseGoodsReadCount,
   increasePurchaseReadCount,
 } from '../../query/detail'
-import { collectedQuery } from '../../query/collect'
+import { collectedQuery, collectMutation, unCollectMutation } from '../../query/collect'
 
 import client from '../../graphql-client'
 import { ProductType, Status, CertifyEmail } from '../../constants/enums'
@@ -92,7 +92,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   async componentDidMount(): Promise<void> {
     await this.fetchProductDetail()
     this.increaseReadCount()
-    //TODO get iscollect query
     this.getIsCollected()
   }
 
@@ -220,8 +219,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   isOwnProduct = (): boolean => {
     const { detail } = this.state
     const { userId } = this.props
-    console.log(userId)
-    console.log(detail.owner.id)
     return !!detail.owner && userId === detail.owner.id
   }
 
@@ -251,6 +248,28 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }
   }
 
+  doCollectHandle = async() => {
+    const { productType, id, isCollected } = this.state
+    const mutation = isCollected ? unCollectMutation : collectMutation
+    const toastText = isCollected ? '取消收藏成功' : '收藏成功'
+    const postData = {
+      productId: id,
+      productType,
+    }
+    try {
+      await client.mutate({
+        mutation,
+        variables: { postData },
+      })
+      this.setState({
+        toastText,
+        isToastOpened: true,
+      })
+    } catch (err){
+      console.log(err)
+    }
+  }
+
   collectHandle = () => {
     console.log('--------------collectHandle------------------------')
     if(Taro.getStorageSync('token')) {
@@ -264,13 +283,14 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         })
         return
       }
-      const { isCollected } = this.state
-      this.setState({
-        isCollected: !isCollected,
-      })
+      this.doCollectHandle()
     } else {
-      authLogin({ callback: this.collectHandle })
+      authLogin({ callback: this.collectAuthCallback })
     }
+  }
+
+  collectAuthCallback = () => {
+    this.getIsCollected()
   }
 
   handleCloseToast = () => {

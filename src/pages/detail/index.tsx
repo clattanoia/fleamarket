@@ -92,7 +92,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   async componentDidMount(): Promise<void> {
     await this.fetchProductDetail()
     this.increaseReadCount()
-    this.getIsCollected()
   }
 
   async componentDidShow(): Promise<void> {
@@ -104,9 +103,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   getIsCollected = async() => {
-    const { productType, id } = this.state
+    const { productType, id, isOwner } = this.state
     const { userId } = this.props
-    if(!userId){
+
+    if(!userId || isOwner){
       return
     }
     const postData = {
@@ -132,6 +132,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     this.setState({
       detail: detailInfo,
       isOwner,
+    }, () => {
+      this.getIsCollected()
     })
 
     this.props.updateMyProductList({

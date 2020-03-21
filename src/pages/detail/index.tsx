@@ -51,7 +51,6 @@ type PageState = {
   isCollected: boolean
   toastText: string
   isToastOpened: boolean
-  isOwner: boolean
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -80,9 +79,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       isCollected: false,
       toastText: '',
       isToastOpened: false,
-      isOwner: false,
     }
   }
+
+  isConcatAuthCallback = true  //判断是 获取联系 or 收藏 的登录回调
 
   componentWillMount(): void {
     const { productType, id } = this.$router.params
@@ -129,10 +129,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
       variables: { id },
     })
-    const isOwner = !!detailInfo.owner && this.props.userId === detailInfo.owner.id
     this.setState({
       detail: detailInfo,
-      isOwner,
     }, () => {
       this.getIsCollected()
     })
@@ -170,6 +168,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   showContact = async(): Promise<void> => {
+    this.isConcatAuthCallback = true
     if(Taro.getStorageSync('token')) {
       const contacts = await this.getContacts()
       this.setState({
@@ -210,12 +209,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }
   }
 
-  gotoPage = () => {
-    // if(this.isOwnProduct()) {
-    //   this.showManage()
-    // } else {
-    //   this.showContact()
-    // }
+  concatcAuthCallback = () => {
+    if(!this.isOwnProduct()) {
+      this.showContact()
+    }
   }
 
   isOwnProduct = (): boolean => {
@@ -266,6 +263,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       this.setState({
         toastText,
         isToastOpened: true,
+        isCollected: !isCollected,
       })
     } catch (err){
       console.log(err)
@@ -277,15 +275,13 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   collectHandle = () => {
-    console.log('--------------collectHandle------------------------')
+    this.isConcatAuthCallback = false
     if(Taro.getStorageSync('token')) {
       const isOwner = this.isOwnProduct()
-      console.log(isOwner)
       if(isOwner){
         this.setState({
           toastText: '不能收藏自己的"二货"哦～',
           isToastOpened: true,
-          isOwner,
         })
         return
       }
@@ -300,6 +296,14 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     this.collectHandle()
   }
 
+  authCallback = () => {
+    if(this.isConcatAuthCallback){
+      this.concatcAuthCallback()
+    } else {
+      this.collectAuthCallback()
+    }
+  }
+
   handleCloseToast = () => {
     this.setState({
       toastText: '',
@@ -308,7 +312,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   render() {
-    const { detail, productType, isCollected, toastText, isToastOpened, isOwner } = this.state
+    const { detail, productType, isCollected, toastText, isToastOpened } = this.state
     return detail && detail.owner ? (
       <View className="detail">
         <View className="owner-container">
@@ -358,7 +362,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           </View>
           <View className="footer_right">
             {
-              isOwner ?
+              this.isOwnProduct() ?
                 <AtButton type='primary' className="btn manage-btn" onClick={this.showManage}>管理</AtButton> :
                 <AtButton type='primary' className="btn contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
             }
@@ -378,7 +382,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           onClose={this.closeManage}
           onRefresh={this.refreshDetail}
         />
-        <AuthInfoLayout authCallback={this.gotoPage} />
+        <AuthInfoLayout authCallback={this.authCallback} />
         <AtToast
           isOpened={isToastOpened}
           hasMask

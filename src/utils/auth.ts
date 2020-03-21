@@ -26,6 +26,7 @@ export async function isAuthUserInfo() {
 }
 
 export async function authLogin(props: Inprops) {
+
   try {
     const token = Taro.getStorageSync('token')
     if(token){
@@ -55,7 +56,6 @@ export async function authLogin(props: Inprops) {
     })
     // tslint:disable-next-line
     await store.dispatch(fetchUserInfo())
-    console.log(props.callback)
     props.callback && props.callback()
   } catch (error) {
     throw error

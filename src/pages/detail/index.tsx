@@ -103,8 +103,9 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   getIsCollected = async() => {
-    const { productType, id, isOwner } = this.state
+    const { productType, id } = this.state
     const { userId } = this.props
+    const isOwner = this.isOwnProduct()
 
     if(!userId || isOwner){
       return

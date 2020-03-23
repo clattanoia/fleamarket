@@ -11,22 +11,17 @@ import Preload from '../../components/center/preload'
 
 import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
 import { Product } from '../../interfaces/product'
-import { InMyProductListState } from '../../reducers/myProductList'
+import { InMyCollectListState } from '../../reducers/MyCollectList'
 
 import styles from './index.module.scss'
-import { fetchMyProductList, resetMyProductListState } from '../../actions/myProductList'
-
-const TITLES = {
-  [ProductType.GOODS]: '我的出售',
-  [ProductType.PURCHASE]: '我的求购',
-}
+import { fetchMyCollectList, resetMyCollectListState } from '../../actions/myCollectList'
 
 type PageStateProps = {
-  myProductList: InMyProductListState,
+  myCollectList: InMyCollectListState,
 }
 
 type PageDispatchProps = {
-  fetchMyProductList: (searchInput, productType: ProductType) => Function,
+  fetchMyCollectList: (searchInput, productType: ProductType) => Function,
   resetState: () => Function,
 }
 
@@ -42,14 +37,14 @@ interface MyCollectList {
   props: IProps;
 }
 
-@connect(({ myProductList }) => ({
-  myProductList,
+@connect(({ myCollectList }) => ({
+  myCollectList,
 }), (dispatch) => ({
-  fetchMyProductList(searchInput, productType) {
-    dispatch(fetchMyProductList(searchInput, productType))
+  fetchMyCollectList(searchInput, productType) {
+    dispatch(fetchMyCollectList(searchInput, productType))
   },
   resetState() {
-    dispatch(resetMyProductListState())
+    dispatch(resetMyCollectListState())
   },
 }))
 class MyCollectList extends Component<PageOwnProps, PageState> {
@@ -65,7 +60,7 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
     const { productType } = this.$router.params
     this.setState({ productType: productType as ProductType })
     Taro.setNavigationBarTitle({
-      title: TITLES[productType] || '收藏列表',
+      title: '收藏列表',
     })
   }
 
@@ -78,7 +73,7 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
   }
 
   getSearchInput() {
-    const { pageIndex, pageSize } = this.props.myProductList
+    const { pageIndex, pageSize } = this.props.myCollectList
 
     return {
       pageIndex,
@@ -89,14 +84,14 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
   }
 
   isFetching(): boolean {
-    const { showLoadMore, showPreload } = this.props.myProductList
+    const { showLoadMore, showPreload } = this.props.myCollectList
     return showLoadMore || showPreload
   }
 
   fetchListData(): void {
     const searchInput = this.getSearchInput()
 
-    this.props.fetchMyProductList(searchInput, this.state.productType)
+    this.props.fetchMyCollectList(searchInput, this.state.productType)
   }
 
   handleGotoDetail(item: Product): void {
@@ -106,7 +101,7 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
   }
 
   onScrollToBottom = (): void => {
-    const { totalPages, pageIndex } = this.props.myProductList
+    const { totalPages, pageIndex } = this.props.myCollectList
     if(pageIndex >= totalPages || this.isFetching()) {
       return
     }
@@ -115,8 +110,8 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
   }
 
   renderEmpty(): ReactNodeLike {
-    const { myProductList } = this.props
-    const { listData } = myProductList
+    const { myCollectList } = this.props
+    const { listData } = myCollectList
 
     if(!listData.length && !this.isFetching()) {
       return <View className={styles.empty}>暂无相关数据</View>
@@ -124,24 +119,24 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
   }
 
   renderListData(): ReactNodeLike {
-    const { myProductList } = this.props
-    const { listData } = myProductList
+    const { myCollectList } = this.props
+    const { listData } = myCollectList
     return listData.map((item: Product) => (
       <ProductListItem item={item} key={item.id} onClick={() => this.handleGotoDetail(item)} />
     ))
   }
 
   renderLoadMore(): ReactNodeLike {
-    const { myProductList } = this.props
-    const { showLoadMore } = myProductList
+    const { myCollectList } = this.props
+    const { showLoadMore } = myCollectList
     if(showLoadMore) {
       return <AtLoadMore status="loading" />
     }
   }
 
   renderNoMore(): ReactNodeLike {
-    const { myProductList } = this.props
-    const { totalPages, pageIndex, listData } = myProductList
+    const { myCollectList } = this.props
+    const { totalPages, pageIndex, listData } = myCollectList
 
     // TODO: 大于 5 条并且加载完
     if((listData.length > 5 && pageIndex >= totalPages)) {
@@ -170,15 +165,15 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
   }
 
   renderToast() {
-    const { myProductList } = this.props
-    const { isToastOpened, toastText } = myProductList
+    const { myCollectList } = this.props
+    const { isToastOpened, toastText } = myCollectList
 
     return <AtToast isOpened={isToastOpened} hasMask status="error" text={toastText}></AtToast>
   }
 
   render() {
 
-    const { showPreload } = this.props.myProductList
+    const { showPreload } = this.props.myCollectList
     return (
       <View className={styles.container}>
         { showPreload ? <Preload /> : this.renderScrollView() }

@@ -80,6 +80,12 @@ class Profile extends Component<PageOwnProps, PageState> {
     })
   }
 
+  editProfile = () => {
+    Taro.navigateTo({
+      url: '/pages/profile/edit/index',
+    })
+  }
+
   getContracts = () => {
     Taro.navigateTo({
       url: '/pages/profile/contact/index',
@@ -135,7 +141,7 @@ class Profile extends Component<PageOwnProps, PageState> {
   render() {
     return (
       <View className='profile'>
-        <View className='profile-header'>
+        <View className='profile-header' onClick={this.editProfile}>
           <Avatar
             certificate={this.props.userInfo.certification === CertifyEmail.CERTIFIED}
             userId={this.props.userInfo.id}

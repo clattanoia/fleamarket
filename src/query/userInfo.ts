@@ -24,3 +24,13 @@ export const userInfoQuery = gql`
   }
 `
 
+export const updateUserInfoQuery = gql`
+  mutation ($userInfoInput: UserInfoInput!){
+    userInfo: updateUserInfo(userInfoInput: $userInfoInput) {
+      nickname
+      avatarUrl
+      brief
+    }
+  }
+`
+

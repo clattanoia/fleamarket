@@ -1,0 +1,16 @@
+.profileEditContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+
+  .avatar {
+    width: 108px;
+    height: 108px;
+    margin: 30px 0;
+  }
+  .formContainer {
+    width: 100%;
+  }
+}

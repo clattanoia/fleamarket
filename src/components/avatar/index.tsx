@@ -23,13 +23,14 @@ function Avatar({
   onClick = () => {},
   certificate = false,
 }: InProps) {
+  const style = {
+    width: `${avatarSize}rpx`,
+    height: `${avatarSize}rpx`,
+  }
   return (
-    <View className="avatar" onClick={onClick} data-id={userId}>
+    <View className="avatar" onClick={onClick} data-id={userId} style={style}>
       <Image
-        style={{
-          width: `${avatarSize}rpx`,
-          height: `${avatarSize}rpx`,
-        }}
+        style={style}
         className="image" src={avatarUrl}
       />
       {

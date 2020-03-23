@@ -124,9 +124,10 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
 
   renderListData(): ReactNodeLike {
     const { myCollectList } = this.props
+    const { productType } = this.state
     const { listData } = myCollectList
     return listData.map((item: Product) => (
-      <ProductListItem item={item} key={item.id} onClick={() => this.handleGotoDetail(item)} />
+      <ProductListItem item={item} productType={productType} key={item.id} onClick={() => this.handleGotoDetail(item)} />
     ))
   }
 

@@ -5,6 +5,8 @@ export const profileInfoQuery = gql`
     profileInfo {
       salesCount
       purchaseCount
+      salesCollectCount
+      purchaseCollectCount
     }
   }
 `

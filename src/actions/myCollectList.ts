@@ -8,8 +8,7 @@ import {
   RESET_MY_COLLECT_LIST,
   UPDATE_MY_COLLECT_LIST_DATA, FETCH_MY_COLLECT_LIST_ERROR,
 } from '../constants/actionTypes'
-import { ProductType } from '../constants/enums'
-import { searchMyGoodsQuery, searchMyPurchaseQuery } from '../query/search'
+import { searchMyCollectQuery } from '../query/collect'
 
 const fetchStart = () => {
   return {
@@ -50,12 +49,11 @@ export const updateListData = (payload) => {
   }
 }
 
-export function fetchMyCollectList(searchInput, productType) {
+export function fetchMyCollectList(searchInput) {
   return async(dispatch: Dispatch) => {
-    const query = productType === ProductType.GOODS ? searchMyGoodsQuery : searchMyPurchaseQuery
     try {
       dispatch(fetchStart())
-      const { data } = await client.query({ query, variables: { searchInput }})
+      const { data } = await client.query({ query: searchMyCollectQuery, variables: { searchInput }})
       dispatch(fetchSuccess(data))
     } catch (error) {
       dispatch(fetchError({ error }))

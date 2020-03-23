@@ -26,7 +26,7 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  fetchMyCollectList: (searchInput, productType: ProductType) => Function,
+  fetchMyCollectList: (searchInput) => Function,
   resetState: () => Function,
 }
 
@@ -45,8 +45,8 @@ interface MyCollectList {
 @connect(({ myCollectList }) => ({
   myCollectList,
 }), (dispatch) => ({
-  fetchMyCollectList(searchInput, productType) {
-    dispatch(fetchMyCollectList(searchInput, productType))
+  fetchMyCollectList(searchInput) {
+    dispatch(fetchMyCollectList(searchInput))
   },
   resetState() {
     dispatch(resetMyCollectListState())
@@ -83,6 +83,7 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
     return {
       pageIndex,
       pageSize,
+      productType: this.state.productType,
     }
   }
 
@@ -94,7 +95,7 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
   fetchListData(): void {
     const searchInput = this.getSearchInput()
 
-    this.props.fetchMyCollectList(searchInput, this.state.productType)
+    this.props.fetchMyCollectList(searchInput)
   }
 
   handleGotoDetail(item: Product): void {

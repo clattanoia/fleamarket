@@ -73,6 +73,14 @@ class Profile extends Component<PageOwnProps, PageState> {
   }
 
   async componentDidMount() {
+    this.getProfileInfo()
+  }
+
+  async componentDidShow() {
+    this.getProfileInfo()
+  }
+
+  getProfileInfo = async() => {
     const { data: { profileInfo }} = await client.query({
       query: profileInfoQuery,
       variables: { userId: this.props.userInfo.id },

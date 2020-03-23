@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
-import { AtIcon } from 'taro-ui'
+import { AtIcon, AtAccordion, AtList, AtListItem } from 'taro-ui'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
 
@@ -65,8 +65,11 @@ class Profile extends Component<PageOwnProps, PageState> {
   state = {
     salesCount: 0,
     purchaseCount: 0,
+    salesCollectCount: 0,
+    purchaseCollectCount: 0,
 
     certificationModalOpened: false,
+    isOpenCollect: false,
   }
 
   async componentDidMount() {
@@ -77,6 +80,8 @@ class Profile extends Component<PageOwnProps, PageState> {
     this.setState({
       salesCount: profileInfo.salesCount,
       purchaseCount: profileInfo.purchaseCount,
+      salesCollectCount: profileInfo.salesCollectCount,
+      purchaseCollectCount: profileInfo.purchaseCollectCount,
     })
   }
 
@@ -98,9 +103,9 @@ class Profile extends Component<PageOwnProps, PageState> {
     })
   }
 
-  toMyCollectList = () => {
+  toMyCollectList = (productType) => () => {
     Taro.navigateTo({
-      url: '/pages/myCollect/index',
+      url: `/pages/myCollect/index?productType=${productType}`,
     })
   }
 
@@ -138,7 +143,14 @@ class Profile extends Component<PageOwnProps, PageState> {
     )
   }
 
+  collectClick = (val) => {
+    this.setState({
+      isOpenCollect: val,
+    })
+  }
+
   render() {
+    const  { isOpenCollect, purchaseCollectCount, salesCollectCount } = this.state
     return (
       <View className='profile'>
         <View className='profile-header' onClick={this.editProfile}>
@@ -169,16 +181,31 @@ class Profile extends Component<PageOwnProps, PageState> {
               count={this.state.purchaseCount}
               icon='iconmairu'
               iconColor='#646de9'
-              hasDivision
               handleClick={() => this.toMyProductList(ProductType.PURCHASE)}
             ></OperationItem>
-            <OperationItem
+          </View>
+          <View className="contract">
+            <AtAccordion
               title='我的收藏'
-              count={this.state.purchaseCount}
-              icon='iconshoucang'
-              iconColor='#FF842F'
-              handleClick={this.toMyCollectList}
-            ></OperationItem>
+              icon={{ value: 'star', color: '#FF842F', size: '22' }}
+              open={isOpenCollect}
+              onClick={this.collectClick}
+            >
+              <AtList hasBorder={false}>
+                <AtListItem
+                  title='出售'
+                  extraText={`${salesCollectCount || 0 }`}
+                  arrow='right'
+                  onClick={this.toMyCollectList(ProductType.GOODS)}
+                />
+                <AtListItem
+                  title='求购'
+                  extraText={`${purchaseCollectCount || 0}`}
+                  arrow='right'
+                  onClick={this.toMyCollectList(ProductType.PURCHASE)}
+                />
+              </AtList>
+            </AtAccordion>
           </View>
           <View className='contract'>
             <OperationItem

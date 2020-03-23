@@ -9,12 +9,17 @@ import { ReactNodeLike } from 'prop-types'
 import ProductListItem from './components/productListItem'
 import Preload from '../../components/center/preload'
 
-import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
+import { ProductType } from '../../constants/enums'
 import { Product } from '../../interfaces/product'
 import { InMyCollectListState } from '../../reducers/MyCollectList'
 
 import styles from './index.module.scss'
 import { fetchMyCollectList, resetMyCollectListState } from '../../actions/myCollectList'
+
+const TITLES = {
+  [ProductType.GOODS]: '出售',
+  [ProductType.PURCHASE]: '求购',
+}
 
 type PageStateProps = {
   myCollectList: InMyCollectListState,
@@ -60,7 +65,7 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
     const { productType } = this.$router.params
     this.setState({ productType: productType as ProductType })
     Taro.setNavigationBarTitle({
-      title: '收藏列表',
+      title: `${TITLES[productType]}收藏` || '收藏列表',
     })
   }
 
@@ -78,8 +83,6 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
     return {
       pageIndex,
       pageSize,
-      orderBy: SearchOrderBy.CT,
-      sortDirection: SearchSortDirection.DESC,
     }
   }
 

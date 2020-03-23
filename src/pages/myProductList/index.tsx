@@ -7,7 +7,7 @@ import { ReactNodeLike } from 'prop-types'
 
 
 import ProductListItem from './components/productListItem'
-import Preload from './components/preload'
+import Preload from '../../components/center/preload'
 
 import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
 import { Product } from '../../interfaces/product'

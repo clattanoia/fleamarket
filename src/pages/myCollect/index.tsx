@@ -7,7 +7,7 @@ import { ReactNodeLike } from 'prop-types'
 
 
 import ProductListItem from './components/productListItem'
-import Preload from './components/preload'
+import Preload from '../../components/center/preload'
 
 import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
 import { Product } from '../../interfaces/product'
@@ -65,7 +65,7 @@ class MyCollectList extends Component<PageOwnProps, PageState> {
     const { productType } = this.$router.params
     this.setState({ productType: productType as ProductType })
     Taro.setNavigationBarTitle({
-      title: TITLES[productType] || '列表',
+      title: TITLES[productType] || '收藏列表',
     })
   }
 

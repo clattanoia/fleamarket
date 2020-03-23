@@ -92,6 +92,12 @@ class Profile extends Component<PageOwnProps, PageState> {
     })
   }
 
+  toMyCollectList = () => {
+    Taro.navigateTo({
+      url: '/pages/myCollect/index',
+    })
+  }
+
   handleConfirmCertify = () => {
     this.setState({
       certificationModalOpened: false,
@@ -157,7 +163,15 @@ class Profile extends Component<PageOwnProps, PageState> {
               count={this.state.purchaseCount}
               icon='iconmairu'
               iconColor='#646de9'
+              hasDivision
               handleClick={() => this.toMyProductList(ProductType.PURCHASE)}
+            ></OperationItem>
+            <OperationItem
+              title='我的收藏'
+              count={this.state.purchaseCount}
+              icon='iconshoucang'
+              iconColor='#FF842F'
+              handleClick={this.toMyCollectList}
             ></OperationItem>
           </View>
           <View className='contract'>

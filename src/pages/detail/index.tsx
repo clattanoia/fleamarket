@@ -110,13 +110,13 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     if(!userId || isOwner){
       return
     }
-    const postData = {
+    const collectInput = {
       productId: id,
       productType,
     }
     const { data } = await client.query({
       query: collectedQuery,
-      variables: { postData },
+      variables: { collectInput },
     })
     this.setState({
       isCollected: data.collected.result,
@@ -249,16 +249,17 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
 
   doCollectHandle = async() => {
     const { productType, id, isCollected } = this.state
+
     const mutation = isCollected ? unCollectMutation : collectMutation
     const toastText = isCollected ? '取消收藏成功' : '收藏成功'
-    const postData = {
+    const collectInput = {
       productId: id,
       productType,
     }
     try {
       await client.mutate({
         mutation,
-        variables: { postData },
+        variables: { collectInput },
       })
       this.setState({
         toastText,

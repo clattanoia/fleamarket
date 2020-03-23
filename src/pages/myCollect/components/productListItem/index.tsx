@@ -1,6 +1,7 @@
 import Taro, { memo, useState } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtButton, AtModal, AtToast } from 'taro-ui'
+import { useDispatch } from '@tarojs/redux'
 
 import { Product } from '../../../../interfaces/product'
 import Tag from '../../../../components/tag'
@@ -11,6 +12,7 @@ import styles from './index.module.scss'
 import defaultProductCover from '../../../../assets/default_product_cover.png'
 import { unCollectMutation } from '../../../../query/collect'
 import client from '../../../../graphql-client'
+import { DELETE_MY_COLLECT_LIST_DATA } from '../../../../constants/actionTypes'
 
 interface InProps {
   item: Product,
@@ -25,6 +27,8 @@ const STATUS_MAPPING = {
 }
 
 function ProductListItem(props: InProps) {
+  const dispatch = useDispatch()
+
   const [isOpened, setIsOpened] = useState(false)
   const [isToastOpened, setIsToastOpened] = useState(false)
   const [toastText, setToastText] = useState('')
@@ -38,8 +42,9 @@ function ProductListItem(props: InProps) {
 
   const handleConfirm = async() => {
     const { productType, item } = this.props
+    const productId = item.id
     const collectInput = {
-      productId: item.id,
+      productId,
       productType,
     }
     try {
@@ -47,6 +52,7 @@ function ProductListItem(props: InProps) {
         mutation: unCollectMutation,
         variables: { collectInput },
       })
+      dispatch({ type: DELETE_MY_COLLECT_LIST_DATA, payload: productId })
     } catch (err){
       console.log(err)
       setToastText('操作失败，请稍后重试')

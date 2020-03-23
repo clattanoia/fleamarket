@@ -6,7 +6,7 @@ import {
   FETCH_MY_COLLECT_LIST_SUCCESS,
   FETCH_MY_COLLECT_LIST_FINALLY,
   RESET_MY_COLLECT_LIST,
-  UPDATE_MY_COLLECT_LIST_DATA, FETCH_MY_COLLECT_LIST_ERROR,
+  UPDATE_MY_COLLECT_LIST_DATA, FETCH_MY_COLLECT_LIST_ERROR, DELETE_MY_COLLECT_LIST_DATA,
 } from '../constants/actionTypes'
 import { searchMyCollectQuery } from '../query/collect'
 
@@ -45,6 +45,13 @@ export const resetMyCollectListState = () => {
 export const updateListData = (payload) => {
   return {
     type: UPDATE_MY_COLLECT_LIST_DATA,
+    payload,
+  }
+}
+
+export const deleteCollectData = (payload) => {
+  return {
+    type: DELETE_MY_COLLECT_LIST_DATA,
     payload,
   }
 }

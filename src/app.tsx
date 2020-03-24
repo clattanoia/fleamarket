@@ -34,7 +34,6 @@ class App extends Component {
       'pages/profile/contact/add/index',
       'pages/profile/edit/index',
       'pages/myProductList/index',
-      'pages/myCollect/index',
     ],
     window: {
       backgroundTextStyle: 'light',

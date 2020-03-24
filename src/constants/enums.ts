@@ -13,6 +13,11 @@ export enum ProductType {
   PURCHASE = 'PURCHASE',
 }
 
+export enum Origin {
+  PUBLISH = 'PUBLISH',
+  COLLECT = 'COLLECT',
+}
+
 export enum ProductStatus {
   ALL = 'ALL',
   FOR_SALE = 'FOR_SALE',

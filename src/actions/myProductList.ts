@@ -6,10 +6,11 @@ import {
   FETCH_MY_PRODUCT_LIST_SUCCESS,
   FETCH_MY_PRODUCT_LIST_FINALLY,
   RESET_MY_PRODUCT_LIST,
-  UPDATE_MY_PRODUCT_LIST_DATA, FETCH_MY_PRODUCT_LIST_ERROR,
+  UPDATE_MY_PRODUCT_LIST_DATA, FETCH_MY_PRODUCT_LIST_ERROR, DELETE_MY_COLLECT_LIST_DATA,
 } from '../constants/actionTypes'
 import { ProductType } from '../constants/enums'
 import { searchMyGoodsQuery, searchMyPurchaseQuery } from '../query/search'
+import { searchMyCollectQuery } from '../query/collect'
 
 const fetchStart = () => {
   return {
@@ -56,6 +57,27 @@ export function fetchMyProductList(searchInput, productType) {
     try {
       dispatch(fetchStart())
       const { data } = await client.query({ query, variables: { searchInput }})
+      dispatch(fetchSuccess(data))
+    } catch (error) {
+      dispatch(fetchError({ error }))
+    } finally {
+      dispatch(fetchFinally())
+    }
+  }
+}
+
+export const deleteCollectData = (payload) => {
+  return {
+    type: DELETE_MY_COLLECT_LIST_DATA,
+    payload,
+  }
+}
+
+export function fetchMyCollectList(searchInput) {
+  return async(dispatch: Dispatch) => {
+    try {
+      dispatch(fetchStart())
+      const { data } = await client.query({ query: searchMyCollectQuery, variables: { searchInput }})
       dispatch(fetchSuccess(data))
     } catch (error) {
       dispatch(fetchError({ error }))

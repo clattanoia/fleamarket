@@ -28,7 +28,6 @@ import { ProductType, Status, CertifyEmail } from '../../constants/enums'
 import { InContact } from '../../interfaces/contact'
 import { authLogin } from '../../utils/auth'
 import { updateListData } from '../../actions/myProductList'
-import { updateListData as updateCollectListData } from '../../actions/myCollectList'
 
 import './index.scss'
 
@@ -38,7 +37,6 @@ type PageStateProps = {
 
 type PageDispatchProps = {
   updateMyProductList: (payload) => Function,
-  updateCollectListData: (payload) => Function,
 }
 
 type PageOwnProps = {}
@@ -66,9 +64,6 @@ interface ProductDetail {
 }), dispatch => ({
   updateMyProductList(payload) {
     dispatch(updateListData(payload))
-  },
-  updateCollectListData(payload) {
-    dispatch(updateCollectListData(payload))
   },
 }))
 class ProductDetail extends Component<PageOwnProps, PageState> {
@@ -160,10 +155,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       variables: { id },
     })
     this.props.updateMyProductList({
-      id: this.state.id,
-      modification: { readCount: this.state.detail.readCount + 1 },
-    })
-    this.props.updateCollectListData({
       id: this.state.id,
       modification: { readCount: this.state.detail.readCount + 1 },
     })

@@ -9,16 +9,16 @@ import { ReactNodeLike } from 'prop-types'
 import ProductListItem from './components/productListItem'
 import Preload from '../../components/center/preload'
 
-import { ProductType, SearchOrderBy, SearchSortDirection } from '../../constants/enums'
+import { ProductType, SearchOrderBy, SearchSortDirection, Origin } from '../../constants/enums'
 import { Product } from '../../interfaces/product'
 import { InMyProductListState } from '../../reducers/myProductList'
 
 import styles from './index.module.scss'
-import { fetchMyProductList, resetMyProductListState } from '../../actions/myProductList'
+import { fetchMyProductList, resetMyProductListState, fetchMyCollectList } from '../../actions/myProductList'
 
 const TITLES = {
-  [ProductType.GOODS]: '我的出售',
-  [ProductType.PURCHASE]: '我的求购',
+  [ProductType.GOODS]: '出售',
+  [ProductType.PURCHASE]: '求购',
 }
 
 type PageStateProps = {
@@ -28,12 +28,14 @@ type PageStateProps = {
 type PageDispatchProps = {
   fetchMyProductList: (searchInput, productType: ProductType) => Function,
   resetState: () => Function,
+  fetchMyCollectList: (searchInput) => Function,
 }
 
 type PageOwnProps = {}
 
 type PageState = {
   productType: ProductType,
+  origin: Origin
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -51,10 +53,14 @@ interface MyProductList {
   resetState() {
     dispatch(resetMyProductListState())
   },
+  fetchMyCollectList(searchInput) {
+    dispatch(fetchMyCollectList(searchInput))
+  },
 }))
 class MyProductList extends Component<PageOwnProps, PageState> {
   state = {
     productType: ProductType.GOODS,
+    origin: Origin.PUBLISH,
   }
 
   config: Config = {
@@ -62,8 +68,9 @@ class MyProductList extends Component<PageOwnProps, PageState> {
   }
 
   componentWillMount(): void {
-    const { productType } = this.$router.params
+    const { productType, origin } = this.$router.params
     this.setState({ productType: productType as ProductType })
+    this.setState({ origin: origin as Origin })
     Taro.setNavigationBarTitle({
       title: TITLES[productType] || '列表',
     })
@@ -79,13 +86,18 @@ class MyProductList extends Component<PageOwnProps, PageState> {
 
   getSearchInput() {
     const { pageIndex, pageSize } = this.props.myProductList
-
-    return {
+    const { origin, productType } = this.state
+    const searchOption = {
       pageIndex,
       pageSize,
-      orderBy: SearchOrderBy.CT,
-      sortDirection: SearchSortDirection.DESC,
     }
+    if(origin === Origin.PUBLISH){
+      searchOption['orderBy'] = SearchOrderBy.CT
+      searchOption['sortDirection'] = SearchSortDirection.DESC
+    } else {
+      searchOption['productType'] = productType
+    }
+    return searchOption
   }
 
   isFetching(): boolean {
@@ -95,8 +107,12 @@ class MyProductList extends Component<PageOwnProps, PageState> {
 
   fetchListData(): void {
     const searchInput = this.getSearchInput()
-
-    this.props.fetchMyProductList(searchInput, this.state.productType)
+    const { origin, productType } = this.state
+    if(origin === Origin.PUBLISH){
+      this.props.fetchMyProductList(searchInput, productType)
+    } else {
+      this.props.fetchMyCollectList(searchInput)
+    }
   }
 
   handleGotoDetail(item: Product): void {
@@ -125,9 +141,16 @@ class MyProductList extends Component<PageOwnProps, PageState> {
 
   renderListData(): ReactNodeLike {
     const { myProductList } = this.props
+    const { productType, origin } = this.state
     const { listData } = myProductList
     return listData.map((item: Product) => (
-      <ProductListItem item={item} key={item.id} onClick={() => this.handleGotoDetail(item)} />
+      <ProductListItem
+        item={item}
+        productType={productType}
+        key={item.id}
+        origin={origin}
+        onClick={() => this.handleGotoDetail(item)}
+      />
     ))
   }
 

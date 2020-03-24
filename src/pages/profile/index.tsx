@@ -11,7 +11,7 @@ import CertifyModal from './cetification'
 
 import client from '../../graphql-client'
 import { profileInfoQuery } from '../../query/profile'
-import { CertifyEmail, ProductType } from '../../constants/enums'
+import { CertifyEmail, ProductType, Origin } from '../../constants/enums'
 import { updateUserInfo } from '../../actions/userInfo'
 
 import './index.scss'
@@ -105,15 +105,9 @@ class Profile extends Component<PageOwnProps, PageState> {
     })
   }
 
-  toMyProductList = (productType) => {
+  toMyProductList = (productType, origin) => () => {
     Taro.navigateTo({
-      url: `/pages/myProductList/index?productType=${productType}`,
-    })
-  }
-
-  toMyCollectList = (productType) => () => {
-    Taro.navigateTo({
-      url: `/pages/myCollect/index?productType=${productType}`,
+      url: `/pages/myProductList/index?productType=${productType}&origin=${origin}`,
     })
   }
 
@@ -182,14 +176,14 @@ class Profile extends Component<PageOwnProps, PageState> {
               icon='iconmaichu'
               hasDivision
               iconColor='#10ca2e'
-              handleClick={() => this.toMyProductList(ProductType.GOODS)}
+              handleClick={this.toMyProductList(ProductType.GOODS, Origin.PUBLISH)}
             ></OperationItem>
             <OperationItem
               title='我的求购'
               count={this.state.purchaseCount}
               icon='iconmairu'
               iconColor='#646de9'
-              handleClick={() => this.toMyProductList(ProductType.PURCHASE)}
+              handleClick={this.toMyProductList(ProductType.PURCHASE, Origin.PUBLISH)}
             ></OperationItem>
           </View>
           <View className="contract">
@@ -204,13 +198,13 @@ class Profile extends Component<PageOwnProps, PageState> {
                   title='出售'
                   extraText={`${salesCollectCount || 0 }`}
                   arrow='right'
-                  onClick={this.toMyCollectList(ProductType.GOODS)}
+                  onClick={this.toMyProductList(ProductType.GOODS, Origin.COLLECT)}
                 />
                 <AtListItem
                   title='求购'
                   extraText={`${purchaseCollectCount || 0}`}
                   arrow='right'
-                  onClick={this.toMyCollectList(ProductType.PURCHASE)}
+                  onClick={this.toMyProductList(ProductType.PURCHASE, Origin.COLLECT)}
                 />
               </AtList>
             </AtAccordion>

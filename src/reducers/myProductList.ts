@@ -3,7 +3,7 @@ import {
   FETCH_MY_PRODUCT_LIST_SUCCESS,
   FETCH_MY_PRODUCT_LIST_FINALLY,
   RESET_MY_PRODUCT_LIST,
-  UPDATE_MY_PRODUCT_LIST_DATA, FETCH_MY_PRODUCT_LIST_ERROR,
+  UPDATE_MY_PRODUCT_LIST_DATA, FETCH_MY_PRODUCT_LIST_ERROR, DELETE_MY_COLLECT_LIST_DATA,
 } from '../constants/actionTypes'
 import { Product } from '../interfaces/product'
 
@@ -100,6 +100,17 @@ export default function myProductList(state = INITIAL_STATE, action) {
       return {
         ...state,
         listData,
+      }
+    }
+
+    case DELETE_MY_COLLECT_LIST_DATA: {
+      const { listData } = state
+      const { payload } = action
+
+      const newList = listData.filter(item => item.id !== payload)
+      return {
+        ...state,
+        listData: newList,
       }
     }
 

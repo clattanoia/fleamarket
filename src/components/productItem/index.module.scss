@@ -2,6 +2,9 @@
 
 
 .productItem {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
 
   .goodsImage {
     width: 100%;
@@ -9,8 +12,10 @@
     overflow: hidden;
     display: flex;
     align-items: center;
+    border-radius: 10px;
     image {
       width:100%;
+      border-radius: 10px;
     }
   }
 

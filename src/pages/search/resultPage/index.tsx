@@ -76,9 +76,7 @@ function ResultPage(props: InProps) {
           upperThreshold={20}
           onScrollToLower={onScrollToLower}
         >
-          <View className={styles.list}>
-            <ProductList productListData={searchListResult} productType={productType} showPreload={isLoading && !searchListResult.length} />
-          </View>
+          <ProductList productListData={searchListResult} productType={productType} showPreload={isLoading && !searchListResult.length} />
           <View className={styles.noMore}>
             { isLoading ? <AtLoadMore status="loading" /> : (
               showNoMore && <AtLoadMore status="noMore" noMoreTextStyle="color: #c8c8c8" />

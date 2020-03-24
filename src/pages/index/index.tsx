@@ -118,9 +118,7 @@ class Index extends Component {
         <View className="scrollSection">
           <CategorySection />
           <Text className='category'>看推荐</Text>
-          <View className='wrapper-list'>
-            <ProductList productListData={goods} productType={ProductType.GOODS} showPreload={isLoading} />
-          </View>
+          <ProductList productListData={goods} productType={ProductType.GOODS} showPreload={isLoading} />
         </View>
         <TabBar current={0} />
       </View>

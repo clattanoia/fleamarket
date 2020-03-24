@@ -14,9 +14,6 @@ import { getToken, uploadQiniu } from '../../../utils/qiniuUploader'
 import styles from './index.module.scss'
 
 function ProfileEdit() {
-  Taro.setNavigationBarTitle({
-    title: '修改个人信息',
-  })
   const dispatch = useDispatch()
   const userInfo = useSelector((state: any) => {
     return state.userInfo
@@ -134,6 +131,10 @@ function ProfileEdit() {
       </View>
     </View>
   )
+}
+
+ProfileEdit.config = {
+  navigationBarTitleText: '修改个人信息',
 }
 
 export default memo(ProfileEdit)

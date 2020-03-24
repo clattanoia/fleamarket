@@ -318,6 +318,18 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     })
   }
 
+  onShareAppMessage = (res) => {
+    const { productType, id } = this.state
+    if(res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: '二货集好物',
+      path: `/page/detail/index?id=${id}&productType=${productType}`,
+    }
+  }
+
   render() {
     const { detail, productType, isCollected, toastText, isToastOpened } = this.state
     return detail && detail.owner ? (
@@ -365,6 +377,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
                 <AtIcon value={isCollected ? 'star-2' : 'star'} size='20'></AtIcon>
               </View>
               <Text>{isCollected ? '已收藏' : '收藏'}</Text>
+            </View>
+            <View className="share">
+              <AtIcon value='share' size='24' color="#808080"></AtIcon>
+              <AtButton className="share-btn" openType="share"></AtButton>
             </View>
           </View>
           <View className="footer_right">

@@ -7,7 +7,7 @@ function Feedback() {
   })
 
   return (
-    <WebView src="https://jinshuju.net/f/xcpEai" />
+    <WebView src="https://jinshuju.2hj.com.cn/f/xcpEai" />
   )
 }
 

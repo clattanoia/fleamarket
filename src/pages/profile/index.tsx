@@ -69,7 +69,7 @@ class Profile extends Component<PageOwnProps, PageState> {
     purchaseCollectCount: 0,
 
     certificationModalOpened: false,
-    isOpenCollect: false,
+    isOpenCollect: true,
   }
 
   async componentDidMount() {

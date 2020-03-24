@@ -112,7 +112,7 @@ function PublishInfo(props: InProps) {
                 value={detail}
                 onChange={handleChangeDetail}
                 maxLength={500}
-                placeholder='请输入详情'
+                placeholder='"二货"的详细信息，如：9 成新，可小刀'
                 height={260}
                 onBlur={showEdit(false)}
                 focus={showTextarea}
@@ -126,7 +126,7 @@ function PublishInfo(props: InProps) {
                     </Text>
                   ) : (
                     <Text className="textarea--detail textarea--detail__placeholder">
-                      请输入详情
+                      &quot;二货&quot;的详细信息，如：9 成新，可小刀
                     </Text>
                   )
                 }

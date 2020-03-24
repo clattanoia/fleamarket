@@ -27,12 +27,15 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/publish/index',
-      'pages/profile/index',
       'pages/detail/index',
       'pages/search/index',
+
+      'pages/profile/index',
       'pages/profile/contact/index',
       'pages/profile/contact/add/index',
       'pages/profile/edit/index',
+      'pages/profile/feedback',
+
       'pages/myProductList/index',
     ],
     window: {

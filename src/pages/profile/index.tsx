@@ -111,6 +111,12 @@ class Profile extends Component<PageOwnProps, PageState> {
     })
   }
 
+  toFeedbackPage = () => {
+    Taro.navigateTo({
+      url: '/pages/profile/feedback',
+    })
+  }
+
   handleConfirmCertify = () => {
     this.setState({
       certificationModalOpened: false,
@@ -218,6 +224,14 @@ class Profile extends Component<PageOwnProps, PageState> {
               icon='icondianhua'
               iconColor='#fb5d5e'
               handleClick={this.getContracts}
+            ></OperationItem>
+          </View>
+          <View className="feedback">
+            <OperationItem
+              title='建议/反馈'
+              icon='iconinfo'
+              iconColor='#FE5155'
+              handleClick={this.toFeedbackPage}
             ></OperationItem>
           </View>
         </View>

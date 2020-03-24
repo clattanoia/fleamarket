@@ -166,6 +166,9 @@ class Profile extends Component<PageOwnProps, PageState> {
             <Text className='name'>{this.props.userInfo.nickname}</Text>
             <Text className='description'>{this.props.userInfo.brief || '这个人很懒，什么也没有留下~'}</Text>
           </View>
+          <View className="header-icon">
+            <AtIcon prefixClass='iconfont' value='iconright' size="40" color='#fff'></AtIcon>
+          </View>
         </View>
         <View className='scroll-section'>
           {this.renderCertificationTip()}

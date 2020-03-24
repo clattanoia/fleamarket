@@ -11,25 +11,28 @@ page {
   overflow: hidden;
 
   .profile-header {
-    height: 108px;
+    box-sizing: border-box;
+    min-height: 148px;
     padding: 20px 20px;
     width: 100%;
     display: flex;
+    align-items: center;
     background-color: $baseColor;
-
-    .name {
-      padding-left: 20px;
-      font-size: 40px;
-      display: flex;
-      align-items: center;
+    .header-right {
+      flex: 1;
       color: #fff;
-      font-weight: bold;
-    }
+      margin-left: 20px;
+      .name {
+        font-size: 40px;
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+      }
 
-    .description {
-      color: #fff;
-      font-size: 28px;
-      padding-left: 20px;
+      .description {
+        color: #fff;
+        font-size: 28px;
+      }
     }
   }
 

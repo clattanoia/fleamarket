@@ -14,6 +14,9 @@ import { getToken, uploadQiniu } from '../../../utils/qiniuUploader'
 import styles from './index.module.scss'
 
 function ProfileEdit() {
+  Taro.setNavigationBarTitle({
+    title: '修改个人信息',
+  })
   const dispatch = useDispatch()
   const userInfo = useSelector((state: any) => {
     return state.userInfo
@@ -66,7 +69,7 @@ function ProfileEdit() {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         const tempFilePaths = res.tempFilePaths
         const token = await getToken()
-        const path = `user_avatar/${userInfo.id}/`
+        const path = 'user/avatar/'
         try {
           Taro.showLoading({
             title: '上传中...',
@@ -120,7 +123,7 @@ function ProfileEdit() {
         <AtTextarea
           value={brief}
           onChange={onBriefChange}
-          maxLength={100}
+          maxLength={30}
           placeholder='请输入你的简介'
         />
         <AtButton

@@ -34,7 +34,6 @@ class App extends Component {
       'pages/profile/contact/index',
       'pages/profile/contact/add/index',
       'pages/profile/edit/index',
-      'pages/profile/feedback',
 
       'pages/myProductList/index',
     ],

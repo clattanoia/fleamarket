@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
-import { AtIcon, AtAccordion, AtList, AtListItem } from 'taro-ui'
+import { AtIcon, AtAccordion, AtList, AtListItem, AtButton } from 'taro-ui'
 import { ComponentClass } from 'react'
 import { connect } from '@tarojs/redux'
 
@@ -108,12 +108,6 @@ class Profile extends Component<PageOwnProps, PageState> {
   toMyProductList = (productType, origin) => () => {
     Taro.navigateTo({
       url: `/pages/myProductList/index?productType=${productType}&origin=${origin}`,
-    })
-  }
-
-  toFeedbackPage = () => {
-    Taro.navigateTo({
-      url: '/pages/profile/feedback',
     })
   }
 
@@ -227,11 +221,13 @@ class Profile extends Component<PageOwnProps, PageState> {
             ></OperationItem>
           </View>
           <View className="feedback">
+            <AtButton className="feedback-btn" openType="feedback">
+            </AtButton>
             <OperationItem
               title='建议/反馈'
               icon='iconinfo'
               iconColor='#FE5155'
-              handleClick={this.toFeedbackPage}
+              handleClick={() => {}}
             ></OperationItem>
           </View>
         </View>

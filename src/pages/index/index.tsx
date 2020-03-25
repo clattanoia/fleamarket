@@ -108,12 +108,6 @@ class Index extends Component {
     }
   }
 
-  handleGotoPurchase(id): void {
-    Taro.navigateTo({
-      url: `/pages/detail/index?id=${id}&productType=${ProductType.PURCHASE}`,
-    })
-  }
-
   render() {
     const { isLoading, goods } = this.state
     return (

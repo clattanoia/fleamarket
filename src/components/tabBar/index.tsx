@@ -35,7 +35,7 @@ function TabBar(props: InProps) {
   let openPublishLayout = false  // 登录回调判断是跳转页面还是打开弹窗
 
   const gotoPage = () => {
-    Taro.redirectTo({
+    Taro.reLaunch({
       url: toUrl,
     })
   }

@@ -27,7 +27,7 @@ type PageState = {}
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface Profile {
+interface Contact {
   props: IProps;
 }
 
@@ -38,7 +38,7 @@ interface Profile {
     dispatch(deleteContact(contactId, userId))
   },
 }))
-class Profile extends Component {
+class Contact extends Component {
 
   config: Config = {
     navigationBarTitleText: '联系方式',
@@ -139,4 +139,4 @@ class Profile extends Component {
   }
 }
 
-export default Profile as ComponentClass<PageOwnProps, PageState>
+export default Contact as ComponentClass<PageOwnProps, PageState>

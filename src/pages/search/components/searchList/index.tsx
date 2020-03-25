@@ -41,7 +41,7 @@ function SeachListSection(props: InProps) {
   }, [currentProductType, setCurrentSelectInfoHandle])
 
   const cancleHandle = () => {
-    Taro.redirectTo({
+    Taro.reLaunch({
       url: '/pages/index/index',
     })
   }

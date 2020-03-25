@@ -63,7 +63,7 @@ function SeachSection(props: InProps) {
       onSetVal('showResult', true)
       return
     }
-    Taro.redirectTo({
+    Taro.reLaunch({
       url: '/pages/index/index',
     })
   }

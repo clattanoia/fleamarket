@@ -19,6 +19,9 @@ const MAX_PUBLISH_COUNT=10
 
 function TabBar(props: InProps) {
 
+  console.log('--------------TabBar-------------------------------')
+  console.log(Taro.getCurrentPages())
+
   const userInfo = useSelector((state: any) => {
     return state.userInfo
   })

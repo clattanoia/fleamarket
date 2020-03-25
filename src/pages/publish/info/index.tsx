@@ -112,7 +112,7 @@ function PublishInfo(props: InProps) {
                 value={detail}
                 onChange={handleChangeDetail}
                 maxLength={500}
-                placeholder='"二货"的详细信息，如：9 成新，可小刀'
+                placeholder='二货的详细信息，如：9 成新，可小刀'
                 height={260}
                 onBlur={showEdit(false)}
                 focus={showTextarea}

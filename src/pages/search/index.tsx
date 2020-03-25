@@ -32,13 +32,6 @@ type IProps = PageStateProps & PageDispatchProps
 interface Search {
   props: IProps;
 }
-const productTypes = [{
-  name: '出售',
-  id: ProductType.GOODS,
-}, {
-  name: '求购',
-  id: ProductType.PURCHASE,
-}]
 
 
 @connect(({ global }) => ({
@@ -53,6 +46,14 @@ class Search extends Component<{}, PageState> {
   config: Config = {
     navigationBarTitleText: '搜索',
   }
+
+  productTypes = [{
+    name: '出售',
+    id: ProductType.GOODS,
+  }, {
+    name: '求购',
+    id: ProductType.PURCHASE,
+  }]
 
   state = {
     hasFetchSearch: false,
@@ -151,7 +152,7 @@ class Search extends Component<{}, PageState> {
         {
           showResult ? (
             <ResultPage
-              productTypes={productTypes}
+              productTypes={this.productTypes}
               onSetVal={this.setStateValue}
               refreshData={this.refreshData}
               searchListResult={searchListResult}
@@ -161,7 +162,7 @@ class Search extends Component<{}, PageState> {
             />
           ) : (
             <SearchPage
-              productTypes={productTypes}
+              productTypes={this.productTypes}
               hasFetchSearch={hasFetchSearch}
               onSetVal={this.setStateValue}
               refreshData={this.refreshData}

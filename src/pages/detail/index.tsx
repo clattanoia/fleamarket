@@ -379,9 +379,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           <View className="footer_left">
             <View className="collect" onClick={this.collectHandle}>
               <View className={classNames({ 'active': isCollected })}>
-                <AtIcon value={isCollected ? 'star-2' : 'star'} size='20'></AtIcon>
+                <AtIcon value={isCollected ? 'star-2' : 'star'} size='24'></AtIcon>
               </View>
-              <Text>{isCollected ? '已收藏' : '收藏'}</Text>
             </View>
             <View className="share">
               <AtIcon value='share' size='24' color="#808080"></AtIcon>

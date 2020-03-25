@@ -1,8 +1,7 @@
 import { gql } from 'apollo-boost'
 
-export const goodsDetailQuery = gql`
-query($id: String!) {
-  detailInfo: goodsById(id: $id) {
+export const DetailFragment =  gql`
+  fragment DetailFragment on ProductInfo {
     id
     title
     price
@@ -21,36 +20,28 @@ query($id: String!) {
       id
       nickname
       avatarUrl
+      brief
       certification
-      }
     }
   }
+`
+
+export const goodsDetailQuery = gql`
+  query($id: String!) {
+    detailInfo: goodsById(id: $id) {
+      ...DetailFragment
+    }
+  }
+  ${DetailFragment}
 `
 
 export const purchaseDetailQuery = gql`
   query($id: String!) {
     detailInfo: purchaseById(id: $id) {
-      id
-      title
-      price
-      coverUrl
-      category
-      categoryName
-      description
-      coverUrl
-      status
-      createTime
-      updateTime
-      pictures
-      contacts
-      readCount
-      owner {
-        id
-        nickname
-        avatarUrl
-      }
+      ...DetailFragment
     }
   }
+  ${DetailFragment}
 `
 
 export const contactsQuery = gql`

@@ -326,7 +326,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }
     return {
       title: '二货集好物',
-      path: `/page/detail/index?id=${id}&productType=${productType}`,
+      path: `pages/detail/index?id=${id}&productType=${productType}`,
     }
   }
 
@@ -335,13 +335,18 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     return detail && detail.owner ? (
       <View className="detail">
         <View className="owner-container">
-          <Avatar
-            certificate={detail.owner.certification === CertifyEmail.CERTIFIED}
-            userId={detail.owner.id}
-            avatarUrl={detail.owner.avatarUrl}
-            avatarSize={80}
-          />
-          <Text className="nickname">{detail.owner.nickname}</Text>
+          <View className="owner-left">
+            <Avatar
+              certificate={detail.owner.certification === CertifyEmail.CERTIFIED}
+              userId={detail.owner.id}
+              avatarUrl={detail.owner.avatarUrl}
+              avatarSize={80}
+            />
+          </View>
+          <View className="owner-right">
+            <Text className="nickname">{detail.owner.nickname}</Text>
+            <View className="brief">{detail.owner.brief || ''}</View>
+          </View>
         </View>
         <View className="price-container">
           <Text className="unit">￥</Text>

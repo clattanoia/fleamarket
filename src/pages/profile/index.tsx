@@ -164,7 +164,7 @@ class Profile extends Component<PageOwnProps, PageState> {
           />
           <View className='header-right'>
             <Text className='name'>{this.props.userInfo.nickname}</Text>
-            <Text className='description'>{this.props.userInfo.brief || '这个人很懒，什么也没有留下~'}</Text>
+            <View className='description'>{this.props.userInfo.brief || '这个人很懒，什么也没有留下~'}</View>
           </View>
           <View className="header-icon">
             <AtIcon prefixClass='iconfont' value='iconright' size="40" color='#fff'></AtIcon>

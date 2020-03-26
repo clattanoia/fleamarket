@@ -65,8 +65,8 @@ class Search extends Component<{}, PageState> {
   }
 
   componentDidMount() {
-    const { productSearch } = this.props.global
-    if(productSearch.categoryId){
+    const { productSearch: { categoryId }} = this.props.global
+    if(categoryId){
       this.setState({
         hasFetchSearch: true,
         showResult: true,
@@ -75,6 +75,13 @@ class Search extends Component<{}, PageState> {
         this.fetchSearch()
       })
     }
+  }
+
+  componentWillUpdate() {
+    const { productSearch: { categoryId, categoryName }} = this.props.global
+    Taro.setNavigationBarTitle({
+      title: categoryId ? `${categoryName}列表` : '搜索',
+    })
   }
 
   componentWillUnmount() {

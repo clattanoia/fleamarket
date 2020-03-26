@@ -33,8 +33,8 @@ function CategorySection() {
     return null
   }
 
-  const gotoList = (id) => () => {
-    dispatch({ type: SET_PRODUCT_SEARCH, payload: { categoryId: id }})
+  const gotoList = (id, name) => () => {
+    dispatch({ type: SET_PRODUCT_SEARCH, payload: { categoryId: id, categoryName: name }})
     Taro.navigateTo({
       url: '/pages/search/index',
     })
@@ -57,7 +57,7 @@ function CategorySection() {
                 <View className={styles.categoryContent}>
                   {
                     currentCategories.map((category, index) =>
-                      <View className={styles.categoryItem} key={category.id} onClick={gotoList(category.id)}>
+                      <View className={styles.categoryItem} key={category.id} onClick={gotoList(category.id, category.name)}>
                         <CategoryItem category={category} color={colors[index]} width={width} />
                       </View>
                     )

@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   isOpenedAuthInfo: false,
   productSearch: {
     categoryId: '',
+    categoryName: '',
     currentProductType: ProductType.GOODS,
     title: '',
     orderBy: SearchOrderBy.RC,

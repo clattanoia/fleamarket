@@ -94,7 +94,7 @@ function ProductListItem(props: InProps) {
       </View>
       <AtModal
         isOpened={isOpened}
-        title='确认取消收藏该”二货“吗？'
+        title='确认取消收藏该“二”货吗？'
         cancelText='取消'
         confirmText='确认'
         onClose={handleClose}

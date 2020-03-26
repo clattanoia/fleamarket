@@ -78,6 +78,11 @@ class Search extends Component<{}, PageState> {
   }
 
   componentWillUpdate() {
+    const pages = Taro.getCurrentPages()
+    const currentPage = pages.pop()
+    if(currentPage && currentPage.route.indexOf('pages/search/index') === -1){
+      return
+    }
     const { productSearch: { categoryId, categoryName }} = this.props.global
     Taro.setNavigationBarTitle({
       title: categoryId ? `${categoryName}列表` : '搜索',

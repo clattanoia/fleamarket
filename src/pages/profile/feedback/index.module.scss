@@ -1,0 +1,24 @@
+@import "../../../styles/theme.scss";
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 20px 0;
+  justify-content: center;
+  .feedbackHeader{
+    width: 100%;
+    line-height: 40PX;
+    font-size: 16PX;
+    text-align: center;
+    border-bottom: 1PX solid $borderColor;
+    margin: 0 0 20px;
+  }
+  .feedbackTips{
+    text-align: center;
+    color: $fontGray;
+    margin: 0 0 20px;
+    font-size: 12PX;
+  }
+}

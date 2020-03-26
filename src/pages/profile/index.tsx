@@ -12,7 +12,7 @@ import CertifyModal from './cetification'
 import client from '../../graphql-client'
 import { profileInfoQuery } from '../../query/profile'
 import { CertifyEmail, ProductType, Origin } from '../../constants/enums'
-import { updateUserInfo } from '../../actions/userInfo'
+import { updateUserInfo, fetchUserInfo } from '../../actions/userInfo'
 
 import './index.scss'
 
@@ -30,6 +30,7 @@ type PageStateProps = {
 
 type PageDispatchProps = {
   updateMyUserInfo: (payload) => Function,
+  fetchUserInfo: () => Function,
 }
 
 type PageOwnProps = {}
@@ -47,6 +48,9 @@ interface Profile {
 }), (dispatch) => ({
   updateMyUserInfo(payload){
     dispatch(updateUserInfo(payload))
+  },
+  fetchUserInfo(){
+    dispatch(fetchUserInfo())
   },
 }))
 class Profile extends Component<PageOwnProps, PageState> {
@@ -73,7 +77,9 @@ class Profile extends Component<PageOwnProps, PageState> {
   }
 
   async componentDidMount() {
+    console.log('componentDidMount -> profile')
     this.getProfileInfo()
+    this.props.fetchUserInfo()
   }
 
   async componentDidShow() {

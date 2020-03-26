@@ -3,7 +3,7 @@ import { View, Image } from '@tarojs/components'
 import { ITouchEvent } from '@tarojs/components/types/common'
 
 import './index.scss'
-import certificateIcon from '../../assets/certificate-1.png'
+import certificateIcon from '../../assets/certification.png'
 
 interface InProps {
   userId: string;

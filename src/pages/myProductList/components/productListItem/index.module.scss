@@ -1,37 +1,41 @@
 @import "../../../../styles/theme.scss";
 
-.item {
-  padding: 20px;
-  display: flex;
-  flex-direction: row;
-  .cover {
-    width: 230px;
-    height: 230px;
-    border-radius: 20px;
-    margin-right: 20px;
+.itemWrapper {
+  position: relative;
+  .collectBtn {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
   }
+  .item {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    .cover {
+      width: 230px;
+      height: 230px;
+      border-radius: 20px;
+      margin-right: 20px;
+    }
 
-  .info {
-    flex: 1;
-    .price {
-      color: red;
-      .priceUnit {
-        font-size: 20px;
-      }
-      margin-bottom: 6px;
-      margin-top: 5px;
-    }
-    .readCount {
-      font-size: 24px;
-      color: $grey;
-    }
-    .operate{
-      display: flex;
-      flex-direction: row;
+    .info {
+      flex: 1;
       justify-content: space-between;
-      align-items: center;
+      .price {
+        color: red;
+        .priceUnit {
+          font-size: 20px;
+        }
+        margin-bottom: 6px;
+        margin-top: 5px;
+      }
+      .readCount {
+        font-size: 24px;
+        color: $grey;
+      }
     }
   }
 }
+
 
 

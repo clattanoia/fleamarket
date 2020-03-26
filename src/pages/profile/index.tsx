@@ -77,7 +77,6 @@ class Profile extends Component<PageOwnProps, PageState> {
   }
 
   async componentDidMount() {
-    console.log('componentDidMount -> profile')
     this.getProfileInfo()
     this.props.fetchUserInfo()
   }

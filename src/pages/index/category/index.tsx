@@ -36,7 +36,7 @@ function CategorySection() {
   const gotoList = (id, name) => () => {
     dispatch({ type: SET_PRODUCT_SEARCH, payload: { categoryId: id, categoryName: name }})
     Taro.navigateTo({
-      url: '/pages/search/index',
+      url: '/searchPages/index',
     })
   }
 

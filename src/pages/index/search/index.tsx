@@ -10,7 +10,7 @@ function SeachSection() {
 
   const goToSearch = () => {
     Taro.navigateTo({
-      url: '/pages/search/index',
+      url: '/searchPages/index',
     })
   }
   const onChange = () => {}

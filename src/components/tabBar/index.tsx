@@ -22,7 +22,7 @@ function TabBar(props: InProps) {
   const userInfo = useSelector((state: any) => {
     return state.userInfo
   })
-  const pageUrl = ['/pages/index/index', '/pages/publish/index', '/pages/profile/index']
+  const pageUrl = ['/pages/index/index', '/publishPages/index', '/pages/profile/index']
 
   const [isPublishLayoutOpen, setPublishLayoutOpen] = useState(false)
   const [isOpenedTel, setIsOpenedTel] = useState(false)

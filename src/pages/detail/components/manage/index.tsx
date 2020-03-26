@@ -78,7 +78,7 @@ class Manage extends Component<PageOwnProps, PageState> {
   edit = (event) => {
     this.props.onClose(event)
     Taro.navigateTo({
-      url: `/pages/publish/index?productType=${this.props.productType}&productId=${this.props.productId}`,
+      url: `/publishPages/index?productType=${this.props.productType}&productId=${this.props.productId}`,
     })
   }
 

@@ -26,9 +26,9 @@ class App extends Component {
     debug: false,
     pages: [
       'pages/index/index',
-      'pages/publish/index',
+      // 'pages/publish/index',
       'pages/detail/index',
-      'pages/search/index',
+      // 'pages/search/index',
 
       'pages/profile/index',
       'pages/profile/contact/index',
@@ -36,6 +36,20 @@ class App extends Component {
       'pages/profile/edit/index',
 
       'pages/myProductList/index',
+    ],
+    subPackages: [
+      {
+        root: 'searchPages',
+        pages: [
+          'index',
+        ],
+      },
+      {
+        root: 'publishPages',
+        pages: [
+          'index',
+        ],
+      },
     ],
     window: {
       backgroundTextStyle: 'light',

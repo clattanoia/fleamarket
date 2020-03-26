@@ -68,7 +68,7 @@ class Index extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '骚窝跳蚤平台',
+    navigationBarTitleText: '二货集',
   }
 
   state: State = {

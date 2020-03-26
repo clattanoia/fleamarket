@@ -1,6 +1,7 @@
 import Taro, { memo, useState } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtInput, AtTextarea }  from 'taro-ui'
+import { ProductType } from '../../../constants/enums'
 
 import './index.scss'
 
@@ -15,6 +16,7 @@ interface PublishInfo {
 interface InProps {
   onSetVal: (key, value) => void,
   publishInfo: PublishInfo,
+  productType: ProductType
 }
 
 function PublishInfo(props: InProps) {
@@ -23,6 +25,7 @@ function PublishInfo(props: InProps) {
   const [price, setPrice] = useState(props.publishInfo && props.publishInfo.price)
   const [detail, setDetail] = useState(props.publishInfo && props.publishInfo.detail)
   const [showTextarea, setShowTextarea] = useState(false)
+  const detailPlaceholder = `二货的详细信息，如：9 成新，可小刀${props.productType===ProductType.GOODS ? '，物品账单新' : ''}`
 
   Taro.useEffect(() => {
     setTitle(props.publishInfo.title)
@@ -112,7 +115,7 @@ function PublishInfo(props: InProps) {
                 value={detail}
                 onChange={handleChangeDetail}
                 maxLength={500}
-                placeholder='二货的详细信息，如：9 成新，可小刀'
+                placeholder={detailPlaceholder}
                 height={260}
                 onBlur={showEdit(false)}
                 focus={showTextarea}
@@ -126,7 +129,7 @@ function PublishInfo(props: InProps) {
                     </Text>
                   ) : (
                     <Text className="textarea--detail textarea--detail__placeholder">
-                      二货的详细信息，如：9 成新，可小刀
+                      {detailPlaceholder}
                     </Text>
                   )
                 }

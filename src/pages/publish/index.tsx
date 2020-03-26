@@ -362,11 +362,14 @@ class Publish extends Component {
         {this.state.isLoading ?
           <PublishPreload /> :
           <View>
-            <PublishInfo onSetVal={this.setStateValue} publishInfo={{
-              title: this.state.title,
-              price: this.state.price,
-              detail: this.state.detail,
-            }}
+            <PublishInfo
+              onSetVal={this.setStateValue}
+              publishInfo={{
+                title: this.state.title,
+                price: this.state.price,
+                detail: this.state.detail,
+              }}
+              productType={this.$router.params.productType}
             />
             <PublishImages
               onSetVal={this.setStateValue}

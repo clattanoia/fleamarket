@@ -41,14 +41,19 @@ function CetificationModal({ isOpened, onClose, onConfirm }: InProps) {
     }
     loading = true
     try {
+      Taro.showLoading({
+        title: '发送中...',
+      })
       await client.mutate({
         mutation: certificationApplyQuery,
         variables: { email: email.trim() + suffix },
       })
+      Taro.hideLoading()
       await showToast('success')
       setEmail('')
       onConfirm()
     } catch (e) {
+      Taro.hideLoading()
       await showToast('error')
     } finally {
       loading = false

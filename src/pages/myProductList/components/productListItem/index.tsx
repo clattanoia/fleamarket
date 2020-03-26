@@ -77,9 +77,9 @@ function ProductListItem(props: InProps) {
   }
 
   return (
-    <View>
+    <View onClick={props.onClick}>
       <View className={styles.item}>
-        <Image className={styles.cover} mode="aspectFill" src={item.coverUrl as string || defaultProductCover}  onClick={props.onClick} />
+        <Image className={styles.cover} mode="aspectFill" src={item.coverUrl as string || defaultProductCover} />
         <View className={styles.info}>
           <ExtendedContainer maxLine={2} content={(item.title as string)} showSwitch={false} />
           <Tag tagName={tagName} />
@@ -87,7 +87,7 @@ function ProductListItem(props: InProps) {
           <View className={styles.operate}>
             <View className={styles.readCount}>浏览次数：{item.readCount}</View>
             <View>
-              {this.props.origin === Origin.COLLECT && <AtButton size="small" onClick={cancleCollect}>取消收藏</AtButton>}
+              {this.props.origin === Origin.COLLECT && <View onClick={cancleCollect}><AtButton size="small">取消收藏</AtButton></View>}
             </View>
           </View>
         </View>

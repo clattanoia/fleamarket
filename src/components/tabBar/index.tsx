@@ -15,7 +15,8 @@ interface InProps {
   current: number
 }
 
-const MAX_PUBLISH_COUNT=10
+const MAX_PUBLISH_COUNT=5
+const MAX_CERTIFIED_PUBLISH_COUNT=20
 
 function TabBar(props: InProps) {
 
@@ -27,6 +28,7 @@ function TabBar(props: InProps) {
   const [isPublishLayoutOpen, setPublishLayoutOpen] = useState(false)
   const [isOpenedTel, setIsOpenedTel] = useState(false)
   const [showToast, setShowToast] = useState(false)
+  const [toastText, setToastText] = useState('')
 
   let toUrl = ''
   let openPublishLayout = false  // 登录回调判断是跳转页面还是打开弹窗
@@ -38,17 +40,23 @@ function TabBar(props: InProps) {
   }
 
   const authLoginCallback = async() => {
-    const { id, certification } = userInfo
-    if(certification === CertifyEmail.CERTIFIED){
-      setPublishLayoutOpen(true)
-      return
-    }
+    const { certification } = userInfo
+    // if(certification === CertifyEmail.CERTIFIED){
+    //   setPublishLayoutOpen(true)
+    //   return
+    // }
     const { data: { profileInfo }} = await client.query({
       query: profileInfoQuery,
-      variables: { userId: id },
     })
     const { salesCount, purchaseCount } = profileInfo
-    if(salesCount + purchaseCount >= MAX_PUBLISH_COUNT){
+    let maxCount = MAX_PUBLISH_COUNT
+    let toastText = `您的发布已达到${MAX_PUBLISH_COUNT}条。认证后，才可以发布更多！`
+    if(certification === CertifyEmail.CERTIFIED){
+      maxCount = MAX_CERTIFIED_PUBLISH_COUNT
+      toastText = `正常求购/出售的二货数量不能超过${MAX_CERTIFIED_PUBLISH_COUNT}条！`
+    }
+    if(salesCount + purchaseCount >= maxCount){
+      setToastText(toastText)
       setShowToast(true)
     } else {
       setPublishLayoutOpen(true)
@@ -93,6 +101,7 @@ function TabBar(props: InProps) {
 
   const clickAuthTelBtn = () => {
     setIsOpenedTel(false)
+    setToastText('')
   }
 
   const handlePublishItemClick = (key) => {
@@ -112,6 +121,7 @@ function TabBar(props: InProps) {
 
   const handleCloseToast = () => {
     setShowToast(false)
+
   }
 
   return (
@@ -156,7 +166,7 @@ function TabBar(props: InProps) {
 
       <AtToast
         isOpened={showToast}
-        text={`您的发布已达到${MAX_PUBLISH_COUNT}条。认证后，才可以发布更多！`}
+        text={toastText}
         onClose={handleCloseToast}
         hasMask
       >

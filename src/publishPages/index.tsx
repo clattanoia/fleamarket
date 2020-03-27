@@ -39,6 +39,7 @@ const ERROR_MESSAGES = {
   invalidUser: '用户已被禁用',
   images: '最多上传10张图片（JPG/PNG）,图片不能大于10M',
   uploadError: '图片上传失败',
+  auditImageLimited: '图片上传已达上限，请邮箱认证或稍后再试',
 }
 
 const TITLE_TEXT = {
@@ -188,7 +189,7 @@ class Publish extends Component {
 
     return Promise.all(this.getUploadPromises(qiniuToken)).then((res: Array<Publish.InPickerImageFiles>) => {
       return Promise.resolve(res)
-    }, () => Promise.reject('upload error'))
+    }, (e) => Promise.reject(e || 'upload error'))
   }
 
   showErrorMessage = (name: string) => {
@@ -273,7 +274,7 @@ class Publish extends Component {
         }
       }
     } catch (e) {
-      this.showErrorMessage('uploadError')
+      this.showErrorMessage(e.message && e.message.indexOf('audit_image_limited') > -1 ? 'auditImageLimited' :'uploadError')
       this.setLoading(false)
       return
     }

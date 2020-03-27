@@ -87,7 +87,7 @@ function ProfileEdit() {
         } catch (e) {
           Taro.hideLoading()
           Taro.showToast({
-            title: '上传失败',
+            title: e.message && e.message.indexOf('audit_image_limited') > -1 ? '图片上传已达上限，请邮箱认证或稍后再试' : '上传失败',
             icon: 'none',
             duration: 3000,
           })

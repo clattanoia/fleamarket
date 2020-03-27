@@ -234,7 +234,13 @@ const SUGGESTION_RESULT = {
 }
 
 const auditImg = async(url) => {
-  const { data } = await client.query({ query: auditImageTokenQuery, variables: { imgUrl: url }})
+  let data
+  try {
+    const res = await client.query({ query: auditImageTokenQuery, variables: { imgUrl: url }})
+    data = res.data
+  } catch (e) {
+    return Promise.reject(e)
+  }
   const token = data.auditImageToken.token
   const reqBody = `{"data": {"uri": "${url}"},"params": {"scenes": ["pulp","terror","politician"]}}`
   const auditResult: Publish.InImageAuditResult = await new Promise((resolve, reject) => {
@@ -291,7 +297,6 @@ export const uploadQiniu = async(filePath: string, qiniuToken: string, imgPath: 
           const result = { auditResult, qiniuUrl: res.domainUrl }
           return resolve(result)
         } catch (err) {
-          console.log(err)
           return reject(err)
         }
       },

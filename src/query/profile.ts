@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost'
 
 export const profileInfoQuery = gql`
-  query {
-    profileInfo {
+  query profileInfoQuery($productStatus: String){
+    profileInfo(productStatus:$productStatus ) {
       salesCount
       purchaseCount
       salesCollectCount

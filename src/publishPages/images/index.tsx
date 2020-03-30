@@ -66,7 +66,6 @@ function PublishImages(props: InProps) {
         const { path } = file
         try {
           const isWHRight = await getImgWidthHeight(path)
-          console.log(isWHRight)
           item.isWHRight = isWHRight
           return resolve(item)
         } catch (e) {

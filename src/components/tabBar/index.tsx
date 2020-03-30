@@ -5,9 +5,9 @@ import { useSelector } from '@tarojs/redux'
 
 import AuthInfoLayout from '../authInfo'
 import { authLogin } from '../../utils/auth'
-import { ProductType, CertifyEmail, ProductStatus } from '../../constants/enums'
+import { ProductType, CertifyEmail } from '../../constants/enums'
 import client from '../../graphql-client'
-import { profileInfoQuery } from '../../query/profile'
+import { getForSaleProductCountQuery } from '../../query/count'
 
 import './index.scss'
 
@@ -43,18 +43,15 @@ function TabBar(props: InProps) {
     const { certification } = userInfo
     let maxCount = MAX_PUBLISH_COUNT
     let toastText = `您的发布已达到${MAX_PUBLISH_COUNT}条。认证后，才可以发布更多！`
-    const queryData = {}
     if(certification === CertifyEmail.CERTIFIED){
       maxCount = MAX_CERTIFIED_PUBLISH_COUNT
       toastText = `正常求购/出售的二货数量不能超过${MAX_CERTIFIED_PUBLISH_COUNT}条！`
-      queryData['productStatus'] = ProductStatus.FOR_SALE
     }
-    const { data: { profileInfo }} = await client.query({
-      query: profileInfoQuery,
-      variables: queryData,
+    const { data: { getForSaleProductCount }} = await client.query({
+      query: getForSaleProductCountQuery,
     })
-    const { salesCount, purchaseCount } = profileInfo
-    if(salesCount + purchaseCount >= maxCount){
+    const { result } = getForSaleProductCount
+    if(result >= maxCount){
       setToastText(toastText)
       setShowToast(true)
     } else {

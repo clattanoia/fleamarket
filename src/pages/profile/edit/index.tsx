@@ -13,6 +13,9 @@ import { getToken, uploadQiniu } from '../../../utils/qiniuUploader'
 
 import styles from './index.module.scss'
 
+const MaxImageSize = 2 * 1024 * 1024
+const ImageSuffix = ['jpg', 'png', 'jpeg']
+
 function ProfileEdit() {
   const dispatch = useDispatch()
   const userInfo = useSelector((state: any) => {
@@ -59,14 +62,31 @@ function ProfileEdit() {
     }
   }
 
+  const validateFile = (file): boolean => {
+    const { size, path } = file
+    const isOversize = size > MaxImageSize
+    const urlArr = path.split('.')
+    const suffix = urlArr[urlArr.length-1].toLowerCase()
+    const isRightType = ImageSuffix.includes(suffix)
+    return !isOversize && isRightType
+  }
+
   const handleAvatarClick = () => {
     chooseImage({
       count: 1,
       success: async function(res) {
+        console.log(res)
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        const tempFilePaths = res.tempFilePaths
+        const { tempFilePaths, tempFiles } = res
         const token = await getToken()
         const path = 'user/avatar/'
+        if(!validateFile(tempFiles[0])) {
+          return Taro.showToast({
+            title: '请上传 2MB 以内格式为jpg、png或jpeg的图片',
+            icon: 'none',
+            duration: 3000,
+          })
+        }
         try {
           Taro.showLoading({
             title: '上传中...',

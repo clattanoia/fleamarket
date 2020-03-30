@@ -27,11 +27,15 @@ function Avatar({
     width: `${avatarSize}rpx`,
     height: `${avatarSize}rpx`,
   }
+  let avatar = avatarUrl
+  if(avatar.indexOf('qiniu.2hj.com.cn') > -1) {
+    avatar = avatar + '?imageMogr2/thumbnail/120x120'
+  }
   return (
     <View className="avatar" onClick={onClick} data-id={userId} style={style}>
       <Image
         style={style}
-        className="image" src={avatarUrl}
+        className="image" src={avatar}
       />
       {
         certificate ?

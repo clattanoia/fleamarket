@@ -16,10 +16,14 @@ interface InProps {
 function ProductItem(props: InProps) {
   const { productData = { owner: {}}} = props
 
+  const coverUrl = (productData.coverUrl || '').indexOf('qiniu.2hj.com.cn') > -1 ?
+    `${productData.coverUrl}?imageMogr2/thumbnail/300x300`
+    : productData.coverUrl
+
   return (
     <View className={styles.productItem}>
       <View className={styles.goodsImage}>
-        <Image className={styles.goodsImg} mode="widthFix" src={productData.coverUrl || defaultProductCover} />
+        <Image className={styles.goodsImg} mode="widthFix" src={coverUrl || defaultProductCover} />
       </View>
       <View className={styles.goodsName}>
         <ExtendedContainer content={productData.title} maxLine={2} showSwitch={false} />

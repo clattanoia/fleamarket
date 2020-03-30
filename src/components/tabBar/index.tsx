@@ -45,7 +45,7 @@ function TabBar(props: InProps) {
     let toastText = `您的发布已达到${MAX_PUBLISH_COUNT}条。认证后，才可以发布更多！`
     if(certification === CertifyEmail.CERTIFIED){
       maxCount = MAX_CERTIFIED_PUBLISH_COUNT
-      toastText = `正常求购/出售的二货数量不能超过${MAX_CERTIFIED_PUBLISH_COUNT}条！`
+      toastText = `正在求购/出售中的二货数量不能超过${MAX_CERTIFIED_PUBLISH_COUNT}条！`
     }
     const { data: { getForSaleProductCount }} = await client.query({
       query: getForSaleProductCountQuery,

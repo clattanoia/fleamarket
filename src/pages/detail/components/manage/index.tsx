@@ -113,6 +113,17 @@ class Manage extends Component<PageOwnProps, PageState> {
       })
       this.props.onRefresh(event)
     } catch (error) {
+      const errorInfo = error.message
+      if(errorInfo.indexOf('412') > -1) {
+        const msg = errorInfo.replace('Network error: ', '')
+        const msgError = JSON.parse(msg).error
+        this.setState({
+          isToastOpened: true,
+          text: msgError,
+          status: ToastStatus.ERROR,
+        })
+        return
+      }
       this.setState({
         isToastOpened: true,
         text: `${type}失败`,

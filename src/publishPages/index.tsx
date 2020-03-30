@@ -21,6 +21,7 @@ import {
 } from '../query/publish'
 import { ProductType, AuditImageStatus } from '../constants/enums'
 import { InContact } from '../interfaces/contact'
+import { ImageMaxWidthHeight } from '../constants/publish'
 import { goodsDetailQuery, purchaseDetailQuery } from '../query/detail'
 
 import './index.scss'
@@ -37,7 +38,7 @@ const ERROR_MESSAGES = {
   content_risky: '发布内容包含敏感信息，请修改后重新发布',
   systemError: '服务异常',
   invalidUser: '用户已被禁用',
-  images: '最多上传10张图片（JPG/PNG）,图片不能大于10M',
+  images: `最多上传10张图片（JPG/PNG）,图片不能大于10M,图片长宽均不能超过${ImageMaxWidthHeight}PX`,
   uploadError: '图片上传失败',
   auditImageLimited: '图片上传已达上限，请邮箱认证或稍后再试',
 }
@@ -332,6 +333,7 @@ class Publish extends Component {
 
   handleError(e) {
     let error = 'systemError'
+
     if(e.message.indexOf('400') > -1) {
       if(e.message.indexOf('content_risky') > -1) {
         error = 'content_risky'
@@ -340,6 +342,15 @@ class Publish extends Component {
       }
     } else if(e.message.indexOf('403') > -1) {
       error = 'invalidUser'
+    } else if(e.message.indexOf('412') > -1) {
+      const msg = e.message.replace('Network error: ', '')
+      const msgError = JSON.parse(msg).error
+      this.setState({
+        showToast: true,
+        toastText: msgError,
+        toastStatus: 'error',
+      })
+      return
     }
     this.showErrorMessage(error)
   }

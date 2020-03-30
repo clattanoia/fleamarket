@@ -43,6 +43,9 @@ const client = new ApolloClient({
       throw error
     }
   },
+  onError: error => {
+    console.log(error)
+  },
 })
 
 client.defaultOptions = {

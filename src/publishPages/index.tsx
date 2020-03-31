@@ -126,6 +126,24 @@ class Publish extends Component {
     // console.log(this.$router.params)
   }
 
+  componentDidMount(): void {
+    setTimeout(() =>  {
+      if(this.props.userInfo.contacts.length === 0) {
+        Taro.showModal({
+          title: '完善联系方式',
+          content: '尚未设置联系方式，完善联系方式才能发布，点击确定去完善',
+        })
+          .then(res => {
+            if(res.confirm) {
+              return Taro.navigateTo({
+                url: '/pages/profile/contact/index',
+              })
+            }
+          })
+      }
+    }, 100)
+  }
+
   fetchGoodsDetail = async() => {
     const { productType } = this.$router.params
     try {

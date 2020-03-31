@@ -1,10 +1,20 @@
 import Taro, { memo } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
+
 import styles from './index.module.scss'
 
 
-
 function Feedback() {
+
+  const getPaste = () => {
+    Taro.setClipboardData({
+      data: 'https://jinshuju.net/f/xcpEai',
+      success(res) {
+        console.log(res)
+      },
+    })
+  }
 
   return (
     <View className={styles.feedback}>
@@ -12,11 +22,16 @@ function Feedback() {
         反馈/建议链接
       </View>
       <View className={styles.feedbackTips}>
-        由于小程序限制，请复制下面的链接，在浏览器打开
+        由于小程序限制，请复制下面的按钮获取连接，在浏览器打开
       </View>
-      <View>
-        {/* <Navigator url="https://jinshuju.net/f/xcpEai">链接</Navigator> */}
+      {/* <View>
         <Text selectable>https://jinshuju.net/f/xcpEai</Text>
+      </View> */}
+      <View>
+        <AtButton
+          type="primary"
+          onClick={getPaste}
+        >获取链接</AtButton>
       </View>
     </View>
   )

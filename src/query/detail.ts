@@ -16,6 +16,7 @@ export const DetailFragment =  gql`
     pictures
     contacts
     readCount
+    agreeExchange
     owner {
       id
       nickname

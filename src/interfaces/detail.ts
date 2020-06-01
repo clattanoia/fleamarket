@@ -31,4 +31,5 @@ export interface ProductInfoDetail {
   pictures?: string[];
   contacts?: string[];
   readCount: number;
+  agreeExchange?: boolean,
 }

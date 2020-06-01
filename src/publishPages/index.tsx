@@ -8,6 +8,7 @@ import TabBar from '../components/tabBar'
 import PublishInfo from './info'
 import Category from './category'
 import Contact from './contact'
+import Exchange from './exchange'
 import PublishImages from './images'
 import PublishPreload from './preload'
 
@@ -79,6 +80,7 @@ type PageState = {
   imagesUrls: Array<Publish.InPickerImageFiles>,
   selectedCategory: string,
   selectedContacts: Array<string>,
+  isAgreeExchange: boolean,
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -107,6 +109,7 @@ class Publish extends Component {
     imagesUrls: [],
     selectedCategory: '',
     selectedContacts: [],
+    isAgreeExchange: true,
   }
 
   config: Config = {
@@ -142,6 +145,10 @@ class Publish extends Component {
           })
       }
     }, 100)
+
+    if(this.$router.params.productType !== ProductType.GOODS) {
+      this.setState({ isAgreeExchange: false })
+    }
   }
 
   fetchGoodsDetail = async() => {
@@ -307,6 +314,7 @@ class Publish extends Component {
       coverUrl: uploadedImages.length ? uploadedImages[0].qiniuUrl : null,
       pictures: uploadedImages.map(item => item.qiniuUrl),
       contacts: this.state.selectedContacts,
+      isAgreeExchange: this.state.isAgreeExchange,
     }
 
     const { productType, productId } = this.state
@@ -415,6 +423,12 @@ class Publish extends Component {
               selectedContacts={this.state.selectedContacts}
               onSetVal={this.setStateValue}
             />
+            {
+              this.$router.params.productType === ProductType.GOODS &&
+              <Exchange
+                onSetVal={this.setStateValue}
+              />
+            }
             <View className="form_btn">
               <AtButton
                 type="primary"

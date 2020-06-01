@@ -80,7 +80,7 @@ type PageState = {
   imagesUrls: Array<Publish.InPickerImageFiles>,
   selectedCategory: string,
   selectedContacts: Array<string>,
-  isAgreeExchange: boolean,
+  agreeExchange: boolean,
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -109,7 +109,7 @@ class Publish extends Component {
     imagesUrls: [],
     selectedCategory: '',
     selectedContacts: [],
-    isAgreeExchange: true,
+    agreeExchange: true,
   }
 
   config: Config = {
@@ -147,7 +147,7 @@ class Publish extends Component {
     }, 100)
 
     if(this.$router.params.productType !== ProductType.GOODS) {
-      this.setState({ isAgreeExchange: false })
+      this.setState({ agreeExchange: false })
     }
   }
 
@@ -314,7 +314,7 @@ class Publish extends Component {
       coverUrl: uploadedImages.length ? uploadedImages[0].qiniuUrl : null,
       pictures: uploadedImages.map(item => item.qiniuUrl),
       contacts: this.state.selectedContacts,
-      isAgreeExchange: this.state.isAgreeExchange,
+      agreeExchange: this.state.agreeExchange,
     }
 
     const { productType, productId } = this.state

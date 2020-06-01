@@ -20,7 +20,7 @@ class Exchange extends Component<PageOwnProps, PageState> {
 
   onSwitch = (value) => {
     this.setState({ isSelected: value })
-    this.props.onSetVal('isAgreeExchange', value)
+    this.props.onSetVal('agreeExchange', value)
   }
 
   render() {

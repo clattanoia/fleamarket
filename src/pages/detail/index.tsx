@@ -12,6 +12,7 @@ import DetailPreload from './components/detailPreload'
 import AuthInfoLayout from '../../components/authInfo'
 import Contact from './components/contact'
 import Manage from './components/manage'
+import DetailNote from './components/note'
 
 import { ProductInfoDetail, User } from '../../interfaces/detail'
 import {
@@ -373,6 +374,9 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
                 ? (detail.pictures as string[]).map(pic => (<Image key={pic} className="picture" mode="widthFix" src={pic} />))
                 : null
             }
+          </View>
+          <View className="note">
+            <DetailNote />
           </View>
         </View>
         <View className="footer">

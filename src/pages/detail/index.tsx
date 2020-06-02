@@ -216,7 +216,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         })
       }
     } else {
-      authLogin({ callback: this.showContact })
+      authLogin({ callback: this.showExchange })
     }
   }
 

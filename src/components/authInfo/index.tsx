@@ -8,7 +8,7 @@ import { SET_AUTH_INFO } from '../../constants/actionTypes'
 import './index.scss'
 
 interface InProps {
-  authCallback: () => void
+  authCallback?: () => void
 }
 
 

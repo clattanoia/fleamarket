@@ -92,8 +92,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }
   }
 
-  isConcatAuthCallback = true //判断是 获取联系 or 收藏 的登录回调
-
+  authCallback?: () => void
+  
   componentWillMount(): void {
     const { productType, id } = this.$router.params
     this.setState({ productType: productType as ProductType, id })
@@ -189,7 +189,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   showContact = async(): Promise<void> => {
-    this.isConcatAuthCallback = true
+    this.authCallback = this.concatcAuthCallback
     if(Taro.getStorageSync('token')) {
       const contacts = await this.getContacts()
       this.setState({
@@ -333,7 +333,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   collectHandle = () => {
-    this.isConcatAuthCallback = false
+    this.authCallback = this.collectAuthCallback
     if(Taro.getStorageSync('token')) {
       const isOwner = this.isOwnProduct()
       if(isOwner) {
@@ -356,14 +356,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   collectAuthCallback = async() => {
     await this.getIsCollected()
     this.collectHandle()
-  }
-
-  authCallback = () => {
-    if(this.isConcatAuthCallback) {
-      this.concatcAuthCallback()
-    } else {
-      this.collectAuthCallback()
-    }
   }
 
   handleCloseToast = () => {

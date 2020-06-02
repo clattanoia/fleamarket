@@ -3,7 +3,9 @@ import ApolloClient from 'apollo-boost'
 import { authLogin } from './utils/auth'
 
 const client = new ApolloClient({
-  uri: 'https://dev.2hj.com.cn/graphql',
+  // uri: "https://dev.2hj.com.cn/graphql",
+  uri: 'http://localhost:3000/graphql',
+  // uri: 'https://2hj.com.cn/graphql',
   fetch: async(url, options) => {
     const { headers } = options || {
       headers: {},
@@ -17,8 +19,10 @@ const client = new ApolloClient({
         header: { ...headers, authorization: token },
       })
       const { errors } = data
-      const clientStasusCode = errors ? errors[0].message.statusCode : statusCode
-      if( clientStasusCode === 401){
+      const clientStasusCode = errors
+        ? errors[0].message.statusCode
+        : statusCode
+      if(clientStasusCode === 401) {
         Taro.removeStorage({
           key: 'token',
           success: function() {
@@ -28,7 +32,9 @@ const client = new ApolloClient({
       }
 
       if(clientStasusCode !== 200) {
-        throw new Error(JSON.stringify(errors[0].message ? errors[0].message : errors[0]))
+        throw new Error(
+          JSON.stringify(errors[0].message ? errors[0].message : errors[0])
+        )
       }
 
       return {

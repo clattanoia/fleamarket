@@ -1,57 +1,61 @@
-import Taro, { Component, Config } from '@tarojs/taro'
-import { Image, Text, View } from '@tarojs/components'
-import { AtButton, AtIcon, AtToast } from 'taro-ui'
-import { ComponentClass } from 'react'
+import { Block, Image, Text, View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
+import Taro, { Component, Config } from '@tarojs/taro'
 import classNames from 'classnames'
-
-import Avatar from '../../components/avatar'
-import Tag from '../../components/tag'
-import ExtendedContainer from '../../components/extendedContainer'
-import DetailPreload from './components/detailPreload'
+import { ComponentClass } from 'react'
+import { AtButton, AtIcon, AtToast } from 'taro-ui'
+import { updateListData } from '../../actions/myProductList'
 import AuthInfoLayout from '../../components/authInfo'
-import Contact from './components/contact'
-import Manage from './components/manage'
-import DetailNote from './components/note'
-
+import Avatar from '../../components/avatar'
+import ExtendedContainer from '../../components/extendedContainer'
+import Tag from '../../components/tag'
+import { CertifyEmail, ProductType, Status } from '../../constants/enums'
+import client from '../../graphql-client'
+import { InContact } from '../../interfaces/contact'
 import { ProductInfoDetail, User } from '../../interfaces/detail'
 import {
+  collectedQuery,
+  collectMutation,
+  unCollectMutation,
+} from '../../query/collect'
+import {
   contactsQuery,
+  exchangeableGoodsQuery,
   goodsDetailQuery,
-  purchaseDetailQuery,
   increaseGoodsReadCount,
   increasePurchaseReadCount,
+  purchaseDetailQuery,
 } from '../../query/detail'
-import { collectedQuery, collectMutation, unCollectMutation } from '../../query/collect'
-
-import client from '../../graphql-client'
-import { ProductType, Status, CertifyEmail } from '../../constants/enums'
-import { InContact } from '../../interfaces/contact'
 import { authLogin } from '../../utils/auth'
-import { updateListData } from '../../actions/myProductList'
-
+import Contact from './components/contact'
+import DetailPreload from './components/detailPreload'
+import ExchangeableGoods from './components/exchangeableGoods'
+import Manage from './components/manage'
+import DetailNote from './components/note'
 import './index.scss'
 
 type PageStateProps = {
-  userId: string
+  userId: string;
 }
 
 type PageDispatchProps = {
-  updateMyProductList: (payload) => Function,
+  updateMyProductList: (payload) => Function;
 }
 
 type PageOwnProps = {}
 
 type PageState = {
-  id: string | null
-  productType: ProductType
-  detail: ProductInfoDetail
-  isOpen: boolean
-  isOpened: boolean
-  contacts: InContact[]
-  isCollected: boolean
-  toastText: string
-  isToastOpened: boolean
+  id: string | null;
+  productType: ProductType;
+  detail: ProductInfoDetail;
+  isOpen: boolean;
+  isOpened: boolean;
+  exchangeableGoodsModalVisible: boolean;
+  contacts: InContact[];
+  exchangeableGoods: ProductInfoDetail[];
+  isCollected: boolean;
+  toastText: string;
+  isToastOpened: boolean;
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -60,13 +64,16 @@ interface ProductDetail {
   props: IProps;
 }
 
-@connect(({ userInfo }) => ({
-  userId: userInfo.id,
-}), dispatch => ({
-  updateMyProductList(payload) {
-    dispatch(updateListData(payload))
-  },
-}))
+@connect(
+  ({ userInfo }) => ({
+    userId: userInfo.id,
+  }),
+  dispatch => ({
+    updateMyProductList(payload) {
+      dispatch(updateListData(payload))
+    },
+  })
+)
 class ProductDetail extends Component<PageOwnProps, PageState> {
   constructor(props) {
     super(props)
@@ -77,13 +84,15 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       isOpen: false,
       isOpened: false,
       contacts: [],
+      exchangeableGoods: [],
+      exchangeableGoodsModalVisible: false,
       isCollected: false,
       toastText: '',
       isToastOpened: false,
     }
   }
 
-  isConcatAuthCallback = true  //判断是 获取联系 or 收藏 的登录回调
+  isConcatAuthCallback = true //判断是 获取联系 or 收藏 的登录回调
 
   componentWillMount(): void {
     const { productType, id } = this.$router.params
@@ -108,7 +117,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     const { userId } = this.props
     const isOwner = this.isOwnProduct()
 
-    if(!userId || isOwner){
+    if(!userId || isOwner) {
       return
     }
     const collectInput = {
@@ -126,15 +135,23 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
 
   fetchProductDetail = async(): Promise<ProductInfoDetail> => {
     const { id, productType } = this.state
-    const { data: { detailInfo }} = await client.query({
-      query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
+    const {
+      data: { detailInfo },
+    } = await client.query({
+      query:
+        productType === ProductType.GOODS
+          ? goodsDetailQuery
+          : purchaseDetailQuery,
       variables: { id },
     })
-    this.setState({
-      detail: detailInfo,
-    }, () => {
-      this.getIsCollected()
-    })
+    this.setState(
+      {
+        detail: detailInfo,
+      },
+      () => {
+        this.getIsCollected()
+      }
+    )
 
     this.props.updateMyProductList({
       id: this.state.id,
@@ -152,7 +169,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   increaseReadCount = async() => {
     const { id, productType } = this.state
     await client.query({
-      query: productType === ProductType.GOODS ? increaseGoodsReadCount : increasePurchaseReadCount,
+      query:
+        productType === ProductType.GOODS
+          ? increaseGoodsReadCount
+          : increasePurchaseReadCount,
       variables: { id },
     })
     this.props.updateMyProductList({
@@ -181,6 +201,25 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }
   }
 
+  showExchange = async() => {
+    if(Taro.getStorageSync('token')) {
+      const goods = await this.getExchangeableGoods()
+      if(goods.length) {
+        this.setState({
+          exchangeableGoods: goods,
+          exchangeableGoodsModalVisible: true,
+        })
+      } else {
+        this.setState({
+          toastText: '您当前没有可以易货的二货',
+          isToastOpened: true,
+        })
+      }
+    } else {
+      authLogin({ callback: this.showContact })
+    }
+  }
+
   showManage = (): void => {
     this.setState({
       isOpened: true,
@@ -203,8 +242,23 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     const { owner, contacts } = this.state.detail
     if(!contacts || !contacts.length) return []
     try {
-      const { data } = await client.query({ query: contactsQuery, variables: { userId: (owner as User).id, ids: contacts }})
+      const { data } = await client.query({
+        query: contactsQuery,
+        variables: { userId: (owner as User).id, ids: contacts },
+      })
       return data.contacts
+    } catch (error) {
+      throw error
+    }
+  }
+
+  getExchangeableGoods = async(): Promise<ProductInfoDetail[]> => {
+    try {
+      const { data } = await client.query({
+        query: exchangeableGoodsQuery,
+        variables: {},
+      })
+      return data.exchangeableGoods
     } catch (error) {
       throw error
     }
@@ -267,7 +321,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         isToastOpened: true,
         isCollected: !isCollected,
       })
-    } catch (err){
+    } catch (err) {
       console.log(err)
       this.setState({
         toastText: '操作失败，请稍后重试',
@@ -282,7 +336,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     this.isConcatAuthCallback = false
     if(Taro.getStorageSync('token')) {
       const isOwner = this.isOwnProduct()
-      if(isOwner){
+      if(isOwner) {
         this.setState({
           toastText: '不能收藏自己的"二货"哦～',
           isToastOpened: true,
@@ -305,7 +359,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   authCallback = () => {
-    if(this.isConcatAuthCallback){
+    if(this.isConcatAuthCallback) {
       this.concatcAuthCallback()
     } else {
       this.collectAuthCallback()
@@ -319,7 +373,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     })
   }
 
-  onShareAppMessage = (res) => {
+  onShareAppMessage = res => {
     const { productType, id } = this.state
     if(res.from === 'button') {
       // 来自页面内转发按钮
@@ -332,13 +386,21 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   render() {
-    const { detail, productType, isCollected, toastText, isToastOpened } = this.state
+    const {
+      detail,
+      productType,
+      isCollected,
+      toastText,
+      isToastOpened,
+    } = this.state
     return detail && detail.owner ? (
       <View className="detail">
         <View className="owner-container">
           <View className="owner-left">
             <Avatar
-              certificate={detail.owner.certification === CertifyEmail.CERTIFIED}
+              certificate={
+                detail.owner.certification === CertifyEmail.CERTIFIED
+              }
               userId={detail.owner.id}
               avatarUrl={detail.owner.avatarUrl}
               avatarSize={80}
@@ -351,29 +413,32 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         </View>
         <View className="price-container">
           <Text className="unit">￥</Text>
-          <Text className="price">
-            {(detail.price as number)}
-          </Text>
+          <Text className="price">{detail.price!}</Text>
         </View>
         <View className="detial-container">
           <View className="label">
             <Text>商品详情</Text>
-            { this.renderReadCount() }
+            {this.renderReadCount()}
           </View>
           <View className="status-tags">
-            <Tag tagName={this.genProductType((productType as ProductType))} />
-            { this.renderSaleStatus() }
+            <Tag tagName={this.genProductType(productType as ProductType)} />
+            {this.renderSaleStatus()}
           </View>
-          <View className="title">{(detail.title as string)}</View>
+          <View className="title">{detail.title!}</View>
           <View className="description">
-            <ExtendedContainer maxLine={5} content={(detail.description as string)} />
+            <ExtendedContainer maxLine={5} content={detail.description!} />
           </View>
           <View className="pictures">
-            {
-              (detail.pictures as string[]).length > 0
-                ? (detail.pictures as string[]).map(pic => (<Image key={pic} className="picture" mode="widthFix" src={pic} />))
-                : null
-            }
+            {(detail.pictures as string[]).length > 0
+              ? (detail.pictures as string[]).map(pic => (
+                <Image
+                  key={pic}
+                  className="picture"
+                  mode="widthFix"
+                  src={pic}
+                />
+              ))
+              : null}
           </View>
           <View className="note">
             <DetailNote productType={productType} />
@@ -382,21 +447,45 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         <View className="footer">
           <View className="footer_left">
             <View className="collect" onClick={this.collectHandle}>
-              <View className={classNames({ 'active': isCollected })}>
-                <AtIcon value={isCollected ? 'star-2' : 'star'} size='24'></AtIcon>
+              <View className={classNames({ active: isCollected })}>
+                <AtIcon
+                  value={isCollected ? 'star-2' : 'star'}
+                  size="24"
+                ></AtIcon>
               </View>
             </View>
             <View className="share">
-              <AtIcon value='share' size='24' color="#808080"></AtIcon>
+              <AtIcon value="share" size="24" color="#808080"></AtIcon>
               <AtButton className="share-btn" openType="share"></AtButton>
             </View>
           </View>
           <View className="footer_right">
-            {
-              this.isOwnProduct() ?
-                <AtButton type='primary' className="btn manage-btn" onClick={this.showManage}>管理</AtButton> :
-                <AtButton type='primary' className="btn contact-btn" onClick={this.showContact}>获取联系方式</AtButton>
-            }
+            {this.isOwnProduct() ? (
+              <AtButton
+                type="primary"
+                className="btn manage-btn"
+                onClick={this.showManage}
+              >
+                管理
+              </AtButton>
+            ) : (
+              <Block>
+                <AtButton
+                  type="secondary"
+                  className="btn exchange-btn"
+                  onClick={this.showExchange}
+                >
+                  以货换货
+                </AtButton>
+                <AtButton
+                  type="primary"
+                  className="btn contact-btn"
+                  onClick={this.showContact}
+                >
+                  获取联系方式
+                </AtButton>
+              </Block>
+            )}
           </View>
         </View>
         <Contact
@@ -404,10 +493,17 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           contacts={this.state.contacts}
           onClose={this.closeContact}
         />
+        <ExchangeableGoods
+          visible={this.state.exchangeableGoodsModalVisible}
+          goods={this.state.exchangeableGoods}
+          onClose={() =>
+            this.setState({ exchangeableGoodsModalVisible: false })
+          }
+        />
         <Manage
           productId={detail.id}
           userId={detail.owner.id}
-          productStatus={(detail.status as Status)}
+          productStatus={detail.status!}
           productType={this.state.productType}
           isOpened={this.state.isOpened}
           onClose={this.closeManage}
@@ -419,10 +515,11 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           hasMask
           text={toastText}
           onClose={this.handleCloseToast}
-        >
-        </AtToast>
+        ></AtToast>
       </View>
-    ) : <DetailPreload />
+    ) : (
+      <DetailPreload />
+    )
   }
 }
 

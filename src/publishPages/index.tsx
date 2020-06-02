@@ -176,6 +176,7 @@ class Publish extends Component {
           .filter(item => detailInfo.contacts.includes(item.id))
           .map(item => item.id),
         isLoading: false,
+        agreeExchange: detailInfo.agreeExchange,
       })
     } catch (e) {
       this.setState({
@@ -427,6 +428,7 @@ class Publish extends Component {
               this.$router.params.productType === ProductType.GOODS &&
               <Exchange
                 onSetVal={this.setStateValue}
+                agreeExchange={this.state.agreeExchange}
               />
             }
             <View className="form_btn">

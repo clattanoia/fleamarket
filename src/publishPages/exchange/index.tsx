@@ -7,19 +7,13 @@ import './index.scss'
 
 type PageOwnProps = {
   onSetVal: (key, value) => void,
+  agreeExchange: boolean,
 }
 
-type PageState = {
-  isSelected: boolean,
-}
+type PageState = {}
 
 class Exchange extends Component<PageOwnProps, PageState> {
-  state = {
-    isSelected: true,
-  }
-
   onSwitch = (value) => {
-    this.setState({ isSelected: value })
     this.props.onSetVal('agreeExchange', value)
   }
 
@@ -31,7 +25,7 @@ class Exchange extends Component<PageOwnProps, PageState> {
           title='允许以货换货'
           color='#FE5155'
           border={false}
-          checked={this.state.isSelected}
+          checked={this.props.agreeExchange}
           onChange={this.onSwitch}
         />
       </View>

@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component } from '@tarojs/taro'
 import { AtSwitch } from 'taro-ui'
-import { View } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 
 import './index.scss'
 
@@ -20,14 +20,16 @@ class Exchange extends Component<PageOwnProps, PageState> {
   render() {
     return (
       <View className='exchange'>
-        <AtSwitch
-          className='exchange-switch'
-          title='允许以货换货'
-          color='#FE5155'
-          border={false}
-          checked={this.props.agreeExchange}
-          onChange={this.onSwitch}
-        />
+        <View><Text>允许以货换货</Text></View>
+        <View>
+          <AtSwitch
+            className='exchange-switch'
+            color='#FE5155'
+            border={false}
+            checked={this.props.agreeExchange}
+            onChange={this.onSwitch}
+          />
+        </View>
       </View>
     )
   }

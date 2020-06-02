@@ -470,13 +470,15 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               </AtButton>
             ) : (
               <Block>
-                <AtButton
-                  type="secondary"
-                  className="btn exchange-btn"
-                  onClick={this.showExchange}
-                >
-                  以货换货
-                </AtButton>
+                {detail.agreeExchange && detail.status === Status.FOR_SALE && (
+                  <AtButton
+                    type="secondary"
+                    className="btn exchange-btn"
+                    onClick={this.showExchange}
+                  >
+                    以货换货
+                  </AtButton>
+                )}
                 <AtButton
                   type="primary"
                   className="btn contact-btn"

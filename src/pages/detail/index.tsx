@@ -376,7 +376,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
             }
           </View>
           <View className="note">
-            <DetailNote />
+            <DetailNote productType={productType} />
           </View>
         </View>
         <View className="footer">

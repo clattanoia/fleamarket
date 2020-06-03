@@ -25,6 +25,7 @@ import {
   increaseGoodsReadCount,
   increasePurchaseReadCount,
   purchaseDetailQuery,
+  exchangeGoodsMutation,
 } from '../../query/detail'
 import { authLogin } from '../../utils/auth'
 import Contact from './components/contact'
@@ -223,6 +224,41 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       }
     } else {
       authLogin({ callback: this.showExchange })
+    }
+  }
+
+  exchangeGoods = async(sourceId: string) => {
+    const exchangeInput = {
+      sourceId: sourceId,
+      targetId: this.state.id,
+      userId: this.props.userId,
+    }
+
+    try {
+      await client.mutate({
+        mutation: exchangeGoodsMutation,
+        variables: { exchangeInput },
+      })
+
+      this.setState({
+        toastText: '操作成功',
+        isToastOpened: true,
+      })
+
+      setTimeout(
+        () => {
+          this.handleCloseToast()
+          this.setState({ exchangeableGoodsModalVisible: false })
+        },
+        2000,
+      )
+
+      await this.refreshDetail()
+    } catch (error) {
+      this.setState({
+        toastText: '操作失败，请稍后重试！',
+        isToastOpened: true,
+      })
     }
   }
 
@@ -500,9 +536,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           onClose={() =>
             this.setState({ exchangeableGoodsModalVisible: false })
           }
-          onConfirm={() =>
-            this.setState({ exchangeableGoodsModalVisible: false })
-          }
+          onConfirm={this.exchangeGoods}
         />
         <Manage
           productId={detail.id}

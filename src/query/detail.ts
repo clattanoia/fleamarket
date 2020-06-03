@@ -90,6 +90,12 @@ export const exchangeableGoodsQuery = gql`
   }
 `
 
+export const exchangeGoodsMutation = gql`
+  mutation($exchangeInput: ExchangeInput) {
+    exchangedGoods: exchangeGoods(exchangeInput: $exchangeInput)
+  }
+`
+
 export const pullOffShelvesGoodsMutation = gql`
   mutation($id: String!, $userId: String!) {
     pullOffShelvesGoods(id: $id, userId: $userId)

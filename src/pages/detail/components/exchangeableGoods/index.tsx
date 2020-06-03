@@ -1,6 +1,6 @@
 import { Text, View } from '@tarojs/components'
 import { BaseEventOrigFunction } from '@tarojs/components/types/common'
-import Taro, { useState } from '@tarojs/taro'
+import Taro, { useState, useEffect } from '@tarojs/taro'
 import { AtButton, AtFloatLayout, AtIcon } from 'taro-ui'
 import { ProductInfoDetail } from '../../../../interfaces/detail'
 
@@ -12,7 +12,7 @@ type ExchangeableGoodsProps = {
   visible: boolean;
   goods: ProductInfoDetail[];
   onClose: BaseEventOrigFunction<void>;
-  onConfirm: BaseEventOrigFunction<void>;
+  onConfirm: (id: string) => void;
 }
 
 export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
@@ -22,6 +22,12 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
   const onGoodsItemClick = (goodsId: string): void => {
     setSelectedGoods(selectedGoods === goodsId ? '' : goodsId)
   }
+
+  useEffect(() => {
+    if(visible === true) {
+      setSelectedGoods('')
+    }
+  }, [visible])
 
   return (
     <AtFloatLayout isOpened={visible} onClose={onClose}>
@@ -37,25 +43,18 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
         <View className="list">
           {
             goods &&
-            goods
-              .sort((goodsA, goodsB) => {
-                if(goodsA.createTime && goodsB.createTime) {
-                  return Date.parse(goodsA.createTime - goodsB.createTime)
-                }
-                return 0
-              })
-              .map(
-                (item: ProductInfoDetail) => <ExchangeableGoodsItem
-                  key={item.id}
-                  data={item}
-                  isSelected={selectedGoods === item.id}
-                  onClick={onGoodsItemClick}
-                />,
-              )
+            goods.map(
+              (item: ProductInfoDetail) => <ExchangeableGoodsItem
+                key={item.id}
+                data={item}
+                isSelected={selectedGoods === item.id}
+                onClick={onGoodsItemClick}
+              />,
+            )
           }
         </View>
         <View className="footer">
-          <AtButton type="secondary" size="small" onClick={onConfirm}>
+          <AtButton type="secondary" size="small" onClick={() => onConfirm(selectedGoods)}>
             确定
           </AtButton>
         </View>

@@ -243,7 +243,7 @@ class Profile extends Component<PageOwnProps, PageState> {
         </View>
         <TabBar  current={2} />
         {
-          true && (
+          this.state.certificationModalOpened && (
             <CertifyModal
               isOpened={this.state.certificationModalOpened}
               onClose={() => this.setState({ certificationModalOpened: false })}

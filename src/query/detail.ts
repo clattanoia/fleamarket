@@ -32,28 +32,23 @@ export const goodsDetailQuery = gql`
     detailInfo: goodsById(id: $id) {
       ...DetailFragment
     }
-  }
-  ${DetailFragment}
-`
-
-export const receivedExchangesQuery = gql`
-  query($targetId: String!) {
-    receivedExchanges(targetId: $targetId) {
-      id: String
-      userId: String
-      targetId: String
-      sourceId: String
-      status: ExchangeStatus
+    receivedExchanges(targetId: $id) {
+      id
+      userId
+      targetId
+      sourceId
+      status
       goods {
         title
         price
         coverUrl
         readCount
       }
-      createTime: Date
-      updateTime: Date
+      createTime
+      updateTime
     }
   }
+  ${DetailFragment}
 `
 
 export const purchaseDetailQuery = gql`

@@ -12,7 +12,7 @@ import Tag from '../../components/tag'
 import { CertifyEmail, ProductType, Status } from '../../constants/enums'
 import client from '../../graphql-client'
 import { InContact } from '../../interfaces/contact'
-import { ProductInfoDetail, User } from '../../interfaces/detail'
+import { ExchangeInfo, ProductInfoDetail, User } from '../../interfaces/detail'
 import {
   collectedQuery,
   collectMutation,
@@ -57,6 +57,7 @@ type PageState = {
   exchangeableGoods: ProductInfoDetail[];
   isCollected: boolean;
   toastText: string;
+  receivedExchanges: ExchangeInfo[];
   isToastOpened: boolean;
 }
 
@@ -91,6 +92,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       isCollected: false,
       toastText: '',
       isToastOpened: false,
+      receivedExchanges: [],
     }
   }
 
@@ -138,22 +140,20 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   fetchProductDetail = async(): Promise<ProductInfoDetail> => {
     const { id, productType } = this.state
     const {
-      data: { detailInfo },
-    } = await client.query({
+      data: { detailInfo, receivedExchanges = []},
+    } = await client.query<{
+      receivedExchanges: ExchangeInfo[];
+      detailInfo: ProductDetail;
+    }>({
       query:
         productType === ProductType.GOODS
           ? goodsDetailQuery
           : purchaseDetailQuery,
       variables: { id },
     })
-    this.setState(
-      {
-        detail: detailInfo,
-      },
-      () => {
-        this.getIsCollected()
-      }
-    )
+    this.setState({ detail: detailInfo, receivedExchanges }, () => {
+      this.getIsCollected()
+    })
 
     this.props.updateMyProductList({
       id: this.state.id,
@@ -474,7 +474,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               ))
               : null}
           </View>
-          <ReceivedExchange goodsId={this.state.id || ''} />
+          <ReceivedExchange exchanges={this.state.receivedExchanges} />
           <View className="note">
             <DetailNote productType={productType} />
           </View>

@@ -1,31 +1,13 @@
 import { View } from '@tarojs/components'
-import Taro, { useEffect, useState } from '@tarojs/taro'
-import client from '../../../../graphql-client'
+import Taro from '@tarojs/taro'
 import { ExchangeInfo } from '../../../../interfaces/detail'
-import { receivedExchangesQuery } from '../../../../query/detail'
 
 interface ReceivedExchangeProps {
-  goodsId: string;
+  exchanges: ExchangeInfo[];
 }
 
 export default function ReceivedExchange(props: ReceivedExchangeProps) {
-  const { goodsId } = props
-  const [exchanges, setExchanges] = useState<ExchangeInfo[]>([])
-
-  useEffect(() => {
-    if(!goodsId) return
-    client
-      .query<{
-      receivedExchanges: ExchangeInfo[];
-    }>({
-      query: receivedExchangesQuery,
-      variables: { targetId: goodsId },
-    })
-      .then(({ data }) => {
-        const { receivedExchanges = []} = data
-        setExchanges(receivedExchanges)
-      })
-  }, [goodsId])
+  const { exchanges = []} = props
 
   return (
     <View className="received-exchange">

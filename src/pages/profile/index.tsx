@@ -242,11 +242,16 @@ class Profile extends Component<PageOwnProps, PageState> {
           </View>
         </View>
         <TabBar  current={2} />
-        <CertifyModal
-          isOpened={this.state.certificationModalOpened}
-          onClose={() => this.setState({ certificationModalOpened: false })}
-          onConfirm={this.handleConfirmCertify}
-        />
+        {
+          true && (
+            <CertifyModal
+              isOpened={this.state.certificationModalOpened}
+              onClose={() => this.setState({ certificationModalOpened: false })}
+              onConfirm={this.handleConfirmCertify}
+            />
+          )
+        }
+
       </View>
     )
   }

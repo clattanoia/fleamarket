@@ -32,6 +32,7 @@ import DetailPreload from './components/detailPreload'
 import ExchangeableGoods from './components/exchangeableGoods'
 import Manage from './components/manage'
 import DetailNote from './components/note'
+import ReceivedExchange from './components/receivedExchange'
 import './index.scss'
 
 type PageStateProps = {
@@ -437,6 +438,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               ))
               : null}
           </View>
+          <ReceivedExchange goodsId={this.state.id || ''} />
           <View className="note">
             <DetailNote productType={productType} />
           </View>

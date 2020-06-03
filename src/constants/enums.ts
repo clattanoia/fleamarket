@@ -4,18 +4,24 @@ export enum Status {
   FREEZE = 'FREEZE'
 }
 
+export enum ExchangeStatus {
+  AGREED = 'AGREED',
+  APPLIED = 'APPLIED',
+  REJECTED = 'REJECTED'
+}
+
 export enum Platform {
   WECHAT
 }
 
 export enum ProductType {
   GOODS = 'GOODS',
-  PURCHASE = 'PURCHASE',
+  PURCHASE = 'PURCHASE'
 }
 
 export enum Origin {
   PUBLISH = 'PUBLISH',
-  COLLECT = 'COLLECT',
+  COLLECT = 'COLLECT'
 }
 
 export enum ProductStatus {
@@ -31,39 +37,39 @@ export enum RefreshDataType {
 
 export enum ProductHandleType {
   SOLDOUT = '下架',
-  ACTIVATE = '激活',
+  ACTIVATE = '激活'
 }
 
 export enum ToastStatus {
   ERROR = 'error',
   LOADING = 'loading',
-  SUCCESS = 'success',
+  SUCCESS = 'success'
 }
 
 export enum SearchOrderBy {
   RC = 'RC',
   CT = 'CT',
   UT = 'UT',
-  PC = 'PC',
+  PC = 'PC'
 }
 
 export enum SearchSortDirection {
   ASC = 'ASC',
-  DESC = 'DESC',
+  DESC = 'DESC'
 }
 
 export enum CertifyEmail {
   UNCERTIFIED = 'UNCERTIFIED',
-  CERTIFIED = 'CERTIFIED',
+  CERTIFIED = 'CERTIFIED'
 }
 
 export enum ImageScenes {
   PULP = 'pulp',
   TERROR = 'terror',
-  POLITICIAN = 'politician',
+  POLITICIAN = 'politician'
 }
 
 export enum AuditImageStatus {
   ERROR = 'error',
-  SUCCESS = 'success',
+  SUCCESS = 'success'
 }

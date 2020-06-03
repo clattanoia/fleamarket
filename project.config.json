@@ -7,6 +7,7 @@
 		"urlCheck": true,
 		"es6": false,
 		"postcss": false,
+		"preloadBackgroundData": false,
 		"minified": false,
 		"newFeature": true,
 		"coverView": true,
@@ -21,7 +22,7 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"preloadBackgroundData": false
+		"useCompilerModule": false
 	},
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",

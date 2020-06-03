@@ -1,4 +1,4 @@
-import { Platform, Status } from '../constants/enums'
+import { ExchangeStatus, Platform, Status } from '../constants/enums'
 import { InContact } from './contact'
 
 export type User = {
@@ -11,14 +11,14 @@ export type User = {
   avatarUrl: string;
   gender: number;
   lastVisitTime: Date;
-  platform: Platform
-  contacts: InContact[]
-  certification: string
+  platform: Platform;
+  contacts: InContact[];
+  certification: string;
 }
 
 export interface ProductInfoDetail {
   id: string;
-  owner?: User
+  owner?: User;
   title?: string;
   price?: number;
   description?: string;
@@ -31,5 +31,16 @@ export interface ProductInfoDetail {
   pictures?: string[];
   contacts?: string[];
   readCount: number;
-  agreeExchange?: boolean,
+  agreeExchange?: boolean;
+}
+
+export interface ExchangeInfo {
+  id?: string;
+  userId?: string;
+  targetId?: string;
+  sourceId?: string;
+  status?: ExchangeStatus;
+  goods?: ProductInfoDetail;
+  createTime?: Date;
+  updateTime?: Date;
 }

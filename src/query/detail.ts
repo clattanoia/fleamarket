@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost'
 
-export const DetailFragment =  gql`
+export const DetailFragment = gql`
   fragment DetailFragment on ProductInfo {
     id
     title
@@ -36,6 +36,26 @@ export const goodsDetailQuery = gql`
   ${DetailFragment}
 `
 
+export const receivedExchangesQuery = gql`
+  query($targetId: String!) {
+    receivedExchanges(targetId: $targetId) {
+      id: String
+      userId: String
+      targetId: String
+      sourceId: String
+      status: ExchangeStatus
+      goods {
+        title
+        price
+        coverUrl
+        readCount
+      }
+      createTime: Date
+      updateTime: Date
+    }
+  }
+`
+
 export const purchaseDetailQuery = gql`
   query($id: String!) {
     detailInfo: purchaseById(id: $id) {
@@ -57,7 +77,7 @@ export const contactsQuery = gql`
 `
 
 export const exchangeableGoodsQuery = gql`
-  query{
+  query {
     exchangeableGoods {
       id
       title

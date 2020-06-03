@@ -93,7 +93,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   authCallback?: () => void
-  
+
   componentWillMount(): void {
     const { productType, id } = this.$router.params
     this.setState({ productType: productType as ProductType, id })
@@ -188,6 +188,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     }[type]
   }
 
+  excuteAuthCallback = () => {
+    this.authCallback && this.authCallback()
+  }
+
   showContact = async(): Promise<void> => {
     this.authCallback = this.concatcAuthCallback
     if(Taro.getStorageSync('token')) {
@@ -202,6 +206,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   showExchange = async() => {
+    this.authCallback = this.showExchange
     if(Taro.getStorageSync('token')) {
       const goods = await this.getExchangeableGoods()
       if(goods.length) {
@@ -503,7 +508,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           onClose={this.closeManage}
           onRefresh={this.refreshDetail}
         />
-        <AuthInfoLayout authCallback={this.authCallback} />
+        <AuthInfoLayout authCallback={this.excuteAuthCallback} />
         <AtToast
           isOpened={isToastOpened}
           hasMask

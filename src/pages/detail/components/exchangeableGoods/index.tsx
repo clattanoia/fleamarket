@@ -1,6 +1,6 @@
 import { Text, View } from '@tarojs/components'
 import { BaseEventOrigFunction } from '@tarojs/components/types/common'
-import Taro from '@tarojs/taro'
+import Taro, { useState } from '@tarojs/taro'
 import { AtButton, AtFloatLayout, AtIcon } from 'taro-ui'
 import { ProductInfoDetail } from '../../../../interfaces/detail'
 
@@ -17,9 +17,10 @@ type ExchangeableGoodsProps = {
 
 export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
   const { goods, visible, onClose, onConfirm } = props
+  const [selectedGoods, setSelectedGoods] = useState('')
 
   const onGoodsItemClick = (goodsId: string): void => {
-    console.info(goodsId)
+    setSelectedGoods(selectedGoods === goodsId ? '' : goodsId)
   }
 
   return (
@@ -35,13 +36,22 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
         </View>
         <View className="list">
           {
-            goods && goods.map(
-              (item: ProductInfoDetail) => <ExchangeableGoodsItem
-                key={item.id}
-                data={item}
-                onClick={onGoodsItemClick}
-              />,
-            )
+            goods &&
+            goods
+              .sort((goodsA, goodsB) => {
+                if(goodsA.createTime && goodsB.createTime) {
+                  return Date.parse(goodsA.createTime - goodsB.createTime)
+                }
+                return 0
+              })
+              .map(
+                (item: ProductInfoDetail) => <ExchangeableGoodsItem
+                  key={item.id}
+                  data={item}
+                  isSelected={selectedGoods === item.id}
+                  onClick={onGoodsItemClick}
+                />,
+              )
           }
         </View>
         <View className="footer">

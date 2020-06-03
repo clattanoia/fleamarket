@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro'
 import { Text, View, Image } from '@tarojs/components'
+import { AtIcon } from 'taro-ui'
 import { ProductInfoDetail } from '../../../../interfaces/detail'
 
 import './exchangeableGoodsItem.scss'
@@ -7,9 +8,10 @@ import './exchangeableGoodsItem.scss'
 interface Props {
   data: ProductInfoDetail;
   onClick: Function;
+  isSelected: boolean;
 }
 
-export default function ExchangeableGoodsItem({ data, onClick }: Props) {
+export default function ExchangeableGoodsItem({ data, onClick, isSelected }: Props) {
   const imageStyle = 'width: 110px; height: 110px; border: 1px solid #eeeeee; border-radius: 6px;'
 
   return (
@@ -33,6 +35,14 @@ export default function ExchangeableGoodsItem({ data, onClick }: Props) {
           </View>
           <View className='read-count'>
             <Text>浏览次数：{data.readCount}</Text>
+            {
+              isSelected &&
+              <AtIcon
+                value='check-circle'
+                size='22'
+                color='#FE5155'
+              />
+            }
           </View>
         </View>
       </View>

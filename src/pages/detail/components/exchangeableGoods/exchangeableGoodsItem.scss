@@ -40,6 +40,10 @@
     .read-count {
       color: gray;
       font-size: 24px;
+      height: 44px;
+      line-height: 44px;
+      display: flex;
+      justify-content: space-between;
     }
   }
 }

@@ -65,6 +65,7 @@ export const exchangeableGoodsQuery = gql`
       price
       readCount
       coverUrl
+      createTime
     }
   }
 `

@@ -252,8 +252,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         },
         2000,
       )
-
-      await this.refreshDetail()
     } catch (error) {
       this.setState({
         toastText: '操作失败，请稍后重试！',

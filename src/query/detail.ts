@@ -27,28 +27,38 @@ export const DetailFragment = gql`
   }
 `
 
+export const ExchangeInfoFragment = gql`
+  fragment ExchangeInfoFragment on ExchangeInfo {
+    id
+    userId
+    targetId
+    sourceId
+    status
+    goods {
+      title
+      price
+      coverUrl
+      readCount
+    }
+    createTime
+    updateTime
+  }
+`
+
 export const goodsDetailQuery = gql`
   query($id: String!) {
     detailInfo: goodsById(id: $id) {
       ...DetailFragment
     }
     receivedExchanges(targetId: $id) {
-      id
-      userId
-      targetId
-      sourceId
-      status
-      goods {
-        title
-        price
-        coverUrl
-        readCount
-      }
-      createTime
-      updateTime
+      ...ExchangeInfoFragment
+    }
+    requestedExchanges(sourceId: $id) {
+      ...ExchangeInfoFragment
     }
   }
   ${DetailFragment}
+  ${ExchangeInfoFragment}
 `
 
 export const purchaseDetailQuery = gql`

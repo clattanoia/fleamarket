@@ -34,6 +34,7 @@ import ExchangeableGoods from './components/exchangeableGoods'
 import Manage from './components/manage'
 import DetailNote from './components/note'
 import ReceivedExchange from './components/receivedExchange'
+import RequestedExchange from './components/requestedExchange'
 import './index.scss'
 
 type PageStateProps = {
@@ -58,6 +59,7 @@ type PageState = {
   isCollected: boolean;
   toastText: string;
   receivedExchanges: ExchangeInfo[];
+  requestedExchanges: ExchangeInfo[];
   isToastOpened: boolean;
 }
 
@@ -93,6 +95,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       toastText: '',
       isToastOpened: false,
       receivedExchanges: [],
+      requestedExchanges: [],
     }
   }
 
@@ -140,10 +143,15 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   fetchProductDetail = async(): Promise<ProductInfoDetail> => {
     const { id, productType } = this.state
     const {
-      data: { detailInfo, receivedExchanges = []},
+      data: {
+        detailInfo,
+        receivedExchanges = [],
+        requestedExchanges = [],
+      },
     } = await client.query<{
-      receivedExchanges: ExchangeInfo[];
-      detailInfo: ProductDetail;
+      detailInfo: ProductDetail
+      receivedExchanges: ExchangeInfo[]
+      requestedExchanges: ExchangeInfo[]
     }>({
       query:
         productType === ProductType.GOODS
@@ -151,7 +159,11 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           : purchaseDetailQuery,
       variables: { id },
     })
-    this.setState({ detail: detailInfo, receivedExchanges }, () => {
+    this.setState({
+      detail: detailInfo,
+      receivedExchanges,
+      requestedExchanges,
+    }, () => {
       this.getIsCollected()
     })
 
@@ -424,6 +436,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       isCollected,
       toastText,
       isToastOpened,
+      receivedExchanges,
+      requestedExchanges,
     } = this.state
     return detail && detail.owner ? (
       <View className="detail">
@@ -472,7 +486,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               ))
               : null}
           </View>
-          <ReceivedExchange exchanges={this.state.receivedExchanges} />
+          <RequestedExchange exchanges={requestedExchanges} />
+          <ReceivedExchange exchanges={receivedExchanges} />
           <View className="note">
             <DetailNote productType={productType} />
           </View>

@@ -2,9 +2,9 @@ import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.scss'
 
-export default function MyExchangeList() {
+export default function RequestedExchange() {
   return (
-    <View className="my-exchange-list">
+    <View className="requested-exchange-list">
       <View className="list-title">
         <Text>求易货 —— 我发起的置换</Text>
       </View>

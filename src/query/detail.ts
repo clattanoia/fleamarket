@@ -62,6 +62,9 @@ export const exchangeableGoodsQuery = gql`
       id
       title
       status
+      price
+      readCount
+      coverUrl
     }
   }
 `

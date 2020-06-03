@@ -13,10 +13,7 @@ interface InProps {
 const _authCallbacks = new Set<() => void>()
 
 function authCallbacks() {
-  _authCallbacks.forEach(cb => {
-    console.log(cb)
-    cb()
-  })
+  _authCallbacks.forEach(cb => cb())
 }
 
 function AuthInfoLayout(props: InProps) {

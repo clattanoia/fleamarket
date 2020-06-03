@@ -442,7 +442,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           </View>
         </View>
         <View className="footer">
-          <View className="footer_left">
+          <View className="footer-left">
             <View className="collect" onClick={this.collectHandle}>
               <View className={classNames({ active: isCollected })}>
                 <AtIcon
@@ -456,7 +456,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               <AtButton className="share-btn" openType="share"></AtButton>
             </View>
           </View>
-          <View className="footer_right">
+          <View className="footer-right">
             {this.isOwnProduct() ? (
               <AtButton
                 type="primary"

@@ -1,4 +1,4 @@
-import { Text, View } from '@tarojs/components'
+import { Text, View, ScrollView } from '@tarojs/components'
 import { BaseEventOrigFunction } from '@tarojs/components/types/common'
 import Taro, { useState, useEffect } from '@tarojs/taro'
 import { AtButton, AtFloatLayout, AtIcon } from 'taro-ui'
@@ -40,7 +40,7 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
             <AtIcon value="close" size="16" onClick={onClose}></AtIcon>
           </View>
         </View>
-        <View className="list">
+        <ScrollView className="list" scrollY>
           {
             goods &&
             goods.map(
@@ -52,7 +52,7 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
               />,
             )
           }
-        </View>
+        </ScrollView>
         <View className="footer">
           <AtButton type="secondary" size="small" onClick={() => onConfirm(selectedGoods)}>
             确定

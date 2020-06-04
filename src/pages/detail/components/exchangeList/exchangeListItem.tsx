@@ -34,9 +34,7 @@ export default function ExchangeListItem(props: ExchangeListItemProps) {
               <Text>浏览次数：{readCount}</Text>
             </View>
           </View>
-          <View className="status-action">
-            <Text>{children}</Text>
-          </View>
+          <View className="status-action">{children}</View>
         </View>
       </View>
     </View>

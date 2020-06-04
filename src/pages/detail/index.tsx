@@ -21,11 +21,11 @@ import {
 import {
   contactsQuery,
   exchangeableGoodsQuery,
+  exchangeGoodsMutation,
   goodsDetailQuery,
   increaseGoodsReadCount,
   increasePurchaseReadCount,
   purchaseDetailQuery,
-  exchangeGoodsMutation,
 } from '../../query/detail'
 import { authLogin } from '../../utils/auth'
 import Contact from './components/contact'
@@ -143,15 +143,11 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   fetchProductDetail = async(): Promise<ProductInfoDetail> => {
     const { id, productType } = this.state
     const {
-      data: {
-        detailInfo,
-        receivedExchanges = [],
-        requestedExchanges = [],
-      },
+      data: { detailInfo, receivedExchanges = [], requestedExchanges = []},
     } = await client.query<{
-      detailInfo: ProductDetail
-      receivedExchanges: ExchangeInfo[]
-      requestedExchanges: ExchangeInfo[]
+      detailInfo: ProductDetail;
+      receivedExchanges: ExchangeInfo[];
+      requestedExchanges: ExchangeInfo[];
     }>({
       query:
         productType === ProductType.GOODS
@@ -159,13 +155,16 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           : purchaseDetailQuery,
       variables: { id },
     })
-    this.setState({
-      detail: detailInfo,
-      receivedExchanges,
-      requestedExchanges,
-    }, () => {
-      this.getIsCollected()
-    })
+    this.setState(
+      {
+        detail: detailInfo,
+        receivedExchanges,
+        requestedExchanges,
+      },
+      () => {
+        this.getIsCollected()
+      }
+    )
 
     this.props.updateMyProductList({
       id: this.state.id,
@@ -257,25 +256,19 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         isToastOpened: true,
       })
 
-      setTimeout(
-        () => {
-          this.handleCloseToast()
-          this.setState({ exchangeableGoodsModalVisible: false })
-        },
-        2000,
-      )
+      setTimeout(() => {
+        this.handleCloseToast()
+        this.setState({ exchangeableGoodsModalVisible: false })
+      }, 2000)
     } catch (error) {
       this.setState({
         toastText: '操作失败，请稍后重试！',
         isToastOpened: true,
       })
 
-      setTimeout(
-        () => {
-          this.handleCloseToast()
-        },
-        2000,
-      )
+      setTimeout(() => {
+        this.handleCloseToast()
+      }, 2000)
     }
   }
 
@@ -494,7 +487,10 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               : null}
           </View>
           <RequestedExchange exchanges={requestedExchanges} />
-          <ReceivedExchange exchanges={receivedExchanges} />
+          <ReceivedExchange
+            isGoodsOwner={this.isOwnProduct()}
+            exchanges={receivedExchanges}
+          />
           <View className="note">
             <DetailNote productType={productType} />
           </View>
@@ -554,7 +550,9 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           visible={this.state.exchangeableGoodsModalVisible}
           goods={this.state.exchangeableGoods}
           onConfirm={this.exchangeGoods}
-          onClose={() => this.setState({ exchangeableGoodsModalVisible: false })}
+          onClose={() =>
+            this.setState({ exchangeableGoodsModalVisible: false })
+          }
         />
         <Manage
           productId={detail.id}

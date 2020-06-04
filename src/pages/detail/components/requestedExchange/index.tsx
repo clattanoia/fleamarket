@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.scss'
 import { ExchangeInfo } from '../../../../interfaces/detail'
+import { ExchangeStatusText } from '../../../../constants/enums'
 
 interface RequestedExchangeProps {
   exchanges: ExchangeInfo[];
@@ -43,7 +44,7 @@ export default function RequestedExchange(props: RequestedExchangeProps) {
                         </View>
                       </View>
                       <View className="status-action">
-                        <Text>{status}</Text>
+                        <Text>{status && ExchangeStatusText[status]}</Text>
                       </View>
                     </View>
                   </View>

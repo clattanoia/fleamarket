@@ -10,6 +10,12 @@ export enum ExchangeStatus {
   REJECTED = 'REJECTED'
 }
 
+export enum ExchangeStatusText {
+  AGREED = '同意置换',
+  APPLIED = '候选中',
+  REJECTED = '已拒绝'
+}
+
 export enum Platform {
   WECHAT
 }

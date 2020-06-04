@@ -1,0 +1,44 @@
+import { Image, Text, View } from '@tarojs/components'
+import Taro from '@tarojs/taro'
+import { ExchangeInfo } from '../../../../interfaces/detail'
+import './index.scss'
+
+interface ExchangeListItemProps {
+  exchange: ExchangeInfo;
+  children?: any;
+  productClick?(exchange: ExchangeInfo): void;
+}
+
+export default function ExchangeListItem(props: ExchangeListItemProps) {
+  const { exchange, children, productClick } = props
+  const { title = '', coverUrl = '', price = '', readCount = '', id = '' } =
+    exchange?.goods ?? {}
+
+  const handleProductClick = (exchange: ExchangeInfo) => {
+    productClick && productClick(exchange)
+  }
+
+  return (
+    <View className="exchange-list-item" key={id}>
+      <Image src={coverUrl} onClick={() => handleProductClick(exchange)} />
+      <View className="item-content">
+        <View className="title" onClick={() => handleProductClick(exchange)}>
+          {title}
+        </View>
+        <View className="info">
+          <View>
+            <View className="price">
+              <Text>{price}</Text>
+            </View>
+            <View className="view-count">
+              <Text>浏览次数：{readCount}</Text>
+            </View>
+          </View>
+          <View className="status-action">
+            <Text>{children}</Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  )
+}

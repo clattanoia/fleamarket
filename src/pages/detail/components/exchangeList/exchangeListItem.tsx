@@ -1,5 +1,7 @@
 import { Image, Text, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
+import cls from 'classnames'
+import { Status } from '../../../../constants/enums'
 import { ExchangeInfo } from '../../../../interfaces/detail'
 import './index.scss'
 
@@ -11,8 +13,14 @@ interface ExchangeListItemProps {
 
 export default function ExchangeListItem(props: ExchangeListItemProps) {
   const { exchange, children, productClick } = props
-  const { title = '', coverUrl = '', price = '', readCount = '', id = '' } =
-    exchange?.goods ?? {}
+  const {
+    title = '',
+    coverUrl = '',
+    price = '',
+    readCount = '',
+    id = '',
+    status = '',
+  } = exchange?.goods ?? {}
 
   const handleProductClick = (exchange: ExchangeInfo) => {
     productClick && productClick(exchange)
@@ -22,7 +30,12 @@ export default function ExchangeListItem(props: ExchangeListItemProps) {
     <View className="exchange-list-item" key={id}>
       <Image src={coverUrl} onClick={() => handleProductClick(exchange)} />
       <View className="item-content">
-        <View className="title" onClick={() => handleProductClick(exchange)}>
+        <View
+          className={cls('title', {
+            'disabled-title': status !== Status.FOR_SALE,
+          })}
+          onClick={() => handleProductClick(exchange)}
+        >
           {title}
         </View>
         <View className="info">

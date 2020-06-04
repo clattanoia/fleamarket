@@ -43,6 +43,11 @@
       -webkit-line-clamp: 2;
       /*! autoprefixer: off */
     }
+
+    .disabled-title {
+      color: #ddd;
+    }
+
     .info {
       display: flex;
       justify-content: space-between;

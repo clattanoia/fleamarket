@@ -38,6 +38,7 @@ export const ExchangeInfoFragment = gql`
       title
       price
       coverUrl
+      status
       readCount
     }
     createTime

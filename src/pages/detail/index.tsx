@@ -489,6 +489,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           <RequestedExchange exchanges={requestedExchanges} />
           <ReceivedExchange
             isGoodsOwner={this.isOwnProduct()}
+            goodsStatus={detail.status}
             exchanges={receivedExchanges}
           />
           <View className="note">

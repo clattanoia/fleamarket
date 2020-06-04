@@ -40,14 +40,16 @@ export default function ExchangeListItem(props: ExchangeListItemProps) {
         </View>
         <View className="info">
           <View>
-            <View className="price">
-              <Text>{price}</Text>
+            <View className="price-btn-container">
+              <View className="price">
+                <Text>{price}</Text>
+              </View>
+              <View className="status-action">{children}</View>
             </View>
             <View className="view-count">
               <Text>浏览次数：{readCount}</Text>
             </View>
           </View>
-          <View className="status-action">{children}</View>
         </View>
       </View>
     </View>

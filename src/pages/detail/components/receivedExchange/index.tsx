@@ -1,24 +1,33 @@
-import { Block, Button, Text } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { Block, Text } from '@tarojs/components'
+import Taro, { useState } from '@tarojs/taro'
+import { AtButton, AtToast } from 'taro-ui'
 import {
   ExchangeStatus,
   ExchangeStatusText,
   ProductType,
   Status,
 } from '../../../../constants/enums'
-import { ExchangeInfo } from '../../../../interfaces/detail'
+import { agreeToExchangeMutation } from '../../../../query/detail'
+import client from '../../../../graphql-client'
+import { ExchangeInfo, ProductInfoDetail } from '../../../../interfaces/detail'
 import { navigateWithFallback } from '../../../../utils/helper'
 import ExchangeList from '../exchangeList'
 import ExchangeListItem from '../exchangeList/exchangeListItem'
 
 interface ReceivedExchangeProps {
+  userId: string;
   exchanges: ExchangeInfo[];
   isGoodsOwner: boolean;
+  refetchProductionDetails: () => Promise<ProductInfoDetail>;
   goodsStatus?: Status;
 }
 
 export default function ReceivedExchange(props: ReceivedExchangeProps) {
-  const { exchanges = [], isGoodsOwner, goodsStatus = Status.FOR_SALE } = props
+  const { userId, exchanges = [], goodsStatus = Status.FOR_SALE,  isGoodsOwner, refetchProductionDetails } = props
+  const [toastOptions, setToastOptions] = useState({
+    opened: false,
+    text: '',
+  })
   const disableOperations = goodsStatus !== Status.FOR_SALE
 
   const handleProductClick = (exchange: ExchangeInfo) => {
@@ -27,6 +36,32 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
     navigateWithFallback({
       url: `/pages/detail/index?id=${sourceId}&productType=${ProductType.GOODS}`,
     })
+  }
+
+  const handleAgreeToExchange = async(id: string) => {
+    try {
+      const { data: { agreeToExchange }} = await client.mutate({
+        mutation: agreeToExchangeMutation,
+        variables: {
+          id,
+          userId,
+        },
+      })
+
+      if(agreeToExchange) {
+        setToastOptions({
+          opened: true,
+          text: '操作成功',
+        })
+
+        await refetchProductionDetails()
+      }
+    } catch (error) {
+      setToastOptions({
+        opened: true,
+        text: '操作失败，请稍后重试',
+      })
+    }
   }
 
   return exchanges.length ? (
@@ -43,13 +78,32 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
             {isGoodsOwner ? (
               status === ExchangeStatus.APPLIED ? (
                 <Block>
-                  <Button disabled={disableOperations}>同意</Button>
-                  <Button disabled={disableOperations}>拒绝</Button>
+                  <AtButton
+                    size="small"
+                    type="primary"
+                    disabled={disableOperations}
+                    onClick={() => handleAgreeToExchange(exchange.id || '')}
+                  >
+                    同意
+                  </AtButton>
+                  <AtButton
+                    size="small"
+                    type="secondary"
+                    disabled={disableOperations}
+                  >
+                    拒绝
+                  </AtButton>
                 </Block>
               ) : (
                 <Block>
                   <Text>{ExchangeStatusText[status]}</Text>
-                  <Button disabled={disableOperations}>取消</Button>
+                  <AtButton
+                    size="small"
+                    type="secondary"
+                    disabled={disableOperations}
+                  >
+                    取消
+                  </AtButton>
                 </Block>
               )
             ) : (
@@ -58,6 +112,13 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
           </ExchangeListItem>
         )
       })}
+      <AtToast
+        hasMask
+        duration={2000}
+        isOpened={toastOptions.opened}
+        text={toastOptions.text}
+        onClose={() => setToastOptions({ opened: false, text: '' })}
+      />
     </ExchangeList>
   ) : null
 }

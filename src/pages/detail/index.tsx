@@ -488,9 +488,11 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
           </View>
           <RequestedExchange exchanges={requestedExchanges} />
           <ReceivedExchange
+            userId={this.props.userId}
             isGoodsOwner={this.isOwnProduct()}
             goodsStatus={detail.status}
             exchanges={receivedExchanges}
+            refetchProductionDetails={this.fetchProductDetail}
           />
           <View className="note">
             <DetailNote productType={productType} />

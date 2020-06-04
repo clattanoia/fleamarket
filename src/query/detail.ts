@@ -102,6 +102,12 @@ export const exchangeGoodsMutation = gql`
   }
 `
 
+export const agreeToExchangeMutation = gql`
+  mutation($id: String, $userId: String) {
+    agreeToExchange(id: $id, userId: $userId)
+  }
+`
+
 export const pullOffShelvesGoodsMutation = gql`
   mutation($id: String!, $userId: String!) {
     pullOffShelvesGoods(id: $id, userId: $userId)

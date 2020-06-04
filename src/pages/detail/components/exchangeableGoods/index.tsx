@@ -1,6 +1,7 @@
 import { Text, View, ScrollView } from '@tarojs/components'
 import Taro, { useState, useEffect } from '@tarojs/taro'
 import { AtButton, AtFloatLayout } from 'taro-ui'
+import { BaseEventOrigFunction } from '@tarojs/components/types/common'
 import { ProductInfoDetail } from '../../../../interfaces/detail'
 
 import ExchangeableGoodsItem from './exhangeableGoodsItem'
@@ -11,10 +12,11 @@ type ExchangeableGoodsProps = {
   visible: boolean;
   goods: ProductInfoDetail[];
   onConfirm: (id: string) => void;
+  onClose: BaseEventOrigFunction<void>;
 }
 
 export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
-  const { goods, visible, onConfirm } = props
+  const { goods, visible, onConfirm, onClose } = props
   const [selectedGoods, setSelectedGoods] = useState('')
 
   const onGoodsItemClick = (goodsId: string): void => {
@@ -28,7 +30,7 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
   }, [visible])
 
   return (
-    <AtFloatLayout isOpened={visible}>
+    <AtFloatLayout isOpened={visible} onClose={onClose}>
       <View className="exchangeable-goods">
         <View className="header">
           <View className="title">
@@ -51,7 +53,7 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
         <View className="footer">
           <AtButton
             disabled={!selectedGoods}
-            type="secondary"
+            type="primary"
             size="normal"
             onClick={() => onConfirm(selectedGoods)}
           >

@@ -269,6 +269,13 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         toastText: '操作失败，请稍后重试！',
         isToastOpened: true,
       })
+
+      setTimeout(
+        () => {
+          this.handleCloseToast()
+        },
+        2000,
+      )
     }
   }
 

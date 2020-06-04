@@ -2,7 +2,8 @@ import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.scss'
 import { ExchangeInfo } from '../../../../interfaces/detail'
-import { ExchangeStatusText } from '../../../../constants/enums'
+import { ExchangeStatusText, ProductType } from '../../../../constants/enums'
+import { navigateWithFallback } from '../../../../utils/helper'
 
 interface RequestedExchangeProps {
   exchanges: ExchangeInfo[];
@@ -10,6 +11,14 @@ interface RequestedExchangeProps {
 
 export default function RequestedExchange(props: RequestedExchangeProps) {
   const { exchanges = []} = props
+
+  const handleProductClick = (exchange: ExchangeInfo) => {
+    const { targetId } = exchange
+
+    navigateWithFallback({
+      url: `/pages/detail/index?id=${targetId}&productType=${ProductType.GOODS}`,
+    })
+  }
 
   return (
     exchanges.length > 0 ?
@@ -31,9 +40,9 @@ export default function RequestedExchange(props: RequestedExchangeProps) {
 
               return (
                 <View className="list-item" key={id}>
-                  <Image src={coverUrl} />
+                  <Image src={coverUrl} onClick={() => handleProductClick(exchange)} />
                   <View className="item-content">
-                    <View className="title">{title}</View>
+                    <View className="title" onClick={() => handleProductClick(exchange)}>{title}</View>
                     <View className="info">
                       <View>
                         <View className="price">

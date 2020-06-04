@@ -1,3 +1,6 @@
+import { navigateTo, getCurrentPages, redirectTo } from '@tarojs/taro'
+
+const MAX_ROUTE_LENGTH  = 10
 
 export function cleanArrayEmpty<T>(arg: Array<T>): Array<T> {
   const output: Array<T> = []
@@ -23,4 +26,18 @@ export const delay = (millisecond: number) => {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), millisecond)
   })
+}
+
+export const navigateWithFallback = (option: navigateTo.Option) => {
+  try {
+    const { length } = getCurrentPages()
+
+    if(length < MAX_ROUTE_LENGTH) {
+      return navigateTo(option)
+    } else {
+      return redirectTo(option)
+    }
+  } catch (e) {
+    return redirectTo(option)
+  }
 }

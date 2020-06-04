@@ -35,6 +35,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
           <ExchangeListItem
             exchange={exchange}
             productClick={handleProductClick}
+            key={exchange.id}
           >
             {isGoodsOwner ? (
               status === ExchangeStatus.APPLIED ? (

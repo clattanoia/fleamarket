@@ -2,19 +2,16 @@
 
 .exchangeable-goods {
   .header {
-    position: relative;
     > .title {
       text-align: center;
-    }
-    > .close {
-      position: absolute;
-      top: 0;
-      right: 0;
     }
   }
   .list {
     min-height: 500px;
-    max-height: 680px;
+    max-height: 660px;
     overflow-y: scroll;
+  }
+  .footer {
+    margin-top: 4px;
   }
 }

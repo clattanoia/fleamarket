@@ -553,9 +553,6 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         <ExchangeableGoods
           visible={this.state.exchangeableGoodsModalVisible}
           goods={this.state.exchangeableGoods}
-          onClose={() =>
-            this.setState({ exchangeableGoodsModalVisible: false })
-          }
           onConfirm={this.exchangeGoods}
         />
         <Manage

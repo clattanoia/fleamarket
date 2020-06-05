@@ -15,6 +15,17 @@
   .list-wrapper {
     padding-top: 40px;
   }
+
+  at-modal {
+    at-modal-content {
+      scroll-view {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
 }
 
 .exchange-list-item {
@@ -35,6 +46,7 @@
     align-items: flex-start;
 
     .title {
+      font-size: 32px;
       height: 88px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -71,8 +83,8 @@
           width: 56%;
           justify-content: flex-end;
 
-          text {
-            margin-right: 10px;
+          at-button {
+            margin-left: 6px;
           }
 
           at-button {

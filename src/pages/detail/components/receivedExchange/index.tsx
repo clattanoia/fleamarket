@@ -1,6 +1,6 @@
 import { Block, Text } from '@tarojs/components'
 import Taro, { useState } from '@tarojs/taro'
-import { AtButton, AtToast } from 'taro-ui'
+import { AtButton, AtToast, AtModal } from 'taro-ui'
 import { DocumentNode } from 'graphql'
 import {
   ExchangeStatus,
@@ -11,6 +11,7 @@ import {
 import {
   agreeToExchangeMutation,
   rejectToExchangeMutation,
+  cancelExchangeAgreementMutation,
 } from '../../../../query/detail'
 import client from '../../../../graphql-client'
 import { ExchangeInfo, ProductInfoDetail } from '../../../../interfaces/detail'
@@ -26,6 +27,12 @@ interface ReceivedExchangeProps {
   goodsStatus?: Status;
 }
 
+type ExchangeInfo = {
+  id: string,
+  mutation: DocumentNode,
+  mutationName: string,
+}
+
 export default function ReceivedExchange(props: ReceivedExchangeProps) {
   const {
     userId,
@@ -38,6 +45,15 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
     opened: false,
     text: '',
   })
+  const [modalOptions, setModalOptions] = useState({
+    opened: false,
+    content: '',
+    exchange: {
+      id: '',
+      mutation: {},
+      mutationName: '',
+    },
+  })
   const disableOperations = goodsStatus !== Status.FOR_SALE
 
   const handleProductClick = (exchange: ExchangeInfo) => {
@@ -48,11 +64,29 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
     })
   }
 
-  const handleOperation = async(
-    id: string,
-    mutation: DocumentNode,
-    mutationName: string
-  ) => {
+  const handleOperation = (content: string, exchange: ExchangeInfo) => {
+    setModalOptions({
+      content,
+      exchange,
+      opened: true,
+    })
+  }
+
+  const handleCancel = () => {
+    setModalOptions({
+      opened: false,
+      content: '',
+      exchange: {
+        id: '',
+        mutation: {},
+        mutationName: '',
+      },
+    })
+  }
+
+  const handleConfirm = async() => {
+    const { exchange: { id, mutation, mutationName }} = modalOptions
+
     try {
       const { data } = await client.mutate({
         mutation: mutation,
@@ -76,6 +110,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
         text: '操作失败，请稍后重试',
       })
     }
+    handleCancel()
   }
 
   return exchanges.length ? (
@@ -96,11 +131,14 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                     size="small"
                     type="primary"
                     disabled={disableOperations}
-                    onClick={() =>
-                      handleOperation(
-                        exchange.id ?? '',
-                        agreeToExchangeMutation,
-                        'agreeToExchange'
+                    onClick={
+                      () => handleOperation(
+                        '确认要和该二货进行置换？',
+                        {
+                          id: exchange.id ?? '',
+                          mutation: agreeToExchangeMutation,
+                          mutationName: 'agreeToExchange',
+                        },
                       )
                     }
                   >
@@ -110,11 +148,14 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                     size="small"
                     type="secondary"
                     disabled={disableOperations}
-                    onClick={() =>
-                      handleOperation(
-                        exchange.id ?? '',
-                        rejectToExchangeMutation,
-                        'rejectToExchange'
+                    onClick={
+                      () => handleOperation(
+                        '确认拒绝与该二货进行置换？',
+                        {
+                          id: exchange.id ?? '',
+                          mutation: rejectToExchangeMutation,
+                          mutationName: 'rejectToExchange',
+                        },
                       )
                     }
                   >
@@ -124,15 +165,25 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
               ) : (
                 <Block>
                   <Text>{ExchangeStatusText[status]}</Text>
-                  {status === ExchangeStatus.AGREED && (
-                    <AtButton
+                  {
+                    status === ExchangeStatus.AGREED && <AtButton
                       size="small"
                       type="secondary"
                       disabled={disableOperations}
+                      onClick={
+                        () => handleOperation(
+                          '确认取消与该二货进行置换？',
+                          {
+                            id: exchange.id ?? '',
+                            mutation: cancelExchangeAgreementMutation,
+                            mutationName: 'cancelExchangeAgreement',
+                          },
+                        )
+                      }
                     >
                       取消
                     </AtButton>
-                  )}
+                  }
                 </Block>
               )
             ) : (
@@ -143,10 +194,19 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
       })}
       <AtToast
         hasMask
-        duration={2000}
+        duration={1500}
         isOpened={toastOptions.opened}
         text={toastOptions.text}
         onClose={() => setToastOptions({ opened: false, text: '' })}
+      />
+      <AtModal
+        closeOnClickOverlay={false}
+        isOpened={modalOptions.opened}
+        cancelText='取消'
+        confirmText='确定'
+        onCancel={handleCancel}
+        onConfirm={handleConfirm}
+        content={modalOptions.content}
       />
     </ExchangeList>
   ) : null

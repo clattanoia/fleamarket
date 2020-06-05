@@ -152,7 +152,7 @@ export const deleteExchangeMutation = gql`
   }
 `
 export const cancelExchangeAgreementMutation = gql`
-  mutation($exchangeId: String!) {
-    cancelExchangeAgreement(exchangeId: $exchangeId)
+  mutation($id: String!) {
+    cancelExchangeAgreement(exchangeId: $id)
   }
 `

@@ -46,8 +46,8 @@
     align-items: flex-start;
 
     .title {
+      position: relative;
       font-size: 32px;
-      height: 88px;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;

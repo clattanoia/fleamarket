@@ -27,7 +27,13 @@ interface ReceivedExchangeProps {
 }
 
 export default function ReceivedExchange(props: ReceivedExchangeProps) {
-  const { userId, exchanges = [], goodsStatus = Status.FOR_SALE,  isGoodsOwner, refetchProductionDetails } = props
+  const {
+    userId,
+    exchanges = [],
+    goodsStatus = Status.FOR_SALE,
+    isGoodsOwner,
+    refetchProductionDetails,
+  } = props
   const [toastOptions, setToastOptions] = useState({
     opened: false,
     text: '',
@@ -42,7 +48,11 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
     })
   }
 
-  const handleOperation = async(id: string, mutation: DocumentNode, mutationName: string) => {
+  const handleOperation = async(
+    id: string,
+    mutation: DocumentNode,
+    mutationName: string
+  ) => {
     try {
       const { data } = await client.mutate({
         mutation: mutation,
@@ -69,7 +79,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
   }
 
   return exchanges.length ? (
-    <ExchangeList listTitle="求易货 —— TA发起的置换">
+    <ExchangeList listTitle="求易货 —— TA人发起的置换">
       {exchanges.map(exchange => {
         const status = exchange.status ?? ''
 
@@ -86,7 +96,13 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                     size="small"
                     type="primary"
                     disabled={disableOperations}
-                    onClick={() => handleOperation(exchange.id ?? '', agreeToExchangeMutation, 'agreeToExchange')}
+                    onClick={() =>
+                      handleOperation(
+                        exchange.id ?? '',
+                        agreeToExchangeMutation,
+                        'agreeToExchange'
+                      )
+                    }
                   >
                     同意
                   </AtButton>
@@ -94,7 +110,13 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                     size="small"
                     type="secondary"
                     disabled={disableOperations}
-                    onClick={() => handleOperation(exchange.id ?? '', rejectToExchangeMutation, 'rejectToExchange')}
+                    onClick={() =>
+                      handleOperation(
+                        exchange.id ?? '',
+                        rejectToExchangeMutation,
+                        'rejectToExchange'
+                      )
+                    }
                   >
                     拒绝
                   </AtButton>
@@ -102,13 +124,15 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
               ) : (
                 <Block>
                   <Text>{ExchangeStatusText[status]}</Text>
-                  <AtButton
-                    size="small"
-                    type="secondary"
-                    disabled={disableOperations}
-                  >
-                    取消
-                  </AtButton>
+                  {status === ExchangeStatus.AGREED && (
+                    <AtButton
+                      size="small"
+                      type="secondary"
+                      disabled={disableOperations}
+                    >
+                      取消
+                    </AtButton>
+                  )}
                 </Block>
               )
             ) : (

@@ -140,3 +140,13 @@ export const increasePurchaseReadCount = gql`
     increasePurchaseReadCount(id: $id)
   }
 `
+export const deleteExchangeMutation = gql`
+  mutation($exchangeId: String!) {
+    deleteExchange(exchangeId: $exchangeId)
+  }
+`
+export const cancelExchangeAgreementMutation = gql`
+  mutation($exchangeId: String!) {
+    cancelExchangeAgreement(exchangeId: $exchangeId)
+  }
+`

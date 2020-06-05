@@ -22,7 +22,7 @@ const TOAST_INFO: Record<string, Partial<AtToastProps>> = {
 }
 
 const MODEL_TEXT = {
-  [ExchangeStatus.AGREED]: '确认取消与该二货的置换？',
+  [ExchangeStatus.AGREED]: '确认拒绝与该二货的置换？确认后，该二货将变为已拒绝！',
   [ExchangeStatus.APPLIED]: '确认取消与该二货的置换？取消后，该二货将从列表移除！',
 }
 
@@ -106,13 +106,22 @@ export default function RequestedExchange(props: RequestedExchangeProps) {
               >
                 <Text>{ExchangeStatusText[status]}</Text>
                 {
-                  (status === ExchangeStatus.AGREED || status === ExchangeStatus.APPLIED) &&
+                  (status === ExchangeStatus.APPLIED) &&
                   <AtButton
                     size="small"
                     type="secondary"
                     onClick={() => handleCancelClick(exchange)}
                     disabled={productStatus === Status.SALE_OUT}
                   >取消</AtButton>
+                }
+                {
+                  (status === ExchangeStatus.AGREED) &&
+                  <AtButton
+                    size="small"
+                    type="secondary"
+                    onClick={() => handleCancelClick(exchange)}
+                    disabled={productStatus === Status.SALE_OUT}
+                  >拒绝</AtButton>
                 }
               </ExchangeListItem>
             )

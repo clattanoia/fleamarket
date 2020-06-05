@@ -47,7 +47,9 @@
     }
 
     .goodsTag {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       width: 104px;
       height: 34px;

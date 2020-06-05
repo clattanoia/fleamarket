@@ -486,11 +486,11 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               ))
               : null}
           </View>
-          <RequestedExchange
+          {this.isOwnProduct() && <RequestedExchange
             productStatus={detail.status}
             exchanges={requestedExchanges}
             onRefresh={this.refreshDetail}
-          />
+          />}
           <ReceivedExchange
             userId={this.props.userId}
             isGoodsOwner={this.isOwnProduct()}

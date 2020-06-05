@@ -260,6 +260,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         this.handleCloseToast()
         this.setState({ exchangeableGoodsModalVisible: false })
       }, 2000)
+
+      this.fetchProductDetail()
     } catch (error) {
       this.setState({
         toastText: '操作失败，请稍后重试！',

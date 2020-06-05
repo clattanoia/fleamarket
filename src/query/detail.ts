@@ -103,14 +103,14 @@ export const exchangeGoodsMutation = gql`
 `
 
 export const agreeToExchangeMutation = gql`
-  mutation($id: String, $userId: String) {
-    agreeToExchange(id: $id, userId: $userId)
+  mutation($exchangeId: String, $userId: String) {
+    agreeToExchange(exchangeId: $id, userId: $userId)
   }
 `
 
 export const rejectToExchangeMutation = gql`
-  mutation($id: String, $userId: String) {
-    rejectToExchange(id: $id, userId: $userId)
+  mutation($exchangeId: String, $userId: String) {
+    rejectToExchange(exchangeId: $id, userId: $userId)
   }
 `
 
@@ -152,7 +152,7 @@ export const deleteExchangeMutation = gql`
   }
 `
 export const cancelExchangeAgreementMutation = gql`
-  mutation($id: String!) {
-    cancelExchangeAgreement(exchangeId: $id)
+  mutation($exchangeId: String!) {
+    cancelExchangeAgreement(exchangeId: $exchangeId)
   }
 `

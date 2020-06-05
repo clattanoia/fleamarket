@@ -27,8 +27,8 @@ interface ReceivedExchangeProps {
   goodsStatus?: Status;
 }
 
-type ExchangeInfo = {
-  id: string,
+type ExchangeInput = {
+  exchangeId: string,
   mutation: DocumentNode,
   mutationName: string,
 }
@@ -49,7 +49,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
     opened: false,
     content: '',
     exchange: {
-      id: '',
+      exchangeId: '',
       mutation: {},
       mutationName: '',
     },
@@ -64,7 +64,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
     })
   }
 
-  const handleOperation = (content: string, exchange: ExchangeInfo) => {
+  const handleOperation = (content: string, exchange: ExchangeInput) => {
     setModalOptions({
       content,
       exchange,
@@ -77,7 +77,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
       opened: false,
       content: '',
       exchange: {
-        id: '',
+        exchangeId: '',
         mutation: {},
         mutationName: '',
       },
@@ -85,13 +85,13 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
   }
 
   const handleConfirm = async() => {
-    const { exchange: { id, mutation, mutationName }} = modalOptions
+    const { exchange: { exchangeId, mutation, mutationName }} = modalOptions
 
     try {
       const { data } = await client.mutate({
         mutation: mutation,
         variables: {
-          id,
+          exchangeId,
           userId,
         },
       })
@@ -135,7 +135,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                       () => handleOperation(
                         '确认要和该二货进行置换？',
                         {
-                          id: exchange.id ?? '',
+                          exchangeId: exchange.id ?? '',
                           mutation: agreeToExchangeMutation,
                           mutationName: 'agreeToExchange',
                         },
@@ -152,7 +152,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                       () => handleOperation(
                         '确认拒绝与该二货进行置换？',
                         {
-                          id: exchange.id ?? '',
+                          exchangeId: exchange.id ?? '',
                           mutation: rejectToExchangeMutation,
                           mutationName: 'rejectToExchange',
                         },
@@ -174,7 +174,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                         () => handleOperation(
                           '确认取消与该二货进行置换？',
                           {
-                            id: exchange.id ?? '',
+                            exchangeId: exchange.id ?? '',
                             mutation: cancelExchangeAgreementMutation,
                             mutationName: 'cancelExchangeAgreement',
                           },

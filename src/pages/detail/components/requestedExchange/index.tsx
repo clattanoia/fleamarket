@@ -1,6 +1,6 @@
 import Taro, { useState } from '@tarojs/taro'
-import { Text, Button, View } from '@tarojs/components'
-import { AtModal, AtToast } from 'taro-ui'
+import { Text, View } from '@tarojs/components'
+import { AtModal, AtToast, AtButton } from 'taro-ui'
 import { AtToastProps } from 'taro-ui/@types/toast'
 import { ExchangeInfo } from '../../../../interfaces/detail'
 import { ExchangeStatusText, ProductType, ExchangeStatus, Status } from '../../../../constants/enums'
@@ -107,10 +107,12 @@ export default function RequestedExchange(props: RequestedExchangeProps) {
                 <Text>{ExchangeStatusText[status]}</Text>
                 {
                   (status === ExchangeStatus.AGREED || status === ExchangeStatus.APPLIED) &&
-                  <Button
+                  <AtButton
+                    size="small"
+                    type="secondary"
                     onClick={() => handleCancelClick(exchange)}
                     disabled={productStatus === Status.SALE_OUT}
-                  >取消</Button>
+                  >取消</AtButton>
                 }
               </ExchangeListItem>
             )

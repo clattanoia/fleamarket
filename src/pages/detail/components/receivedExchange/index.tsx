@@ -31,6 +31,7 @@ type ExchangeInput = {
   exchangeId: string,
   mutation: DocumentNode,
   mutationName: string,
+  status: Status,
 }
 
 export default function ReceivedExchange(props: ReceivedExchangeProps) {
@@ -52,6 +53,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
       exchangeId: '',
       mutation: {},
       mutationName: '',
+      status: Status.FOR_SALE,
     },
   })
   const disableOperations = goodsStatus !== Status.FOR_SALE
@@ -80,12 +82,22 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
         exchangeId: '',
         mutation: {},
         mutationName: '',
+        status: Status.FOR_SALE,
       },
     })
   }
 
   const handleConfirm = async() => {
-    const { exchange: { exchangeId, mutation, mutationName }} = modalOptions
+    const { exchange: { exchangeId, mutation, mutationName, status }} = modalOptions
+
+    if(status === Status.SALE_OUT) {
+      setToastOptions({
+        opened: true,
+        text: '当前二货已下架，不能继续进行易货！',
+      })
+
+      return handleCancel()
+    }
 
     try {
       const { data } = await client.mutate({
@@ -138,6 +150,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                           exchangeId: exchange.id ?? '',
                           mutation: agreeToExchangeMutation,
                           mutationName: 'agreeToExchange',
+                          status: exchange.goods?.status ?? Status.FOR_SALE,
                         },
                       )
                     }
@@ -155,6 +168,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                           exchangeId: exchange.id ?? '',
                           mutation: rejectToExchangeMutation,
                           mutationName: 'rejectToExchange',
+                          status: exchange.goods?.status ?? Status.FOR_SALE,
                         },
                       )
                     }
@@ -177,6 +191,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                             exchangeId: exchange.id ?? '',
                             mutation: cancelExchangeAgreementMutation,
                             mutationName: 'cancelExchangeAgreement',
+                            status: exchange.goods?.status ?? Status.FOR_SALE,
                           },
                         )
                       }

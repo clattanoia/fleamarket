@@ -69,7 +69,11 @@
           align-items: center;
           font-size: 28px;
           width: 56%;
-          justify-content: space-between;
+          justify-content: flex-end;
+
+          text {
+            margin-right: 10px;
+          }
         }
       }
 

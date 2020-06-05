@@ -1,13 +1,17 @@
 import { Block, Text } from '@tarojs/components'
 import Taro, { useState } from '@tarojs/taro'
 import { AtButton, AtToast } from 'taro-ui'
+import { DocumentNode } from 'graphql'
 import {
   ExchangeStatus,
   ExchangeStatusText,
   ProductType,
   Status,
 } from '../../../../constants/enums'
-import { agreeToExchangeMutation } from '../../../../query/detail'
+import {
+  agreeToExchangeMutation,
+  rejectToExchangeMutation,
+} from '../../../../query/detail'
 import client from '../../../../graphql-client'
 import { ExchangeInfo, ProductInfoDetail } from '../../../../interfaces/detail'
 import { navigateWithFallback } from '../../../../utils/helper'
@@ -38,17 +42,17 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
     })
   }
 
-  const handleAgreeToExchange = async(id: string) => {
+  const handleOperation = async(id: string, mutation: DocumentNode, mutationName: string) => {
     try {
-      const { data: { agreeToExchange }} = await client.mutate({
-        mutation: agreeToExchangeMutation,
+      const { data } = await client.mutate({
+        mutation: mutation,
         variables: {
           id,
           userId,
         },
       })
 
-      if(agreeToExchange) {
+      if(data[mutationName]) {
         setToastOptions({
           opened: true,
           text: '操作成功',
@@ -82,7 +86,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                     size="small"
                     type="primary"
                     disabled={disableOperations}
-                    onClick={() => handleAgreeToExchange(exchange.id || '')}
+                    onClick={() => handleOperation(exchange.id ?? '', agreeToExchangeMutation, 'agreeToExchange')}
                   >
                     同意
                   </AtButton>
@@ -90,6 +94,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
                     size="small"
                     type="secondary"
                     disabled={disableOperations}
+                    onClick={() => handleOperation(exchange.id ?? '', rejectToExchangeMutation, 'rejectToExchange')}
                   >
                     拒绝
                   </AtButton>

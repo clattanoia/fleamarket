@@ -110,6 +110,7 @@ class Publish extends Component {
     selectedCategory: '',
     selectedContacts: [],
     agreeExchange: true,
+    hasReceivedExchanges: false,
   }
 
   config: Config = {
@@ -154,7 +155,7 @@ class Publish extends Component {
   fetchGoodsDetail = async() => {
     const { productType } = this.$router.params
     try {
-      const { data: { detailInfo }} = await client.query({
+      const { data: { detailInfo, receivedExchanges = []}} = await client.query({
         query: productType === ProductType.GOODS ? goodsDetailQuery : purchaseDetailQuery,
         variables: { id: this.$router.params.productId },
       })
@@ -177,6 +178,7 @@ class Publish extends Component {
           .map(item => item.id),
         isLoading: false,
         agreeExchange: detailInfo.agreeExchange,
+        hasReceivedExchanges: receivedExchanges.length > 0,
       })
     } catch (e) {
       this.setState({
@@ -429,6 +431,7 @@ class Publish extends Component {
               <Exchange
                 onSetVal={this.setStateValue}
                 agreeExchange={this.state.agreeExchange}
+                hasReceivedExchanges={this.state.hasReceivedExchanges}
               />
             }
             <View className="form_btn">

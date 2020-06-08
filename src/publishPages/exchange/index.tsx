@@ -8,6 +8,7 @@ import './index.scss'
 type PageOwnProps = {
   onSetVal: (key, value) => void,
   agreeExchange: boolean,
+  hasReceivedExchanges: boolean
 }
 
 type PageState = {}
@@ -28,6 +29,7 @@ class Exchange extends Component<PageOwnProps, PageState> {
             border={false}
             checked={this.props.agreeExchange}
             onChange={this.onSwitch}
+            disabled={this.props.hasReceivedExchanges}
           />
         </View>
       </View>

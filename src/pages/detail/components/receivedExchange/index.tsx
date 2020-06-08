@@ -90,7 +90,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
   const handleConfirm = async() => {
     const { exchange: { exchangeId, mutation, mutationName, status }} = modalOptions
 
-    if(status === Status.SALE_OUT) {
+    if(status === Status.SALE_OUT && mutationName === 'agreeToExchange') {
       setToastOptions({
         opened: true,
         text: '当前二货已下架，不能继续进行易货！',

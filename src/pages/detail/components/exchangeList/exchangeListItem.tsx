@@ -30,13 +30,14 @@ export default function ExchangeListItem(props: ExchangeListItemProps) {
     <View className="exchange-list-item" key={id}>
       <Image src={coverUrl} onClick={() => handleProductClick(exchange)} />
       <View className="item-content">
-        <View
-          className={cls('title', {
-            'disabled-title': status !== Status.FOR_SALE,
-          })}
-          onClick={() => handleProductClick(exchange)}
-        >
-          {title}
+        <View className='title-wrapper' onClick={() => handleProductClick(exchange)} >
+          <View
+            className={cls('title', {
+              'disabled-title': status !== Status.FOR_SALE,
+            })}
+          >
+            {title}
+          </View>
         </View>
         <View className="info">
           <View>

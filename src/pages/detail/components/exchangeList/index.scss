@@ -45,15 +45,20 @@
     justify-content: space-between;
     align-items: flex-start;
 
-    .title {
-      position: relative;
-      font-size: 32px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      /*! autoprefixer: off */
+    .title-wrapper {
+      width: 100%;
+      flex: 1;
+
+      .title {
+        position: relative;
+        font-size: 32px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        /*! autoprefixer: off */
+      }
     }
 
     .disabled-title {

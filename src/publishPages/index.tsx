@@ -42,6 +42,8 @@ const ERROR_MESSAGES = {
   images: `最多上传10张图片（JPG/PNG）,图片不能大于10M,图片长宽均不能超过${ImageMaxWidthHeight}PX`,
   uploadError: '图片上传失败',
   auditImageLimited: '图片上传已达上限，请邮箱认证或稍后再试',
+  /* eslint-disable-next-line */
+  already_have_exchange_request: '当前二货已经产生了易货请求，不能取消易货功能！'
 }
 
 const TITLE_TEXT = {
@@ -371,6 +373,10 @@ class Publish extends Component {
       }
     } else if(e.message.indexOf('403') > -1) {
       error = 'invalidUser'
+    } else if(e.message.indexOf('409') > -1) {
+      if(e.message.indexOf('already_have_exchange_request') > -1) {
+        error = 'already_have_exchange_request'
+      }
     } else if(e.message.indexOf('412') > -1) {
       const msg = e.message.replace('Network error: ', '')
       const msgError = JSON.parse(msg).error

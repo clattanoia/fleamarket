@@ -9,7 +9,12 @@ import AuthInfoLayout from '../../components/authInfo'
 import Avatar from '../../components/avatar'
 import ExtendedContainer from '../../components/extendedContainer'
 import Tag from '../../components/tag'
-import { CertifyEmail, ProductType, Status } from '../../constants/enums'
+import {
+  CertifyEmail,
+  ProductType,
+  Status,
+  ExchangeStatus,
+} from '../../constants/enums'
 import client from '../../graphql-client'
 import { InContact } from '../../interfaces/contact'
 import { ExchangeInfo, ProductInfoDetail, User } from '../../interfaces/detail'
@@ -219,6 +224,19 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
   }
 
   showExchange = async() => {
+    const alreadyAgreedExchange = this.state.receivedExchanges.find(
+      exchange => exchange.status === ExchangeStatus.AGREED
+    )
+
+    if(alreadyAgreedExchange) {
+      this.setState({
+        toastText:
+          '当前二货已经确认置换的意向，如有需要，请直接联系该二货的发布者！',
+        isToastOpened: true,
+      })
+      return
+    }
+
     this.authCallback = this.showExchange
     if(Taro.getStorageSync('token')) {
       const goods = await this.getExchangeableGoods()
@@ -488,11 +506,13 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               ))
               : null}
           </View>
-          {this.isOwnProduct() && <RequestedExchange
-            productStatus={detail.status}
-            exchanges={requestedExchanges}
-            onRefresh={this.refreshDetail}
-          />}
+          {this.isOwnProduct() && (
+            <RequestedExchange
+              productStatus={detail.status}
+              exchanges={requestedExchanges}
+              onRefresh={this.refreshDetail}
+            />
+          )}
           <ReceivedExchange
             userId={this.props.userId}
             isGoodsOwner={this.isOwnProduct()}

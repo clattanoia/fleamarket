@@ -62,7 +62,14 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
             disabled={!selectedGoods}
             type="primary"
             size="normal"
-            onClick={debounce(() => onConfirm(selectedGoods), 250)}
+            onClick={debounce(
+              function() { onConfirm(selectedGoods) },
+              250,
+              {
+                leading: true,
+                trailing: false,
+              }
+            )}
           >
             确定
           </AtButton>

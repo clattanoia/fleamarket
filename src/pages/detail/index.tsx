@@ -103,7 +103,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       isToastOpened: false,
       receivedExchanges: [],
       requestedExchanges: [],
-      toastStatus: ToastStatus.SUCCESS,
+      toastStatus: undefined,
     }
   }
 

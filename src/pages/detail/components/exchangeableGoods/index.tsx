@@ -38,7 +38,13 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
             <Text>以货换货</Text>
           </View>
         </View>
-        <ScrollView className="list" scrollY>
+        <ScrollView
+          scrollY
+          className="list"
+          style={{
+            overflow: 'hidden',
+          }}
+        >
           {
             goods &&
             goods.map(

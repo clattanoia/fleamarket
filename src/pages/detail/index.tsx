@@ -272,12 +272,8 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       this.setState({
         toastText: '操作成功',
         isToastOpened: true,
+        exchangeableGoodsModalVisible: false,
       })
-
-      setTimeout(() => {
-        this.handleCloseToast()
-        this.setState({ exchangeableGoodsModalVisible: false })
-      }, 2000)
 
       this.fetchProductDetail()
     } catch (error) {
@@ -285,7 +281,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         toastText: '操作失败，请稍后重试！',
         isToastOpened: true,
       })
-
+    } finally {
       setTimeout(() => {
         this.handleCloseToast()
       }, 2000)

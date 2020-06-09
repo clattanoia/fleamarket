@@ -64,7 +64,7 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
             size="normal"
             onClick={debounce(
               function() { onConfirm(selectedGoods) },
-              250,
+              500,
               {
                 leading: true,
                 trailing: false,

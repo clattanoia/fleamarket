@@ -1,6 +1,7 @@
 import { Image, Text, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import cls from 'classnames'
+import { ITouchEvent } from '@tarojs/components/types/common'
 import { Status } from '../../../../constants/enums'
 import { ExchangeInfo } from '../../../../interfaces/detail'
 import './index.scss'
@@ -26,11 +27,15 @@ export default function ExchangeListItem(props: ExchangeListItemProps) {
     productClick && productClick(exchange)
   }
 
+  const stopPropagation = (event: ITouchEvent) => {
+    event.stopPropagation()
+  }
+
   return (
-    <View className="exchange-list-item" key={id}>
-      <Image src={coverUrl} onClick={() => handleProductClick(exchange)} />
+    <View className="exchange-list-item" key={id} onClick={() => handleProductClick(exchange)} >
+      <Image src={coverUrl} />
       <View className="item-content">
-        <View className='title-wrapper' onClick={() => handleProductClick(exchange)} >
+        <View className='title-wrapper' >
           <View
             className={cls('title', {
               'disabled-title': status !== Status.FOR_SALE,
@@ -45,7 +50,7 @@ export default function ExchangeListItem(props: ExchangeListItemProps) {
               <View className="price">
                 <Text>{price}</Text>
               </View>
-              <View className="status-action">{children}</View>
+              <View className="status-action" onClick={stopPropagation}>{children}</View>
             </View>
             <View className="view-count">
               <Text>浏览次数：{readCount}</Text>

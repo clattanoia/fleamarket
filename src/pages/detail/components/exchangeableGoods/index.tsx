@@ -2,6 +2,7 @@ import { Text, View, ScrollView } from '@tarojs/components'
 import Taro, { useState, useEffect } from '@tarojs/taro'
 import { AtButton, AtFloatLayout } from 'taro-ui'
 import { BaseEventOrigFunction } from '@tarojs/components/types/common'
+import debounce from 'lodash.debounce'
 import { ProductInfoDetail } from '../../../../interfaces/detail'
 
 import ExchangeableGoodsItem from './exhangeableGoodsItem'
@@ -55,7 +56,7 @@ export default function ExchangeableGoods(props: ExchangeableGoodsProps) {
             disabled={!selectedGoods}
             type="primary"
             size="normal"
-            onClick={() => onConfirm(selectedGoods)}
+            onClick={debounce(() => onConfirm(selectedGoods), 250)}
           >
             确定
           </AtButton>

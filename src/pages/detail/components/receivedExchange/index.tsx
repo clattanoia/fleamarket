@@ -7,6 +7,7 @@ import {
   ExchangeStatusText,
   ProductType,
   Status,
+  ToastStatus,
 } from '../../../../constants/enums'
 import {
   agreeToExchangeMutation,
@@ -34,6 +35,12 @@ type ExchangeInput = {
   status: Status,
 }
 
+type ToastOptions = {
+  opened: boolean,
+  text: string,
+  status: undefined | ToastStatus,
+}
+
 export default function ReceivedExchange(props: ReceivedExchangeProps) {
   const {
     userId,
@@ -42,9 +49,10 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
     isGoodsOwner,
     refetchProductionDetails,
   } = props
-  const [toastOptions, setToastOptions] = useState({
+  const [toastOptions, setToastOptions] = useState<ToastOptions>({
     opened: false,
     text: '',
+    status: undefined,
   })
   const [modalOptions, setModalOptions] = useState({
     opened: false,
@@ -94,6 +102,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
       setToastOptions({
         opened: true,
         text: '当前二货已下架，不能继续进行易货！',
+        status: ToastStatus.ERROR,
       })
 
       return handleCancel()
@@ -112,6 +121,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
         setToastOptions({
           opened: true,
           text: '操作成功',
+          status: ToastStatus.SUCCESS,
         })
 
         await refetchProductionDetails()
@@ -120,6 +130,7 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
       setToastOptions({
         opened: true,
         text: '操作失败，请稍后重试',
+        status: ToastStatus.ERROR,
       })
     }
     handleCancel()
@@ -209,10 +220,11 @@ export default function ReceivedExchange(props: ReceivedExchangeProps) {
       })}
       <AtToast
         hasMask
+        status={toastOptions.status}
         duration={1500}
         isOpened={toastOptions.opened}
         text={toastOptions.text}
-        onClose={() => setToastOptions({ opened: false, text: '' })}
+        onClose={() => setToastOptions({ opened: false, text: '', status: undefined })}
       />
       <AtModal
         closeOnClickOverlay={false}

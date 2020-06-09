@@ -14,6 +14,7 @@ import {
   ProductType,
   Status,
   ExchangeStatus,
+  ToastStatus,
 } from '../../constants/enums'
 import client from '../../graphql-client'
 import { InContact } from '../../interfaces/contact'
@@ -66,6 +67,7 @@ type PageState = {
   receivedExchanges: ExchangeInfo[];
   requestedExchanges: ExchangeInfo[];
   isToastOpened: boolean;
+  toastStatus: ToastStatus | undefined;
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -101,6 +103,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       isToastOpened: false,
       receivedExchanges: [],
       requestedExchanges: [],
+      toastStatus: ToastStatus.SUCCESS,
     }
   }
 
@@ -272,6 +275,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       this.setState({
         toastText: '操作成功',
         isToastOpened: true,
+        toastStatus: ToastStatus.SUCCESS,
         exchangeableGoodsModalVisible: false,
       })
 
@@ -279,6 +283,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     } catch (error) {
       this.setState({
         toastText: '操作失败，请稍后重试！',
+        toastStatus: ToastStatus.ERROR,
         isToastOpened: true,
       })
     } finally {
@@ -430,6 +435,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
     this.setState({
       toastText: '',
       isToastOpened: false,
+      toastStatus: undefined,
     })
   }
 
@@ -452,6 +458,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       isCollected,
       toastText,
       isToastOpened,
+      toastStatus,
       receivedExchanges,
       requestedExchanges,
     } = this.state
@@ -592,6 +599,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
         <AtToast
           isOpened={isToastOpened}
           hasMask
+          status={toastStatus}
           text={toastText}
           onClose={this.handleCloseToast}
         ></AtToast>

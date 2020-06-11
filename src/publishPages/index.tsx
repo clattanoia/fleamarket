@@ -11,6 +11,7 @@ import Contact from './contact'
 import Exchange from './exchange'
 import PublishImages from './images'
 import PublishPreload from './preload'
+import PublishLocation from './location'
 
 import { getToken, uploadQiniu } from '../utils/qiniuUploader'
 import client from '../graphql-client'
@@ -423,6 +424,7 @@ class Publish extends Component {
               showErrorMessage={this.showErrorMessage}
               imagesUrls={this.state.imagesUrls}
             />
+            <PublishLocation />
             <Category
               onSetVal={this.setStateValue}
               selectedCategory={this.state.selectedCategory}

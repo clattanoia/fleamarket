@@ -24,6 +24,16 @@ export const DetailFragment = gql`
       brief
       certification
     }
+    location {
+      province {
+        id
+        name
+      }
+      city {
+        id
+        name
+      }
+    }
   }
 `
 

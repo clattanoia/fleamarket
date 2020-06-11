@@ -13,6 +13,16 @@ export const recommendListQuery = gql`
       avatarUrl,
       certification
     }
+    location {
+      province {
+        id
+        name
+      }
+      city {
+        id
+        name
+      }
+    }
   }
 }
 `

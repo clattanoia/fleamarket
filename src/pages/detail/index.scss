@@ -64,6 +64,16 @@ page {
         }
       }
 
+      .status-tags {
+        display: flex;
+        justify-content: space-between;
+        .location {
+          color: $grey;
+          font-size: 26px;
+          font-weight: normal;
+        }
+      }
+
       .title {
         margin: 20rpx 0;
         font-size: 38rpx;

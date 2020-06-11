@@ -1,3 +1,5 @@
+import { Location } from "src/interfaces/detail";
+
 declare namespace Global {
 
   interface Category {
@@ -18,9 +20,6 @@ declare namespace Global {
     price: number,
     categoryName: string,
     owner: User,
-    location: {
-      province: string,
-      city: string
-    }
+    location: Location,
   }
 }

@@ -1,6 +1,11 @@
 import { ExchangeStatus, Platform, Status } from '../constants/enums'
 import { InContact } from './contact'
 
+export type Location = {
+  province?: string,
+  city?: string,
+}
+
 export type User = {
   id: string;
   nickname: string;
@@ -32,6 +37,7 @@ export interface ProductInfoDetail {
   contacts?: string[];
   readCount: number;
   agreeExchange?: boolean;
+  location?: Location,
 }
 
 export interface ExchangeInfo {

@@ -40,7 +40,7 @@ function ProductItem(props: InProps) {
           avatarSize={64}
         />
         <Text className={styles.name}>{productData.owner.nickname}</Text>
-        <Text className={styles.location}>{productData.location.city}</Text>
+        <Text className={styles.location}>{productData.location.city || '齐齐哈尔'}</Text>
       </View>
     </View>
   )

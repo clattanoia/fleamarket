@@ -1,6 +1,7 @@
 module.exports = {
   env: {
-    NODE_ENV: '"production"'
+    NODE_ENV: '"production"',
+    BFF_URI: '"https://2hj.com.cn/graphql"'
   },
   defineConstants: {
   },

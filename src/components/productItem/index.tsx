@@ -14,7 +14,7 @@ interface InProps {
 }
 
 function ProductItem(props: InProps) {
-  const { productData = { owner: {}}} = props
+  const { productData = { owner: {}, location: {}}} = props
 
   const coverUrl = (productData.coverUrl || '').indexOf('qiniu.2hj.com.cn') > -1 ?
     `${productData.coverUrl}?imageMogr2/thumbnail/300x300`
@@ -37,9 +37,10 @@ function ProductItem(props: InProps) {
           certificate={productData.owner.certification === CertifyEmail.CERTIFIED}
           userId={productData.owner.id}
           avatarUrl={productData.owner.avatarUrl}
-          avatarSize={80}
+          avatarSize={64}
         />
         <Text className={styles.name}>{productData.owner.nickname}</Text>
+        <Text className={styles.location}>{productData.location.city}</Text>
       </View>
     </View>
   )

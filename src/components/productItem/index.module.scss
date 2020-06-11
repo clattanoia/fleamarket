@@ -62,8 +62,7 @@
   .userInfo {
     display: flex;
     align-items: center;
-    margin-top: 15px;
-    margin-left: 10px;
+    margin: 15px 6px 0;
 
     .at-avatar {
       width: 52px;
@@ -74,6 +73,25 @@
       color: $fontGray;
       font-size: 24px;
       margin-left: 10px;
+      width: 136px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      /*! autoprefixer: off */
+    }
+
+    .location {
+      text-align: right;
+      color: $fontGray;
+      font-size: 24px;
+      margin-left: 10px;
+      width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }

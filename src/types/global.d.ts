@@ -18,5 +18,9 @@ declare namespace Global {
     price: number,
     categoryName: string,
     owner: User,
+    location: {
+      province: string,
+      city: string
+    }
   }
 }

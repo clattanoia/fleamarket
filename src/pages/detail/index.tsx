@@ -494,7 +494,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               <Tag tagName={this.genProductType(productType as ProductType)} />
               {this.renderSaleStatus()}
             </View>
-            <Text className="location">{`${detail.location.province || ''} ${detail.location.city || ''}`}</Text>
+            <Text className="location">{`${detail.location.province.name || ''} ${detail.location.city.name || ''}`}</Text>
           </View>
           <View className="title">{detail.title!}</View>
           <View className="description">

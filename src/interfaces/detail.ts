@@ -2,8 +2,14 @@ import { ExchangeStatus, Platform, Status } from '../constants/enums'
 import { InContact } from './contact'
 
 export type Location = {
-  province?: string,
-  city?: string,
+  province?: {
+    id: string,
+    name: string,
+  },
+  city?: {
+    id: string,
+    name: string,
+  },
 }
 
 export type User = {

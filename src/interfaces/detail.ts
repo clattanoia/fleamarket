@@ -1,15 +1,14 @@
 import { ExchangeStatus, Platform, Status } from '../constants/enums'
 import { InContact } from './contact'
 
+export interface DistrictInfo {
+  id: string;
+  name: string;
+}
+
 export type Location = {
-  province?: {
-    id: string,
-    name: string,
-  },
-  city?: {
-    id: string,
-    name: string,
-  },
+  province?: DistrictInfo,
+  city?: DistrictInfo,
 }
 
 export type User = {

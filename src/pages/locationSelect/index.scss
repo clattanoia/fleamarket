@@ -1,0 +1,65 @@
+@import "../../styles/theme.scss";
+
+:host {
+  height: 100%;
+}
+
+.location-select-page {
+  height: 100%;
+
+  .scroll-wrapper {
+    height: 100%;
+    display: flex;
+
+    .scroll-province {
+      display: flex;
+      position: relative;
+      width: 30%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #f9f9f9;
+
+      View {
+        display: flex;
+        align-items: center;
+        height: 70px;
+        padding-left: 30px;
+        border-bottom: 1px solid #f2f2f2;
+
+        Text {
+          font-size: 26px;
+        }
+
+        &.active {
+          background-color: white;
+          color: $baseColor;
+        }
+      }
+    }
+
+    .scroll-city {
+      display: flex;
+      position: relative;
+      width: 70%;
+      height: 100%;
+      overflow: hidden;
+      background-color: white;
+
+      View {
+        display: flex;
+        align-items: center;
+        height: 70px;
+        padding-left: 30px;
+        border-bottom: 1px solid #f4f4f4;
+
+        Text {
+          font-size: 26px;
+        }
+
+        &.active {
+          color: $baseColor;
+        }
+      }
+    }
+  }
+}

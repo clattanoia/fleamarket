@@ -1,4 +1,4 @@
-import { SET_AUTH_INFO, SET_PRODUCT_SEARCH, RESET_PRODUCT_SEARCH } from '../constants/actionTypes'
+import { SET_AUTH_INFO, SET_PRODUCT_SEARCH, RESET_PRODUCT_SEARCH, SET_LOCATION_SELECT } from '../constants/actionTypes'
 
 export const setAuthInfo = (payload) => {
   return {
@@ -17,5 +17,12 @@ export const setProductSearch = (payload) => {
 export const resetProductSearch = () => {
   return {
     type: RESET_PRODUCT_SEARCH,
+  }
+}
+
+export const setLocationSelect = (payload) => {
+  return {
+    type: SET_LOCATION_SELECT,
+    payload,
   }
 }

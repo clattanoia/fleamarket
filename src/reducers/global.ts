@@ -1,4 +1,4 @@
-import { SET_AUTH_INFO, SET_PRODUCT_SEARCH, RESET_PRODUCT_SEARCH } from '../constants/actionTypes'
+import { SET_AUTH_INFO, SET_PRODUCT_SEARCH, RESET_PRODUCT_SEARCH, SET_LOCATION_SELECT } from '../constants/actionTypes'
 import { ProductType, SearchOrderBy, SearchSortDirection, ProductStatus } from '../constants/enums'
 
 const INITIAL_STATE = {
@@ -11,6 +11,10 @@ const INITIAL_STATE = {
     orderBy: SearchOrderBy.RC,
     sortDirection: SearchSortDirection.DESC,
     status: ProductStatus.ALL,
+  },
+  locationSelect: {
+    province: null,
+    city: null,
   },
 }
 
@@ -34,6 +38,11 @@ export default function global(state = INITIAL_STATE, action) {
       return {
         ...state,
         productSearch: INITIAL_STATE.productSearch,
+      }
+    case SET_LOCATION_SELECT:
+      return {
+        ...state,
+        locationSelect: action.payload,
       }
     default:
       return state

@@ -35,6 +35,8 @@ class App extends Component {
       'pages/profile/feedback/index',
 
       'pages/myProductList/index',
+
+      'pages/locationSelect/index',
     ],
     subPackages: [
       {

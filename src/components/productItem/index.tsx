@@ -33,13 +33,15 @@ function ProductItem(props: InProps) {
         <Text className={styles.goodsTag}>{productData.categoryName}</Text>
       </View>
       <View className={styles.userInfo}>
-        <Avatar
-          certificate={productData.owner.certification === CertifyEmail.CERTIFIED}
-          userId={productData.owner.id}
-          avatarUrl={productData.owner.avatarUrl}
-          avatarSize={64}
-        />
-        <Text className={styles.name}>{productData.owner.nickname}</Text>
+        <View className={styles.leftContent}>
+          <Avatar
+            certificate={productData.owner.certification === CertifyEmail.CERTIFIED}
+            userId={productData.owner.id}
+            avatarUrl={productData.owner.avatarUrl}
+            avatarSize={64}
+          />
+          <Text className={styles.name}>{productData.owner.nickname}</Text>
+        </View>
         <Text className={styles.location}>{productData.location.city.name || ''}</Text>
       </View>
     </View>

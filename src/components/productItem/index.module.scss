@@ -61,25 +61,30 @@
 
   .userInfo {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     margin: 15px 6px 0;
 
-    .at-avatar {
-      width: 52px;
-      height: 52px;
-    }
-
-    .name {
-      color: $fontGray;
-      font-size: 24px;
-      margin-left: 10px;
-      width: 140px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      /*! autoprefixer: off */
+    .leftContent {
+      display: flex;
+      align-items: center;
+      .at-avatar {
+        width: 52px;
+        height: 52px;
+      }
+  
+      .name {
+        color: $fontGray;
+        font-size: 24px;
+        margin-left: 10px;
+        width: 140px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        /*! autoprefixer: off */
+      }
     }
 
     .location {

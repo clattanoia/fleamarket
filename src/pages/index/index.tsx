@@ -1,10 +1,11 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect, useSelector } from '@tarojs/redux'
 
 import { fetchUserInfo } from '../../actions/userInfo'
 import { fetchCategories } from '../../actions/category'
+import { fetchDistricts } from '../../actions/district'
 import TabBar from '../../components/tabBar'
 import client from '../../graphql-client'
 import { recommendListQuery } from '../../query/recommend'
@@ -37,6 +38,7 @@ type PageStateProps = {
 type PageDispatchProps = {
   fetchUserInfo: () => Function,
   fetchCategories: () => Function,
+  fetchDistricts: () => Function,
 }
 
 type PageOwnProps = {}
@@ -57,6 +59,9 @@ interface Index {
   fetchCategories() {
     dispatch(fetchCategories())
   },
+  fetchDistricts() {
+    dispatch(fetchDistricts())
+  },
 }))
 class Index extends Component {
 
@@ -76,8 +81,13 @@ class Index extends Component {
     isLoading: false,
   }
 
+  districts = useSelector((state: any) => {
+    return state.districts
+  })
+
   componentDidMount() {
     this.props.fetchCategories()
+    this.props.fetchDistricts()
 
     if(Taro.getStorageSync('token')) {
       this.props.fetchUserInfo()

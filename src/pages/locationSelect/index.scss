@@ -22,12 +22,12 @@
       View {
         display: flex;
         align-items: center;
-        height: 70px;
+        height: 80px;
         padding-left: 30px;
         border-bottom: 1px solid #f2f2f2;
 
         Text {
-          font-size: 26px;
+          font-size: 28px;
         }
 
         &.active {
@@ -48,12 +48,12 @@
       View {
         display: flex;
         align-items: center;
-        height: 70px;
+        height: 80px;
         padding-left: 30px;
         border-bottom: 1px solid #f4f4f4;
 
         Text {
-          font-size: 26px;
+          font-size: 28px;
         }
 
         &.active {

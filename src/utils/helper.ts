@@ -1,4 +1,6 @@
 import { navigateTo, getCurrentPages, redirectTo } from '@tarojs/taro'
+import get from 'lodash/get'
+import { Location, DistrictInfo } from '../interfaces/detail'
 
 const MAX_ROUTE_LENGTH  = 10
 
@@ -40,4 +42,18 @@ export const navigateWithFallback = (option: navigateTo.Option) => {
   } catch (e) {
     return redirectTo(option)
   }
+}
+
+export const isValidLocationInfo = (loc: Location | undefined): boolean => {
+  if(!loc) return false
+
+  const path = ['province.id', 'province.name', 'city.id', 'city.name']
+  return path.every(p => get(loc, p, '').length > 0)
+}
+
+export const isValidDistrictInfo = (dis: DistrictInfo | undefined): boolean => {
+  if(!dis) return false
+
+  const path = ['id', 'name']
+  return path.every(p => get(dis, p, '').length > 0)
 }

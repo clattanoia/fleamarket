@@ -1,4 +1,4 @@
-import { SET_AUTH_INFO, SET_PRODUCT_SEARCH, RESET_PRODUCT_SEARCH, SET_LOCATION_SELECT } from '../constants/actionTypes'
+import { SET_AUTH_INFO, SET_PRODUCT_SEARCH, RESET_PRODUCT_SEARCH, SET_LOCATION_SELECT, RESET_LOCATION_SELECT } from '../constants/actionTypes'
 import { ProductType, SearchOrderBy, SearchSortDirection, ProductStatus } from '../constants/enums'
 
 const INITIAL_STATE = {
@@ -43,6 +43,11 @@ export default function global(state = INITIAL_STATE, action) {
       return {
         ...state,
         locationSelect: action.payload,
+      }
+    case RESET_LOCATION_SELECT:
+      return {
+        ...state,
+        locationSelect: undefined,
       }
     default:
       return state

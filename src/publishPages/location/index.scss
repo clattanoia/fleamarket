@@ -15,9 +15,18 @@
     border: 1px solid #dcdcdc;
 
     .text {
-      margin-top: 2px;
-      margin-left: 5px;
+      margin: 2px 5px 0;
       font-size: 24px;
+    }
+  }
+
+  &.unknown-location {
+    .location-wrapper {
+      border: 1px solid $baseColor;
+    }
+
+    .text {
+      color: $baseColor;
     }
   }
 }

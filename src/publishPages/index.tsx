@@ -3,6 +3,7 @@ import { View } from '@tarojs/components'
 import { AtButton, AtToast } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { ComponentClass } from 'react'
+import isEmpty from 'lodash/isEmpty'
 
 import TabBar from '../components/tabBar'
 import PublishInfo from './info'
@@ -27,6 +28,9 @@ import { ImageMaxWidthHeight } from '../constants/publish'
 import { goodsDetailQuery, purchaseDetailQuery } from '../query/detail'
 
 import './index.scss'
+import { Location } from '../interfaces/detail'
+import { resetLocationSelect } from '../actions/global'
+import { isValidLocationInfo } from '../utils/helper'
 
 const ERROR_MESSAGES = {
   title: '标题不能为空',
@@ -44,7 +48,8 @@ const ERROR_MESSAGES = {
   uploadError: '图片上传失败',
   auditImageLimited: '图片上传已达上限，请邮箱认证或稍后再试',
   /* eslint-disable-next-line */
-  already_have_exchange_request: '当前二货已经产生了易货请求，不能取消易货功能！'
+  already_have_exchange_request: '当前二货已经产生了易货请求，不能取消易货功能！',
+  location: '地址未选择',
 }
 
 const TITLE_TEXT = {
@@ -63,10 +68,15 @@ type UserInfo = {
 }
 
 type PageStateProps = {
-  userInfo: UserInfo
+  userInfo: UserInfo,
+  global: {
+    locationSelect: Location
+  }
 }
 
-type PageDispatchProps = {}
+type PageDispatchProps = {
+  resetLocationSelect: () => Function
+}
 
 type PageOwnProps = {}
 
@@ -92,8 +102,13 @@ interface Publish {
   props: IProps;
 }
 
-@connect(({ userInfo }) => ({
-  userInfo: userInfo,
+@connect(({ userInfo, global }) => ({
+  userInfo,
+  global,
+}), (dispatch) => ({
+  resetLocationSelect() {
+    dispatch(resetLocationSelect())
+  },
 }))
 class Publish extends Component {
 
@@ -114,6 +129,7 @@ class Publish extends Component {
     selectedContacts: [],
     agreeExchange: true,
     hasReceivedExchanges: false,
+    location: undefined,
   }
 
   config: Config = {
@@ -155,6 +171,23 @@ class Publish extends Component {
     }
   }
 
+  componentDidShow() {
+    this.syncLocationSelect()
+  }
+
+  syncLocationSelect = () => {
+    const { global, resetLocationSelect } = this.props
+    const { locationSelect } = global
+
+    if(isValidLocationInfo(locationSelect)) {
+      this.setState({
+        location: locationSelect,
+      })
+
+      resetLocationSelect && resetLocationSelect()
+    }
+  }
+
   fetchGoodsDetail = async() => {
     const { productType } = this.$router.params
     try {
@@ -182,6 +215,7 @@ class Publish extends Component {
         isLoading: false,
         agreeExchange: detailInfo.agreeExchange,
         hasReceivedExchanges: receivedExchanges.length > 0,
+        location: detailInfo.location,
       })
     } catch (e) {
       this.setState({
@@ -233,7 +267,7 @@ class Publish extends Component {
     })
   }
 
-  validRequired = (val: string | Array<any>): boolean => !!val.length
+  validRequired = (val: string | Array<any> | Location): boolean => !isEmpty(val)
 
   vaildInputValues = (isShowErrorMessage = false): boolean => {
     const attrKeys: Array<string> = [
@@ -242,6 +276,7 @@ class Publish extends Component {
       'detail',
       'selectedCategory',
       'selectedContacts',
+      'location',
     ]
 
     // 求购信息校验图片
@@ -321,6 +356,7 @@ class Publish extends Component {
       pictures: uploadedImages.map(item => item.qiniuUrl),
       contacts: this.state.selectedContacts,
       agreeExchange: this.state.agreeExchange,
+      location: this.state.location,
     }
 
     const { productType, productId } = this.state
@@ -424,7 +460,7 @@ class Publish extends Component {
               showErrorMessage={this.showErrorMessage}
               imagesUrls={this.state.imagesUrls}
             />
-            <PublishLocation />
+            <PublishLocation location={this.state.location} />
             <Category
               onSetVal={this.setStateValue}
               selectedCategory={this.state.selectedCategory}

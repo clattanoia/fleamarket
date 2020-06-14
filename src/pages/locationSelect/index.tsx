@@ -7,6 +7,7 @@ import { districtData } from './data'
 import { setLocationSelect } from '../../actions/global'
 import { Location, DistrictInfo } from '../../interfaces/detail'
 import { SpecialAreaPrefix } from '../../constants/index'
+import { isValidDistrictInfo } from '../../utils/helper'
 
 type PageStateProps = {
   global: {
@@ -53,7 +54,9 @@ class LocationSelect extends Component<{}, PageState> {
   }
 
   get activeProvince(): DistrictInfo | undefined {
-    return this.state.curProvince || this.props.global?.locationSelect?.province || districtData.province[0]
+    const provinceFromStore = this.props.global?.locationSelect?.province
+    const provinceFallback = isValidDistrictInfo(provinceFromStore) ? provinceFromStore : districtData.province[0]
+    return this.state.curProvince || provinceFallback
   }
 
   get activeCity(): DistrictInfo | undefined {
@@ -87,6 +90,8 @@ class LocationSelect extends Component<{}, PageState> {
       province: this.activeProvince,
       city: item,
     })
+
+    Taro.navigateBack()
   }
 
   render() {

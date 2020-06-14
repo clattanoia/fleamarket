@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro'
 import ApolloClient from 'apollo-boost'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import { authLogin } from './utils/auth'
 
 const client = new ApolloClient({
@@ -51,6 +52,9 @@ const client = new ApolloClient({
   onError: error => {
     console.log(error)
   },
+  cache: new InMemoryCache({
+    addTypename: false,
+  }),
 })
 
 client.defaultOptions = {

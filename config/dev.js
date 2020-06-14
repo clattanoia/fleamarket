@@ -1,7 +1,7 @@
 module.exports = {
   env: {
     NODE_ENV: '"development"',
-    BFF_URI: '"https://dev.2hj.com.cn/graphql"'
+    BFF_URI: '"http://127.0.0.1:3000/graphql"'
   },
   defineConstants: {
   },

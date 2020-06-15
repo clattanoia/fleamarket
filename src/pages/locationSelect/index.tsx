@@ -3,16 +3,15 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import cls from 'classnames'
 import './index.scss'
-import { districtData } from './data'
 import { setLocationSelect } from '../../actions/global'
-import { Location, DistrictInfo } from '../../interfaces/detail'
-import { SpecialAreaPrefix } from '../../constants/index'
-import { isValidDistrictInfo } from '../../utils/helper'
+import { Location, DistrictInfo, Districts } from '../../interfaces/detail'
+import { isValidDistrictInfo, isSpecialArea } from '../../utils/helper'
 
 type PageStateProps = {
   global: {
     locationSelect: Location
   }
+  districts: Districts
 }
 
 type PageDispatchProps = {
@@ -29,8 +28,8 @@ interface LocationSelect {
   props: IProps
 }
 
-@connect(({ global }) => ({
-  global,
+@connect(({ global, districts }) => ({
+  global, districts,
 }), (dispatch) => ({
   setLocationSelect(payload) {
     dispatch(setLocationSelect(payload))
@@ -53,9 +52,14 @@ class LocationSelect extends Component<{}, PageState> {
     curProvince: undefined,
   }
 
+  get districtData(): Districts {
+    const districts = this.props.districts
+    return districts
+  }
+
   get activeProvince(): DistrictInfo | undefined {
     const provinceFromStore = this.props.global?.locationSelect?.province
-    const provinceFallback = isValidDistrictInfo(provinceFromStore) ? provinceFromStore : districtData.province[0]
+    const provinceFallback = isValidDistrictInfo(provinceFromStore) ? provinceFromStore : this.districtData.province[0]
     return this.state.curProvince || provinceFallback
   }
 
@@ -66,11 +70,11 @@ class LocationSelect extends Component<{}, PageState> {
   get cityList() {
     const { activeProvince } = this
     if(activeProvince) {
-      if(SpecialAreaPrefix.some(id => activeProvince.id.startsWith(id))) {
+      if(isSpecialArea(activeProvince.id)) {
         return [activeProvince]
       } else {
         const provincePrefix = activeProvince.id.substr(0, 2)
-        return districtData.city.filter(item => item.id.startsWith(provincePrefix))
+        return this.districtData.city.filter(item => item.id.startsWith(provincePrefix)) || []
       }
     } else {
       return []
@@ -97,7 +101,7 @@ class LocationSelect extends Component<{}, PageState> {
   render() {
     const activeProvinceId = this.activeProvince?.id
     const activeCityId = this.activeCity?.id
-    const { province } = districtData
+    const { province } = this.districtData
 
     return (
       <View className='location-select-page'>

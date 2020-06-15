@@ -3,12 +3,12 @@ import category from './category'
 import userInfo from './userInfo'
 import global from './global'
 import myProductList from './myProductList'
-import district from './district'
+import districts from './districts'
 
 export default combineReducers({
   category,
   userInfo,
   global,
   myProductList,
-  district,
+  districts,
 })

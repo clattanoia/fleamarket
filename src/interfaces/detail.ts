@@ -11,6 +11,11 @@ export type Location = {
   city?: DistrictInfo,
 }
 
+export type Districts = {
+  province: DistrictInfo[],
+  city: DistrictInfo[],
+}
+
 export type User = {
   id: string;
   nickname: string;

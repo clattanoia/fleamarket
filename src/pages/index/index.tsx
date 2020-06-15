@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { connect, useSelector } from '@tarojs/redux'
+import { connect } from '@tarojs/redux'
 
 import { fetchUserInfo } from '../../actions/userInfo'
 import { fetchCategories } from '../../actions/category'
@@ -80,10 +80,6 @@ class Index extends Component {
     goods: [],
     isLoading: false,
   }
-
-  districts = useSelector((state: any) => {
-    return state.districts
-  })
 
   componentDidMount() {
     this.props.fetchCategories()

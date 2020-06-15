@@ -6,7 +6,7 @@ import { AtIcon } from 'taro-ui'
 import './index.scss'
 import { Location } from '../../interfaces/detail'
 import { setLocationSelect } from '../../actions/global'
-import { isValidLocationInfo } from '../../utils/helper'
+import { isValidLocationInfo, getDisplayLocationText } from '../../utils/helper'
 
 interface Props {
   location?: Location
@@ -15,11 +15,9 @@ interface Props {
 function PublishLocation(props: Props) {
   const dispatch = useDispatch()
   const { location } = props
-  const provinceName = location?.province?.name || ''
-  const cityName = location?.city?.name || ''
   const classname = cls({
     'publish-location': true,
-    'unknown-location': !location,
+    'unknown-location': !isValidLocationInfo(location),
   })
 
   const handleClick = () => {
@@ -35,7 +33,7 @@ function PublishLocation(props: Props) {
       <View className='location-wrapper' onClick={handleClick}>
         <AtIcon value='map-pin' size='16' color='#FE5155' />
         <Text className='text'>
-          { isValidLocationInfo(location) ? `${provinceName} ${cityName}` : '点击选择地址'}
+          { isValidLocationInfo(location) ? getDisplayLocationText(location) : '点击选择地址'}
         </Text>
       </View>
     </View>

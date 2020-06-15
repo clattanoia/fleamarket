@@ -30,7 +30,7 @@ import { goodsDetailQuery, purchaseDetailQuery } from '../query/detail'
 import './index.scss'
 import { Location } from '../interfaces/detail'
 import { resetLocationSelect } from '../actions/global'
-import { isValidLocationInfo } from '../utils/helper'
+import { isValidLocationInfo, isTypeLocationInfo } from '../utils/helper'
 
 const ERROR_MESSAGES = {
   title: '标题不能为空',
@@ -42,7 +42,7 @@ const ERROR_MESSAGES = {
   invalidParameters: '发布内容不合法，请修改后重新发布',
   /* eslint-disable-next-line */
   content_risky: '发布内容包含敏感信息，请修改后重新发布',
-  systemError: '服务异常',
+  systemError: '服务异常，请稍后重试',
   invalidUser: '用户已被禁用',
   images: `最多上传10张图片（JPG/PNG）,图片不能大于10M,图片长宽均不能超过${ImageMaxWidthHeight}PX`,
   uploadError: '图片上传失败',
@@ -267,7 +267,12 @@ class Publish extends Component {
     })
   }
 
-  validRequired = (val: string | Array<any> | Location): boolean => !isEmpty(val)
+  validRequired = (val: string | Array<any> | Location): boolean => {
+    if(isEmpty(val)) return false
+    if(isTypeLocationInfo(val))  return isValidLocationInfo((val) as Location)
+
+    return true
+  }
 
   vaildInputValues = (isShowErrorMessage = false): boolean => {
     const attrKeys: Array<string> = [

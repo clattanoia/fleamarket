@@ -6,12 +6,10 @@ query {
     province {
       id
       name
-      fullname
     }
     city {
       id
       name
-      fullname
     }
   }
 }

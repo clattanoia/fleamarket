@@ -42,6 +42,7 @@ import DetailNote from './components/note'
 import ReceivedExchange from './components/receivedExchange'
 import RequestedExchange from './components/requestedExchange'
 import './index.scss'
+import { getDisplayLocationText } from '../../utils/helper'
 
 type PageStateProps = {
   userId: string;
@@ -125,6 +126,11 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
 
   config: Config = {
     navigationBarTitleText: '二货详情',
+  }
+
+  get locationText(): string {
+    const location = this.state.detail?.location
+    return getDisplayLocationText(location)
   }
 
   getIsCollected = async() => {
@@ -462,6 +468,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
       receivedExchanges,
       requestedExchanges,
     } = this.state
+
     return detail && detail.owner ? (
       <View className="detail">
         <View className="owner-container">
@@ -494,7 +501,7 @@ class ProductDetail extends Component<PageOwnProps, PageState> {
               <Tag tagName={this.genProductType(productType as ProductType)} />
               {this.renderSaleStatus()}
             </View>
-            <Text className="location">{`${detail.location.province.name || ''} ${detail.location.city.name || ''}`}</Text>
+            <Text className="location">{this.locationText}</Text>
           </View>
           <View className="title">{detail.title!}</View>
           <View className="description">

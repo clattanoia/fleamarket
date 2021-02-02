@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import pick from 'lodash/pick'
 import client from '../graphql-client'
 import { loginQuery } from '../query/login'
 import { GlobalData } from './globalData'
@@ -43,10 +44,9 @@ export async function authLogin(props: Inprops) {
     }
 
     const userData = await Taro.getUserInfo()
-    delete userData['errMsg']
-    delete userData['userInfo']
+    const selectedUserData = pick(userData, ['encryptedData', 'iv', 'rawData', 'signature'])
     const platform = taroEnv[Taro.getEnv()] || 'WECHAT'
-    GlobalData.authInfo = { code, userData, platform }
+    GlobalData.authInfo = { code, userData: selectedUserData, platform }
     const loginInput = GlobalData.authInfo
 
     const { data } = await client.mutate({ mutation: loginQuery, variables: { loginInput }})

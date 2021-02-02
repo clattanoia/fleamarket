@@ -76,6 +76,12 @@ class Index extends Component {
     navigationBarTitleText: '二货集',
   }
 
+  onShareAppMessage() {
+    return {
+      title: '二货集',
+    }
+  }
+
   state: State = {
     goods: [],
     isLoading: false,

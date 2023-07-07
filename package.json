@@ -102,7 +102,7 @@
     "nervjs": "^1.5.6",
     "regenerator-runtime": "^0.12.1",
     "simulant": "^0.2.2",
-    "stylelint": "9.3.0",
+    "stylelint": "15.10.1",
     "stylelint-config-taro-rn": "2.2.6",
     "stylelint-taro-rn": "2.2.6",
     "typescript": "^3.9.3"
